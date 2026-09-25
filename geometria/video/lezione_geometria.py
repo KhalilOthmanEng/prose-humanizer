@@ -213,7 +213,7 @@ def steps_column(lines, x=1.2, y_top=2.4, fs=30, buff=0.28):
     for tex, why, col in lines:
         m = MathTex(tex, font_size=fs, color=col)
         if why:
-            w = T(why, 20, GRAY_B)
+            w = T(why, 23, GRAY_B)
             row = VGroup(m, w).arrange(RIGHT, buff=0.25)
         else:
             row = VGroup(m)
@@ -1375,11 +1375,12 @@ class P11_Dimostrazioni(LessonScene):
 
     def construct(self):
         self.title_card()
-        cards = VGroup(*[VGroup(RoundedRectangle(width=2.9, height=1.1, corner_radius=0.15, color=c, stroke_width=3),
-                                T(s, 30, c)) for s, c in [("1. Disegno", WHITE), ("2. Ipotesi", COL_GIV),
-                                                            ("3. Tesi", COL_RES), ("4. Dimostrazione", COL_ANG)]])
-        for cd in cards:
-            cd[1].move_to(cd[0])
+        cards = VGroup()
+        for s_, c in [("1. Disegno", WHITE), ("2. Ipotesi", COL_GIV), ("3. Tesi", COL_RES), ("4. Dimostrazione", COL_ANG)]:
+            lab = T(s_, 30, c)
+            box = RoundedRectangle(width=lab.width + 0.6, height=1.1, corner_radius=0.15, color=c, stroke_width=3)
+            lab.move_to(box)
+            cards.add(VGroup(box, lab))
         cards.arrange(RIGHT, buff=0.3).move_to(P(0, 0.4))
         with self.say("Adesso impariamo a dimostrare, con il metodo del tuo quaderno: disegno, ipotesi, tesi, e poi la dimostrazione."):
             self.play(LaggedStart(*[FadeIn(c, shift=UP * 0.2) for c in cards], lag_ratio=0.4), run_time=2.4)
