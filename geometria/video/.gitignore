@@ -1,0 +1,7 @@
+media/
+audio/
+logs/
+kokoro
+__pycache__/
+filelist.txt
+*.mp4
