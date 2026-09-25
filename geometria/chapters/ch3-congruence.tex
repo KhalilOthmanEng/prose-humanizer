@@ -1,0 +1,590 @@
+% STATUS: COMPLETE DRAFT
+% Chapter 3 : congruence, the three criteria, how to write a proof, seven solved proofs
+% Every coordinate and length below is checked in scripts/verify.py
+\bichapter{Congruent triangles}{Triangoli congruenti}\label{ch:congruence}
+
+% ================================================================
+\bisection{What ``congruent'' means}{Che cosa vuol dire «congruente»}\label{sec:congruent}
+% ================================================================
+\begin{bi}
+\colheads
+Two keys cut from the same original open the same door. One may be lying upside down on the table and the other hanging from a hook, but if you pick them up and place one on the other, they match edge for edge. In geometry such figures are called \textbf{congruent}.
+\IT
+Due chiavi copiate dallo stesso originale aprono la stessa porta. Una può stare capovolta sul tavolo e l'altra appesa a un gancio, ma se le prendi e le sovrapponi combaciano bordo per bordo. In geometria figure così si dicono \textbf{congruenti}.
+\end{bi}
+
+\begin{defn}{congruent figures}{figure congruenti}
+Two figures are \textbf{congruent}, written $\cong$, if one can be placed exactly on top of the other by a \emph{rigid motion}: sliding it, turning it, or flipping it over. A rigid motion never stretches or bends, so lengths and angles do not change.
+\tcblower
+Due figure sono \textbf{congruenti}, e si scrive $\cong$, se una si può sovrapporre esattamente all'altra con un \emph{movimento rigido}: traslandola, ruotandola o ribaltandola. Un movimento rigido non allunga e non piega, quindi lunghezze e angoli non cambiano.
+\end{defn}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === base triangle (0,0),(1.8,0),(0.5,1.3); copies: shift (3,0); rotate 70 deg about its first vertex then shift (7.2,0);
+% mirror in the vertical line x = 0 then shift (11.4,0). All copies keep side lengths 1.8, 1.393, 1.838 (rigid motions).
+\begin{tikzpicture}
+  \tikzset{tri/.pic={\draw[side, fill=#1] (0,0) -- (1.8,0) -- (0.5,1.3) -- cycle;
+                     \draw[tick1] (0,0) -- (1.8,0); \draw[tick2] (1.8,0) -- (0.5,1.3); \draw[tick3] (0.5,1.3) -- (0,0);}}
+  \pic at (0,0) {tri=angB!15};
+  \node[font=\small, align=center] at (0.9,-0.55) {original\\\textit{originale}};
+  \pic at (3,0) {tri=angC!15};
+  \node[font=\small, align=center] at (3.9,-0.55) {slide\\\textit{traslazione}};
+  \pic[rotate=70] at (7.6,0) {tri=angD!20};
+  \node[font=\small, align=center] at (7.1,-0.55) {turn\\\textit{rotazione}};
+  \pic[xscale=-1] at (11.8,0) {tri=angA!15};
+  \node[font=\small, align=center] at (11.0,-0.55) {flip\\\textit{ribaltamento}};
+  \draw[-{Stealth[length=2mm]}, black!50] (2.0,0.75) -- (2.9,0.75);
+  \draw[-{Stealth[length=2mm]}, black!50] (5.0,0.75) -- (6.0,0.75);
+  \draw[-{Stealth[length=2mm]}, black!50] (8.2,0.75) -- (9.3,0.75);
+\end{tikzpicture}
+\bicap{The same triangle moved in three ways. The marks (one, two, three ticks) travel with their sides: nothing is stretched.}%
+      {Lo stesso triangolo spostato in tre modi. I segni (uno, due, tre trattini) viaggiano con i loro lati: niente si allunga.}
+\label{fig:moves}
+\end{figure}
+
+\begin{anchor}{tracing paper}{la carta da lucido}
+Put tracing paper on one triangle and copy it. Now move the paper: slide it, turn it, even turn it over. If you can make the copy cover the second triangle exactly, the two triangles are congruent. Every question in this chapter is really the question: ``would the tracing fit?''
+\tcblower
+Metti un foglio di carta da lucido su un triangolo e ricalcalo. Ora muovi il foglio: fallo scorrere, ruotalo, giralo anche dall'altra parte. Se riesci a far coprire esattamente il secondo triangolo dalla copia, i due triangoli sono congruenti. Ogni domanda di questo capitolo è in fondo la domanda: «il ricalco combacia?»
+\end{anchor}
+
+\begin{bi}
+When two triangles are congruent, each vertex has a partner, each side has a partner and each angle has a partner. Partners are called \textbf{corresponding parts}. The order of the letters tells you who goes with whom: $\tri{ABC} \cong \tri{DEF}$ means $A \leftrightarrow D$, $B \leftrightarrow E$, $C \leftrightarrow F$, so $\seg{AB} \cong \seg{DE}$, $\seg{BC} \cong \seg{EF}$, $\seg{CA} \cong \seg{FD}$ and $\av{A} \cong \av{D}$, $\av{B} \cong \av{E}$, $\av{C} \cong \av{F}$. A useful rule: \emph{corresponding sides lie opposite corresponding angles}.
+\IT
+Quando due triangoli sono congruenti, ogni vertice ha un compagno, ogni lato ha un compagno e ogni angolo ha un compagno. I compagni si chiamano \textbf{elementi omologhi}. L'ordine delle lettere dice chi va con chi: $\tri{ABC} \cong \tri{DEF}$ significa $A \leftrightarrow D$, $B \leftrightarrow E$, $C \leftrightarrow F$, quindi $\seg{AB} \cong \seg{DE}$, $\seg{BC} \cong \seg{EF}$, $\seg{CA} \cong \seg{FD}$ e $\av{A} \cong \av{D}$, $\av{B} \cong \av{E}$, $\av{C} \cong \av{F}$. Una regola utile: \emph{lati omologhi stanno opposti ad angoli omologhi}.
+\end{bi}
+
+\begin{trap}{same area, or same angles, means congruent}{stessa area, o stessi angoli, vuol dire congruenti}
+Two right triangles with legs 4 and 3, and 6 and 2, both have area 6, but one has hypotenuse 5 and the other about 6.32: they are not congruent (Figure~\ref{fig:notcong}a). Two equilateral triangles both have three $60^\circ$ angles, but one can be much bigger (Figure~\ref{fig:notcong}b): same shape, different size. Congruent means same shape \emph{and} same size.
+% VERIFIED: python -> areas 6.0 and 6.0 ; hypotenuses 5.0 and 6.325
+\tcblower
+Due triangoli rettangoli con cateti 4 e 3, e 6 e 2, hanno entrambi area 6, ma uno ha ipotenusa 5 e l'altro circa $6{,}32$: non sono congruenti (figura~\ref{fig:notcong}a). Due triangoli equilateri hanno entrambi tre angoli di $60^\circ$, ma uno può essere molto più grande (figura~\ref{fig:notcong}b): stessa forma, grandezza diversa. Congruenti vuol dire stessa forma \emph{e} stessa grandezza.
+\end{trap}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === (a) legs 4,3 (area 6, hyp 5) and 6,2 (area 6, hyp 6.325), scale 0.5
+% (b) equilateral sides 3.2 and 1.6: heights 3.2 sin60 = 2.771 and 1.6 sin60 = 1.386
+\begin{tikzpicture}[scale=0.55]
+  \begin{scope}
+    \draw[side, fill=angB!15] (0,0) -- (4,0) -- (0,3) -- cycle;
+    \node[font=\small] at (1.3,0.9) {$A = 6$};
+    \node[below, font=\small] at (2,0) {4}; \node[left, font=\small] at (0,1.5) {3};
+    \draw[side, fill=angA!15] (5.5,0) -- (11.5,0) -- (5.5,2) -- cycle;
+    \node[font=\small] at (7.2,0.6) {$A = 6$};
+    \node[below, font=\small] at (8.5,0) {6}; \node[left, font=\small] at (5.5,1) {2};
+    \node[font=\small\bfseries] at (5.8,-1.6) {(a)};
+  \end{scope}
+  \begin{scope}[shift={(15,0)}]
+    \draw[side, fill=angC!15] (0,0) -- (3.2,0) -- (1.6,2.771) -- cycle;
+    \draw[side, fill=angC!15] (4.4,0) -- (6.0,0) -- (5.2,1.386) -- cycle;
+    \node[font=\scriptsize] at (1.6,-0.5) {$60^\circ,\ 60^\circ,\ 60^\circ$};
+    \node[font=\scriptsize] at (5.2,-0.5) {$60^\circ,\ 60^\circ,\ 60^\circ$};
+    \node[font=\small\bfseries] at (3,-1.6) {(b)};
+  \end{scope}
+\end{tikzpicture}
+\bicap{Not congruent. (a) Same area, different shape. (b) Same angles, different size.}%
+      {Non congruenti. (a) Stessa area, forma diversa. (b) Stessi angoli, grandezza diversa.}
+\label{fig:notcong}
+\end{figure}
+
+% ================================================================
+\bisection{The three criteria}{I tre criteri di congruenza}\label{sec:criteria}
+% ================================================================
+\begin{think}{a triangle over the phone}{un triangolo al telefono}
+A friend has a triangle; you have paper, a ruler and a protractor. She must describe it over the phone so that you draw an exact copy. A triangle has six measurements: three sides and three angles. What is the \emph{smallest} amount of information she needs to give?
+\answer Three measurements are enough, but only if they are the right three. Each good choice is one of the \emph{criteria} below; each criterion is a recipe that leaves you no freedom at all when you draw.
+\tcblower
+Un'amica ha un triangolo; tu hai carta, righello e goniometro. Lei deve descrivertelo al telefono in modo che tu ne disegni una copia esatta. Un triangolo ha sei misure: tre lati e tre angoli. Qual è il \emph{minimo} di informazioni che deve darti?
+\answer Bastano tre misure, ma solo se sono le tre giuste. Ogni scelta buona è uno dei \emph{criteri} che seguono; ogni criterio è una ricetta che, quando disegni, non ti lascia nessuna libertà.
+\end{think}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === all three panels build the same triangle: A(0,0), B(3.4,0), angle A = 55 deg, AC = 2.5
+% C = 2.5 (cos55, sin55) = (1.434, 2.048). Angle B = atan2(2.048, 3.4-1.434) = 46.2 deg ; BC = 2.839
+% (SSS arcs: radius 2.5 around A and 2.839 around B meet at C)
+% VERIFIED: python -> BC = 2.8389, angle B = 46.168 deg
+\begin{tikzpicture}[scale=1.0]
+  % SAS
+  \begin{scope}
+    \coordinate (A) at (0,0); \coordinate (B) at (3.4,0); \coordinate (C) at (1.434,2.048);
+    \draw[side, angB] (A) -- (B); \draw[side, angB] (A) -- (C);
+    \draw[helper, crimson] (B) -- (C);
+    \pic[draw, angB, angle radius=6mm, "$55^\circ$", angle eccentricity=1.5, font=\scriptsize] {angle=B--A--C};
+    \node[below left] at (A) {$A$}; \node[below right] at (B) {$B$}; \node[above] at (C) {$C$};
+    \node[below, font=\scriptsize] at (1.7,0) {3.4}; \node[above left, font=\scriptsize] at (0.72,1.02) {2.5};
+    \node[font=\small, align=center] at (1.7,-1.0) {\textbf{SAS} \textperiodcentered\ \textbf{\textit{LAL}}\\ the third side is forced\\\textit{il terzo lato è obbligato}};
+  \end{scope}
+  % ASA
+  \begin{scope}[shift={(5.2,0)}]
+    \coordinate (A) at (0,0); \coordinate (B) at (3.4,0); \coordinate (C) at (1.434,2.048);
+    \draw[side, angB] (A) -- (B);
+    \draw[thinline, angB] (A) -- ($(A)!1.25!(C)$); \draw[thinline, angB] (B) -- ($(B)!1.3!(C)$);
+    \pic[draw, angB, angle radius=6mm, "$55^\circ$", angle eccentricity=1.5, font=\scriptsize] {angle=B--A--C};
+    \pic[draw, angB, angle radius=6mm, "$46^\circ$", angle eccentricity=1.55, font=\scriptsize] {angle=C--B--A};
+    \node[circle, fill=crimson, inner sep=1.6pt] at (C) {};
+    \node[below left] at (A) {$A$}; \node[below right] at (B) {$B$}; \node[above right] at (C) {$C$};
+    \node[font=\small, align=center] at (1.7,-1.0) {\textbf{ASA} \textperiodcentered\ \textbf{\textit{ALA}}\\ two rays meet in one point\\\textit{due semirette, un solo punto}};
+  \end{scope}
+  % SSS
+  \begin{scope}[shift={(10.4,0)}]
+    \coordinate (A) at (0,0); \coordinate (B) at (3.4,0); \coordinate (C) at (1.434,2.048);
+    \draw[side, angB] (A) -- (B);
+    \draw[angB, line width=0.6pt] (A) ++(40:2.5) arc (40:95:2.5);
+    \draw[angB, line width=0.6pt] (B) ++(110:2.839) arc (110:160:2.839);
+    \draw[helper] (A) -- (C) -- (B);
+    \node[circle, fill=crimson, inner sep=1.6pt] at (C) {};
+    \node[below left] at (A) {$A$}; \node[below right] at (B) {$B$}; \node[above] at ($(C)+(0,0.1)$) {$C$};
+    \node[font=\small, align=center] at (1.7,-1.0) {\textbf{SSS} \textperiodcentered\ \textbf{\textit{LLL}}\\ two arcs cross in one point\\\textit{due archi, un solo punto}};
+  \end{scope}
+\end{tikzpicture}
+\bicap{Three recipes that leave no freedom. Blue: the data you are given. Red: what is then forced.}%
+      {Tre ricette che non lasciano libertà. In blu i dati; in rosso ciò che è obbligato.}
+\label{fig:criteria}
+\end{figure}
+
+\begin{defn}{first criterion, SAS}{primo criterio, LAL}
+Two triangles are congruent if they have two sides and \textbf{the angle between them} respectively congruent.
+
+\emph{Why.} Draw the angle, then measure the two sides along its arms. The two free ends are now fixed points, and only one segment joins them: the third side has no choice (Figure~\ref{fig:criteria}, left). Think of a laptop opened to a fixed angle: screen and keyboard have fixed lengths, so the gap between their far edges is fixed too.
+\tcblower
+Due triangoli sono congruenti se hanno rispettivamente congruenti due lati e \textbf{l'angolo tra essi compreso}.
+
+\emph{Perché.} Disegna l'angolo, poi misura i due lati sui suoi lati. I due estremi liberi sono ora punti fissi, e un solo segmento li unisce: il terzo lato non ha scelta (figura~\ref{fig:criteria}, a sinistra). Pensa a un portatile aperto con un angolo fisso: schermo e tastiera hanno lunghezze fisse, quindi è fissa anche la distanza tra i loro bordi lontani.
+\end{defn}
+
+\begin{defn}{second criterion, ASA}{secondo criterio, ALA}
+Two triangles are congruent if they have one side and \textbf{the two angles next to it} respectively congruent.
+
+\emph{Why.} Draw the side. At each end, draw a ray at the given angle. Two rays that are not parallel cross in exactly one point: the third vertex (Figure~\ref{fig:criteria}, centre). Surveyors use this to locate a boat from the beach: two observers a known distance apart each measure the angle towards it, and the boat can only be where their two lines cross.
+\tcblower
+Due triangoli sono congruenti se hanno rispettivamente congruenti un lato e \textbf{i due angoli ad esso adiacenti}.
+
+\emph{Perché.} Disegna il lato. In ciascun estremo traccia una semiretta con l'angolo dato. Due semirette non parallele si incontrano in un solo punto: il terzo vertice (figura~\ref{fig:criteria}, al centro). I topografi lo usano per trovare una barca dalla spiaggia: due osservatori a distanza nota misurano ciascuno l'angolo verso la barca, e la barca può stare solo dove le due linee si incrociano.
+\end{defn}
+
+\begin{defn}{third criterion, SSS}{terzo criterio, LLL}
+Two triangles are congruent if they have \textbf{all three sides} respectively congruent.
+
+\emph{Why.} Draw one side. The third vertex must be at the first distance from one end and at the second distance from the other end: two circles, and on each side of the base they cross in one point only (Figure~\ref{fig:criteria}, right). This is why a triangle made of three sticks cannot wobble.
+\tcblower
+Due triangoli sono congruenti se hanno rispettivamente congruenti \textbf{tutti e tre i lati}.
+
+\emph{Perché.} Disegna un lato. Il terzo vertice deve stare alla prima distanza da un estremo e alla seconda distanza dall'altro: due circonferenze, che da ciascuna parte della base si incontrano in un solo punto (figura~\ref{fig:criteria}, a destra). Per questo un triangolo fatto di tre bastoncini non può deformarsi.
+\end{defn}
+
+\begin{example}{why buildings are full of triangles}{perché gli edifici sono pieni di triangoli}
+Pin four sticks together into a square and push one corner: it folds into a rhombus, because four sides do not fix the angles. Pin three sticks into a triangle and push: nothing moves, because by the third criterion three sides fix the whole triangle, angles included (Figure~\ref{fig:rigid}). Roof trusses, cranes, bridges and the diagonal braces behind a bookcase all use this: engineers turn wobbly rectangles into rigid triangles by adding one diagonal.
+\tcblower
+Unisci quattro bastoncini con dei chiodini a formare un quadrato e spingi un angolo: si piega in un rombo, perché quattro lati non fissano gli angoli. Unisci tre bastoncini a triangolo e spingi: non si muove niente, perché per il terzo criterio tre lati fissano tutto il triangolo, angoli compresi (figura~\ref{fig:rigid}). Capriate dei tetti, gru, ponti e le diagonali dietro una libreria usano questa idea: gli ingegneri rendono rigidi i rettangoli aggiungendo una diagonale, cioè creando triangoli.
+\end{example}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === square side 1.8 deforming to a rhombus with 60 deg angle: top corners shift by 1.8 cos60 = 0.9, height 1.8 sin60 = 1.559
+% truss: base 4.8, apex height 1.6, one vertical and two diagonals
+\begin{tikzpicture}
+  \tikzset{pin/.style={circle, draw, fill=white, inner sep=1.4pt}}
+  \begin{scope}
+    \draw[line width=2pt, black!25] (0,0) rectangle (1.8,1.8);
+    \draw[line width=2pt, brown!70!black] (0,0) -- (1.8,0) -- (2.7,1.559) -- (0.9,1.559) -- cycle;
+    \foreach \p in {(0,0),(1.8,0),(2.7,1.559),(0.9,1.559)} \node[pin] at \p {};
+    \draw[-{Stealth[length=2mm]}, crimson, line width=0.8pt] (-0.3,1.8) -- (0.6,1.8);
+    \node[font=\small, align=center] at (1.3,-0.65) {square folds\\\textit{il quadrato si piega}};
+  \end{scope}
+  \begin{scope}[shift={(4.2,0)}]
+    \draw[line width=2pt, brown!70!black] (0,0) -- (1.8,0) -- (0.9,1.559) -- cycle;
+    \foreach \p in {(0,0),(1.8,0),(0.9,1.559)} \node[pin] at \p {};
+    \draw[-{Stealth[length=2mm]}, crimson, line width=0.8pt] (-0.2,1.559) -- (0.6,1.559);
+    \node[font=\small, align=center] at (0.9,-0.65) {triangle holds\\\textit{il triangolo resiste}};
+  \end{scope}
+  \begin{scope}[shift={(8.4,0)}]
+    \draw[line width=1.6pt, brown!70!black] (0,0) -- (4.8,0) -- (2.4,1.6) -- cycle;
+    \draw[line width=1.1pt, brown!70!black] (2.4,0) -- (2.4,1.6) (1.2,0.8) -- (2.4,0) -- (3.6,0.8);
+    \foreach \p in {(0,0),(4.8,0),(2.4,1.6),(2.4,0),(1.2,0.8),(3.6,0.8)} \node[pin] at \p {};
+    \node[font=\small, align=center] at (2.4,-0.65) {roof truss\\\textit{capriata}};
+  \end{scope}
+\end{tikzpicture}
+\bicap{Rigidity. Four sides do not fix a shape; three sides do. A roof truss is a set of triangles.}%
+      {Rigidità. Quattro lati non fissano la forma; tre lati sì. Una capriata è un insieme di triangoli.}
+\label{fig:rigid}
+\end{figure}
+
+\begin{trap}{any three pieces of information will do}{tre informazioni qualsiasi bastano}
+Two cases \emph{do not} work. \textbf{Three angles} (AAA) only fix the shape, not the size (Figure~\ref{fig:notcong}b). \textbf{Two sides and an angle that is not between them} (SSA) can give two different triangles. In Figure~\ref{fig:ssa} the angle at $A$ is $30^\circ$, $AB = 6$ and $BC = 4$: the circle of radius 4 around $B$ cuts the ray from $A$ twice, and $AC$ can be $7.84$ or $2.55$. Same data, two triangles: not a criterion.
+% VERIFIED: python -> AC = 7.842 or 2.550, both with |BC| = 4
+\tcblower
+Due casi \emph{non} funzionano. \textbf{Tre angoli} (AAA) fissano solo la forma, non la grandezza (figura~\ref{fig:notcong}b). \textbf{Due lati e un angolo non compreso tra loro} (LLA) possono dare due triangoli diversi. Nella figura~\ref{fig:ssa} l'angolo in $A$ è $30^\circ$, $AB = 6$ e $BC = 4$: la circonferenza di raggio 4 con centro $B$ taglia due volte la semiretta da $A$, e $AC$ può essere $7{,}84$ oppure $2{,}55$. Stessi dati, due triangoli: non è un criterio.
+\end{trap}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === A(0,0), B(6,0), ray at 30 deg, circle radius 4 about B.
+% t^2 - 12 cos30 t + 20 = 0 -> t = 7.842, 2.550 ; C1 = (6.791,3.921), C2 = (2.209,1.275)
+% VERIFIED: python -> |B C1| = |B C2| = 4
+\begin{tikzpicture}[scale=0.62]
+  \coordinate (A) at (0,0); \coordinate (B) at (6,0);
+  \coordinate (C1) at (6.791,3.921); \coordinate (C2) at (2.209,1.275);
+  \draw[black!25] (B) circle (4);
+  \draw[ray] (A) -- (30:9.2);
+  \fill[angB!15] (A) -- (B) -- (C1) -- cycle;
+  \fill[angA!20] (A) -- (B) -- (C2) -- cycle;
+  \draw[side] (A) -- (B);
+  \draw[side, angB] (B) -- (C1); \draw[side, angA] (B) -- (C2);
+  \pic[draw, angle radius=8mm, "$30^\circ$", angle eccentricity=1.55, font=\small] {angle=B--A--C1};
+  \node[below left] at (A) {$A$}; \node[below right] at (B) {$B$};
+  \node[above left, angB] at (C1) {$C_1$}; \node[above left, angA] at (C2) {$C_2$};
+  \node[below, font=\small] at (3,0) {6};
+  \node[right, font=\small, angB] at ($(B)!0.5!(C1)$) {4};
+  \node[above right, font=\small, angA] at ($(B)!0.5!(C2)+(0,0.05)$) {4};
+\end{tikzpicture}
+\bicap{SSA is not a criterion: the same data ($30^\circ$, 6, 4) give triangle $ABC_1$ and triangle $ABC_2$.}%
+      {LLA non è un criterio: gli stessi dati ($30^\circ$, 6, 4) danno il triangolo $ABC_1$ e il triangolo $ABC_2$.}
+\label{fig:ssa}
+\end{figure}
+
+\begin{tutor}[naming and order]
+Italian schools number the criteria exactly as here: \emph{primo} (LAL), \emph{secondo} (ALA), \emph{terzo} (LLL). The first is usually taken as a postulate (Hilbert did so, reference [3] in Appendix~\ref{app:glossary}) or justified by superposition, as Euclid did (\emph{Elements} I.4, reference [1]); the other two are proved from it. Later she will meet the ``generalised second criterion'' (one side and \emph{any} two angles, LAA), which follows from the angle sum, and a special criterion for right triangles (hypotenuse and one leg). Neither is needed in this booklet.
+\end{tutor}
+
+% ================================================================
+\bisection{How to write a proof}{Come si scrive una dimostrazione}\label{sec:howto}
+% ================================================================
+\begin{bi}
+Her notebook already has the right method, in three steps. \textbf{1.} Draw the figure carefully, following the words exactly, and mark on it everything you know (ticks for equal sides, arcs for equal angles). \textbf{2.} Write the \textbf{hypothesis}: what the problem gives you. \textbf{3.} Write the \textbf{thesis}: what you must prove. Then build the \textbf{proof}: a chain of statements, each with its reason, that goes from the hypothesis to the thesis.
+\IT
+Il tuo quaderno ha già il metodo giusto, in tre passi. \textbf{1.} Disegna la figura con cura, seguendo esattamente il testo, e segna su di essa tutto quello che sai (trattini per i lati congruenti, archetti per gli angoli congruenti). \textbf{2.} Scrivi l'\textbf{ipotesi}: i dati del problema. \textbf{3.} Scrivi la \textbf{tesi}: quello che devi dimostrare. Poi costruisci la \textbf{dimostrazione}: una catena di affermazioni, ognuna con il suo motivo, che va dall'ipotesi alla tesi.
+\EN
+The most common plan is always the same: \emph{find two triangles that contain the pieces you want, prove they are congruent with a criterion, then read off the corresponding parts.} If the thesis is ``$\seg{BH} \cong \seg{HC}$'', look for two triangles that have $\seg{BH}$ and $\seg{HC}$ as corresponding sides.
+\IT
+Il piano più comune è sempre lo stesso: \emph{trova due triangoli che contengono i pezzi che ti interessano, dimostra che sono congruenti con un criterio, poi leggi gli elementi omologhi.} Se la tesi è «$\seg{BH} \cong \seg{HC}$», cerca due triangoli che abbiano $\seg{BH}$ e $\seg{HC}$ come lati omologhi.
+\end{bi}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}X >{\raggedright\arraybackslash\itshape\leavevmode\color{itgreen}}X@{}}
+\toprule
+\textbf{Reason (English)} & \textbf{\upshape Motivo (italiano)}\\
+\midrule
+given; by hypothesis & per ipotesi\\
+common side & lato in comune\\
+by construction & per costruzione\\
+vertical angles & perché opposti al vertice\\
+alternate interior angles of parallel lines & perché alterni interni di rette parallele\\
+base angles of an isosceles triangle & perché angoli alla base di un triangolo isoscele\\
+halves of congruent segments & perché metà di segmenti congruenti\\
+sums (differences) of congruent segments or angles & perché somme (differenze) di segmenti o angoli congruenti\\
+by SAS, ASA, SSS & per il primo, secondo, terzo criterio di congruenza\\
+corresponding parts of congruent triangles & perché elementi omologhi di triangoli congruenti\\
+QED (which was to be proved) & c.v.d. (come volevasi dimostrare)\\
+\bottomrule
+\end{tabularx}
+\bicap{The reasons that appear in almost every proof.}{I motivi che compaiono in quasi ogni dimostrazione.}
+\label{tab:phrases}
+\end{table}
+
+% ================================================================
+\bisection{Seven solved proofs}{Sette dimostrazioni svolte}\label{sec:proofs}
+% ================================================================
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION ===
+% P1: A(0,0) B(4,2) O(2,1) C(0.6,2.2) D = 2O - C = (3.4,-0.2)       VERIFIED: AC = BD = 2.2804
+% P2: A(0,0) C(4,0) B(1.2,1.4) D(1.2,-1.4)                          VERIFIED: angle BAC = DAC = 49.40
+% P3: A(0,2) B(2.2,2) D(4,0) C(1.8,0) O(2,1)                        VERIFIED: BO = OC
+\begin{tikzpicture}[scale=0.9]
+  \begin{scope}
+    \coordinate (A) at (0,0); \coordinate (B) at (4,2); \coordinate (O) at (2,1);
+    \coordinate (C) at (0.6,2.2); \coordinate (D) at (3.4,-0.2);
+    \fill[angB!15] (A) -- (O) -- (C) -- cycle; \fill[angC!15] (B) -- (O) -- (D) -- cycle;
+    \draw[side, tick1] (A) -- (O); \draw[side, tick1] (O) -- (B);
+    \draw[side, tick2] (C) -- (O); \draw[side, tick2] (O) -- (D);
+    \draw[side] (A) -- (C); \draw[side] (B) -- (D);
+    \pic[draw, angA, angle radius=3.5mm] {angle=C--O--A}; \pic[draw, angA, angle radius=3.5mm] {angle=D--O--B};
+    \node[below left] at (A) {$A$}; \node[above right] at (B) {$B$}; \node[above] at (C) {$C$};
+    \node[below] at (D) {$D$}; \node[below right, font=\small] at ($(O)+(0.05,-0.05)$) {$O$};
+    \node[font=\small\bfseries] at (2,-1.0) {P1 (SAS \textperiodcentered\ LAL)};
+  \end{scope}
+  \begin{scope}[shift={(5.6,1)}]
+    \coordinate (A) at (0,0); \coordinate (C) at (4,0); \coordinate (B) at (1.2,1.4); \coordinate (D) at (1.2,-1.4);
+    \fill[angB!15] (A) -- (B) -- (C) -- cycle; \fill[angC!15] (A) -- (D) -- (C) -- cycle;
+    \draw[side, tick1] (A) -- (B); \draw[side, tick1] (A) -- (D);
+    \draw[side, tick2] (C) -- (B); \draw[side, tick2] (C) -- (D);
+    \draw[side] (A) -- (C);
+    \pic[draw, angA, angle radius=6mm] {angle=C--A--B}; \pic[draw, angA, angle radius=6.8mm] {angle=D--A--C};
+    \node[left] at (A) {$A$}; \node[above] at (B) {$B$}; \node[right] at (C) {$C$}; \node[below] at (D) {$D$};
+    \node[font=\small\bfseries] at (2,-2.0) {P2 (SSS \textperiodcentered\ LLL)};
+  \end{scope}
+  \begin{scope}[shift={(11.2,0)}]
+    \coordinate (A) at (0,2); \coordinate (B) at (2.2,2); \coordinate (D) at (4,0); \coordinate (C) at (1.8,0); \coordinate (O) at (2,1);
+    \draw[thinline, black!40] (-0.5,2) -- (3.2,2); \draw[thinline, black!40] (0.8,0) -- (4.6,0);
+    \fill[angB!15] (A) -- (O) -- (B) -- cycle; \fill[angC!15] (D) -- (O) -- (C) -- cycle;
+    \draw[side] (A) -- (B); \draw[side] (C) -- (D);
+    \draw[side, tick1] (A) -- (O); \draw[side, tick1] (O) -- (D);
+    \draw[side] (B) -- (C);
+    \pic[draw, angA, angle radius=5mm] {angle=O--A--B}; \pic[draw, angA, angle radius=5mm] {angle=O--D--C};
+    \node[above left] at (A) {$A$}; \node[above] at (B) {$B$}; \node[below] at (C) {$C$}; \node[below right] at (D) {$D$};
+    \node[right, font=\small] at ($(O)+(0.08,0.05)$) {$O$};
+    \node[font=\small\bfseries] at (2,-1.0) {P3 (ASA \textperiodcentered\ ALA)};
+  \end{scope}
+\end{tikzpicture}
+\bicap{Figures for proofs P1, P2, P3. Shaded: the two triangles to compare.}%
+      {Figure delle dimostrazioni P1, P2, P3. In colore: i due triangoli da confrontare.}
+\label{fig:p123}
+\end{figure}
+
+\begin{proofbox}{P1, two segments with the same midpoint}{P1, due segmenti con lo stesso punto medio}
+Segments $AB$ and $CD$ cross at $O$, the midpoint of both. Prove $\seg{AC} \cong \seg{BD}$.\\
+\textbf{Given:} $\seg{AO} \cong \seg{OB}$, $\seg{CO} \cong \seg{OD}$. \textbf{To prove:} $\seg{AC} \cong \seg{BD}$.\\
+Compare $\tri{AOC}$ and $\tri{BOD}$:
+\begin{steps}
+\step{$\seg{AO} \cong \seg{OB}$}{given}
+\step{$\seg{CO} \cong \seg{OD}$}{given}
+\step{$\ang{A}{O}{C} \cong \ang{B}{O}{D}$}{vertical angles}
+\end{steps}
+Two sides and the angle between them: $\tri{AOC} \cong \tri{BOD}$ by SAS. So $\seg{AC} \cong \seg{BD}$ (corresponding sides, both opposite the angle at $O$). \hfill QED
+\tcblower
+I segmenti $AB$ e $CD$ si incontrano in $O$, punto medio di entrambi. Dimostra che $\seg{AC} \cong \seg{BD}$.\\
+\textbf{Ipotesi:} $\seg{AO} \cong \seg{OB}$, $\seg{CO} \cong \seg{OD}$. \textbf{Tesi:} $\seg{AC} \cong \seg{BD}$.\\
+Considero $\tri{AOC}$ e $\tri{BOD}$:
+\begin{steps}
+\step{$\seg{AO} \cong \seg{OB}$}{per ipotesi}
+\step{$\seg{CO} \cong \seg{OD}$}{per ipotesi}
+\step{$\ang{A}{O}{C} \cong \ang{B}{O}{D}$}{opposti al vertice}
+\end{steps}
+Due lati e l'angolo compreso: $\tri{AOC} \cong \tri{BOD}$ per il primo criterio. Quindi $\seg{AC} \cong \seg{BD}$ (lati omologhi, opposti all'angolo in $O$). \hfill c.v.d.
+\end{proofbox}
+
+\begin{proofbox}{P2, the kite}{P2, l'aquilone}
+In the quadrilateral $ABCD$, $\seg{AB} \cong \seg{AD}$ and $\seg{CB} \cong \seg{CD}$. Prove that the diagonal $AC$ bisects the angle at $A$.\\
+\textbf{To prove:} $\ang{B}{A}{C} \cong \ang{D}{A}{C}$.\\
+Compare $\tri{ABC}$ and $\tri{ADC}$:
+\begin{steps}
+\step{$\seg{AB} \cong \seg{AD}$}{given}
+\step{$\seg{CB} \cong \seg{CD}$}{given}
+\step{$\seg{AC}$ in both}{common side}
+\end{steps}
+$\tri{ABC} \cong \tri{ADC}$ by SSS, so $\ang{B}{A}{C} \cong \ang{D}{A}{C}$ (corresponding angles, opposite the equal sides $CB$ and $CD$). \hfill QED
+\tcblower
+Nel quadrilatero $ABCD$ si ha $\seg{AB} \cong \seg{AD}$ e $\seg{CB} \cong \seg{CD}$. Dimostra che la diagonale $AC$ è bisettrice dell'angolo in $A$.\\
+\textbf{Tesi:} $\ang{B}{A}{C} \cong \ang{D}{A}{C}$.\\
+Considero $\tri{ABC}$ e $\tri{ADC}$:
+\begin{steps}
+\step{$\seg{AB} \cong \seg{AD}$}{per ipotesi}
+\step{$\seg{CB} \cong \seg{CD}$}{per ipotesi}
+\step{$\seg{AC}$ in comune}{lato in comune}
+\end{steps}
+$\tri{ABC} \cong \tri{ADC}$ per il terzo criterio, quindi $\ang{B}{A}{C} \cong \ang{D}{A}{C}$ (angoli omologhi, opposti ai lati congruenti $CB$ e $CD$). \hfill c.v.d.
+\end{proofbox}
+
+\begin{proofbox}{P3, parallels and a midpoint}{P3, parallele e punto medio}
+$AB \parallel CD$. The segments $AD$ and $BC$ cross at $O$, and $O$ is the midpoint of $AD$. Prove that $O$ is also the midpoint of $BC$.\\
+Compare $\tri{AOB}$ and $\tri{DOC}$:
+\begin{steps}
+\step{$\seg{AO} \cong \seg{OD}$}{given}
+\step{$\ang{O}{A}{B} \cong \ang{O}{D}{C}$}{alternate interior, $AB \parallel CD$}
+\step{$\ang{A}{O}{B} \cong \ang{D}{O}{C}$}{vertical angles}
+\end{steps}
+The side $AO$ lies between the angles of steps 2 and 3, and so does $DO$: $\tri{AOB} \cong \tri{DOC}$ by ASA. So $\seg{BO} \cong \seg{OC}$. \hfill QED
+\tcblower
+$AB \parallel CD$. I segmenti $AD$ e $BC$ si incontrano in $O$, e $O$ è il punto medio di $AD$. Dimostra che $O$ è anche il punto medio di $BC$.\\
+Considero $\tri{AOB}$ e $\tri{DOC}$:
+\begin{steps}
+\step{$\seg{AO} \cong \seg{OD}$}{per ipotesi}
+\step{$\ang{O}{A}{B} \cong \ang{O}{D}{C}$}{alterni interni, $AB \parallel CD$}
+\step{$\ang{A}{O}{B} \cong \ang{D}{O}{C}$}{opposti al vertice}
+\end{steps}
+Il lato $AO$ è compreso tra gli angoli dei passi 2 e 3, e così $DO$: $\tri{AOB} \cong \tri{DOC}$ per il secondo criterio. Quindi $\seg{BO} \cong \seg{OC}$. \hfill c.v.d.
+\end{proofbox}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === A(2,3.4) B(0,0) C(4,0); bisector foot = altitude foot = midpoint (2,0)
+% VERIFIED: python -> angle B = angle C = 59.53 ; angle BAH = CAH = 30.47
+\begin{tikzpicture}[scale=0.95]
+  \foreach \x/\lab/\foot/\name in {0/D/P4 (SAS \textperiodcentered\ LAL)/P4, 6.2/H/P5 (SAS \textperiodcentered\ LAL)/P5} {
+    \begin{scope}[shift={(\x,0)}]
+      \coordinate (A) at (2,3.4); \coordinate (B) at (0,0); \coordinate (C) at (4,0); \coordinate (F) at (2,0);
+      \fill[angB!15] (A) -- (B) -- (F) -- cycle; \fill[angC!15] (A) -- (C) -- (F) -- cycle;
+      \draw[side, tick1] (A) -- (B); \draw[side, tick1] (A) -- (C); \draw[side] (B) -- (C);
+      \draw[side, crimson] (A) -- (F);
+      \node[above] at (A) {$A$}; \node[below left] at (B) {$B$}; \node[below right] at (C) {$C$}; \node[below] at (F) {$\lab$};
+      \node[font=\small\bfseries] at (2,-0.9) {\foot};
+    \end{scope}
+  }
+  \begin{scope}
+    \coordinate (A) at (2,3.4); \coordinate (B) at (0,0); \coordinate (C) at (4,0); \coordinate (F) at (2,0);
+    \pic[draw, angA, angle radius=7mm] {angle=B--A--F}; \pic[draw, angA, angle radius=7.8mm] {angle=F--A--C};
+  \end{scope}
+  \begin{scope}[shift={(6.2,0)}]
+    \coordinate (A) at (2,3.4); \coordinate (B) at (0,0); \coordinate (C) at (4,0); \coordinate (F) at (2,0);
+    \rang{A}{F}{C}
+    \pic[draw, angB, angle radius=5mm] {angle=C--B--A}; \pic[draw, angB, angle radius=5mm] {angle=A--C--B};
+  \end{scope}
+\end{tikzpicture}
+\bicap{P4: the bisector $AD$ of the vertex angle. P5: the altitude $AH$ to the base.}%
+      {P4: la bisettrice $AD$ dell'angolo al vertice. P5: l'altezza $AH$ relativa alla base.}
+\label{fig:p45}
+\end{figure}
+
+\begin{proofbox}{P4, the base angles of an isosceles triangle are equal}{P4, gli angoli alla base di un triangolo isoscele sono congruenti}
+\textbf{Given:} $\tri{ABC}$ with $\seg{AB} \cong \seg{AC}$ (base $BC$). \textbf{To prove:} $\av{B} \cong \av{C}$.\\
+Draw the bisector $AD$ of the angle at $A$. Compare $\tri{ABD}$ and $\tri{ACD}$:
+\begin{steps}
+\step{$\seg{AB} \cong \seg{AC}$}{given}
+\step{$\ang{B}{A}{D} \cong \ang{C}{A}{D}$}{$AD$ is the bisector}
+\step{$\seg{AD}$ in both}{common side}
+\end{steps}
+$\tri{ABD} \cong \tri{ACD}$ by SAS, so $\av{B} \cong \av{C}$. \hfill QED\\
+\emph{Bonus:} also $\seg{BD} \cong \seg{DC}$, and the angles at $D$ are equal and fill a straight angle, so each is $90^\circ$. The bisector of the vertex angle is also median and altitude.
+\tcblower
+\textbf{Ipotesi:} $\tri{ABC}$ con $\seg{AB} \cong \seg{AC}$ (base $BC$). \textbf{Tesi:} $\av{B} \cong \av{C}$.\\
+Traccio la bisettrice $AD$ dell'angolo in $A$. Considero $\tri{ABD}$ e $\tri{ACD}$:
+\begin{steps}
+\step{$\seg{AB} \cong \seg{AC}$}{per ipotesi}
+\step{$\ang{B}{A}{D} \cong \ang{C}{A}{D}$}{$AD$ è bisettrice}
+\step{$\seg{AD}$ in comune}{lato in comune}
+\end{steps}
+$\tri{ABD} \cong \tri{ACD}$ per il primo criterio, quindi $\av{B} \cong \av{C}$. \hfill c.v.d.\\
+\emph{In più:} anche $\seg{BD} \cong \seg{DC}$, e gli angoli in $D$ sono congruenti e adiacenti, quindi ognuno è retto. La bisettrice dell'angolo al vertice è anche mediana e altezza.
+\end{proofbox}
+
+\begin{history}{the bridge of donkeys}{il ponte degli asini}
+P4 is Proposition 5 of Book I of Euclid's \emph{Elements}. In the Middle Ages it was nicknamed \emph{pons asinorum}, ``the bridge of donkeys'': the first real bridge a student had to cross, and the place where many stopped.
+\tcblower
+P4 è la Proposizione 5 del Libro I degli \emph{Elementi} di Euclide. Nel Medioevo fu soprannominata \emph{pons asinorum}, «il ponte degli asini»: il primo vero ponte che uno studente doveva attraversare, e il punto in cui molti si fermavano.
+\end{history}
+
+\begin{proofbox}{P5, the altitude of an isosceles triangle}{P5, l'altezza di un triangolo isoscele}
+\textbf{Given:} $\seg{AB} \cong \seg{AC}$; $AH$ is the altitude to the base $BC$, so $\ang{A}{H}{B} = \ang{A}{H}{C} = 90^\circ$.\\
+\textbf{To prove:} $\seg{BH} \cong \seg{HC}$, and $\tri{ABH} \cong \tri{ACH}$.
+\begin{steps}
+\step{$\av{B} \cong \av{C}$}{base angles, P4}
+\step{$\ang{B}{A}{H} = 180^\circ - 90^\circ - \av{B}$}{angle sum in $\tri{ABH}$}
+\step{$\ang{C}{A}{H} = 180^\circ - 90^\circ - \av{C}$}{angle sum in $\tri{ACH}$}
+\step{$\ang{B}{A}{H} \cong \ang{C}{A}{H}$}{from 1, 2, 3}
+\end{steps}
+Now compare $\tri{ABH}$ and $\tri{ACH}$: $\seg{AB} \cong \seg{AC}$ (given), $\seg{AH}$ common, and the angles between them are equal (step 4). By SAS, $\tri{ABH} \cong \tri{ACH}$. So $\seg{BH} \cong \seg{HC}$: $H$ is the midpoint of the base. \hfill QED\\
+\emph{Conclusion:} in an isosceles triangle the altitude to the base is also the median and the bisector.
+\tcblower
+\textbf{Ipotesi:} $\seg{AB} \cong \seg{AC}$; $AH$ è l'altezza relativa alla base $BC$, quindi $\ang{A}{H}{B} = \ang{A}{H}{C} = 90^\circ$.\\
+\textbf{Tesi:} $\seg{BH} \cong \seg{HC}$, e $\tri{ABH} \cong \tri{ACH}$.
+\begin{steps}
+\step{$\av{B} \cong \av{C}$}{angoli alla base, P4}
+\step{$\ang{B}{A}{H} = 180^\circ - 90^\circ - \av{B}$}{somma degli angoli di $\tri{ABH}$}
+\step{$\ang{C}{A}{H} = 180^\circ - 90^\circ - \av{C}$}{somma degli angoli di $\tri{ACH}$}
+\step{$\ang{B}{A}{H} \cong \ang{C}{A}{H}$}{da 1, 2, 3}
+\end{steps}
+Ora considero $\tri{ABH}$ e $\tri{ACH}$: $\seg{AB} \cong \seg{AC}$ (ipotesi), $\seg{AH}$ in comune, e gli angoli compresi sono congruenti (passo 4). Per il primo criterio $\tri{ABH} \cong \tri{ACH}$. Quindi $\seg{BH} \cong \seg{HC}$: $H$ è il punto medio della base. \hfill c.v.d.\\
+\emph{Conclusione:} in un triangolo isoscele l'altezza relativa alla base è anche mediana e bisettrice.
+\end{proofbox}
+
+\begin{tutor}[another route for P5]
+After step 4, ASA works too (side $AB$ with $\av{B}$ and $\ang{B}{A}{H}$). Some textbooks instead use the right triangle criterion (hypotenuse and one leg: $AB \cong AC$, $AH$ common), which is correct but usually comes later in the Italian syllabus. The route above uses only what she already has: the first criterion, P4 and the angle sum.
+\end{tutor}
+
+\bisubsection{The two problems from the notebook}{I due problemi del quaderno}\label{sec:notebook}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION ===
+% P6: A(0,3) B(-1.5,0) C(1.5,0); AD = AE = 0.45 AB on the extensions beyond A: D(0.675,4.35), E(-0.675,4.35)
+%     VERIFIED: BD = CE ; BE = CD ; angle BAE = CAD = 126.87
+% P7: A(0,0) B(4,0) C(2,4.5); M(3,2.25) N(1,2.25) G(2,1.5)
+%     VERIFIED: AN = BM ; GN = GM ; angle NAG = MBG ; angle ANG = BMG
+\begin{tikzpicture}[scale=0.95]
+  \begin{scope}
+    \coordinate (A) at (0,3); \coordinate (B) at (-1.5,0); \coordinate (C) at (1.5,0);
+    \coordinate (D) at (0.675,4.35); \coordinate (E) at (-0.675,4.35);
+    \fill[angB!15] (A) -- (B) -- (E) -- cycle; \fill[angC!15] (A) -- (C) -- (D) -- cycle;
+    \draw[side, tick1] (A) -- (B); \draw[side, tick1] (A) -- (C); \draw[side] (B) -- (C);
+    \draw[side, tick2] (A) -- (D); \draw[side, tick2] (A) -- (E);
+    \draw[helper, angB] (B) -- (E); \draw[helper, angC] (C) -- (D);
+    \node[right] at ($(A)+(0.05,-0.1)$) {$A$}; \node[below left] at (B) {$B$}; \node[below right] at (C) {$C$};
+    \node[above right] at (D) {$D$}; \node[above left] at (E) {$E$};
+    \node[font=\small\bfseries] at (0,-0.9) {P6};
+  \end{scope}
+  \begin{scope}[shift={(4.2,0)}]
+    \coordinate (A) at (0,0); \coordinate (B) at (4,0); \coordinate (C) at (2,4.5);
+    \coordinate (M) at (3,2.25); \coordinate (N) at (1,2.25); \coordinate (G) at (2,1.5);
+    \fill[angB!18] (A) -- (G) -- (N) -- cycle; \fill[angC!18] (B) -- (G) -- (M) -- cycle;
+    \draw[side] (A) -- (B);
+    \draw[side, tick1] (A) -- (N); \draw[side, tick1] (N) -- (C);
+    \draw[side, tick1] (C) -- (M); \draw[side, tick1] (M) -- (B);
+    \draw[side, crimson] (A) -- (M); \draw[side, crimson] (B) -- (N);
+    \node[below left] at (A) {$A$}; \node[below right] at (B) {$B$}; \node[above] at (C) {$C$};
+    \node[above left] at (N) {$N$}; \node[above right] at (M) {$M$}; \node[below] at ($(G)+(0,-0.08)$) {$G$};
+    \node[font=\small\bfseries] at (2,-0.9) {P7};
+  \end{scope}
+\end{tikzpicture}
+\bicap{P6: the legs $BA$ and $CA$ extended beyond $A$ by $AD \cong AE$. P7: isosceles triangle with base $AB$, medians $AM$ and $BN$ meeting at $G$.}%
+      {P6: i lati $BA$ e $CA$ prolungati oltre $A$ di $AD \cong AE$. P7: triangolo isoscele di base $AB$, mediane $AM$ e $BN$ che si incontrano in $G$.}
+\label{fig:p67}
+\end{figure}
+
+\begin{proofbox}{P6, notebook problem 1}{P6, problema 1 del quaderno}
+\emph{Given the isosceles triangle $ABC$ with base $BC$, extend the sides $BA$ and $CA$ beyond the vertex $A$ by two congruent segments $AD$ and $AE$. Prove that $BD$ and $CE$ are congruent.}\\
+\textbf{Given:} $\seg{AB} \cong \seg{AC}$; $\seg{AD} \cong \seg{AE}$; $D$ on the extension of $BA$, $E$ on the extension of $CA$.\\
+\textbf{(a) As written.} $\seg{BD} = \seg{BA} + \seg{AD}$ and $\seg{CE} = \seg{CA} + \seg{AE}$. Both are sums of congruent segments, so $\seg{BD} \cong \seg{CE}$. \hfill QED\\
+\textbf{(b) The usual textbook version: prove $\seg{BE} \cong \seg{CD}$.} Compare $\tri{ABE}$ and $\tri{ACD}$:
+\begin{steps}
+\step{$\seg{AB} \cong \seg{AC}$}{given}
+\step{$\seg{AE} \cong \seg{AD}$}{given}
+\step{$\ang{B}{A}{E} \cong \ang{C}{A}{D}$}{vertical angles}
+\end{steps}
+By SAS $\tri{ABE} \cong \tri{ACD}$, so $\seg{BE} \cong \seg{CD}$. \hfill QED
+\tcblower
+\emph{Dato il triangolo isoscele $ABC$ di base $BC$, si prolunghino, oltre il vertice $A$, i lati $BA$ e $CA$ di due segmenti congruenti $AD$ e $AE$. Dimostra che $BD$ e $CE$ sono congruenti.}\\
+\textbf{Ipotesi:} $\seg{AB} \cong \seg{AC}$; $\seg{AD} \cong \seg{AE}$; $D$ sul prolungamento di $BA$, $E$ sul prolungamento di $CA$.\\
+\textbf{(a) Come è scritto.} $\seg{BD} = \seg{BA} + \seg{AD}$ e $\seg{CE} = \seg{CA} + \seg{AE}$. Sono somme di segmenti congruenti, quindi $\seg{BD} \cong \seg{CE}$. \hfill c.v.d.\\
+\textbf{(b) La versione solita dei libri: dimostra che $\seg{BE} \cong \seg{CD}$.} Considero $\tri{ABE}$ e $\tri{ACD}$:
+\begin{steps}
+\step{$\seg{AB} \cong \seg{AC}$}{per ipotesi}
+\step{$\seg{AE} \cong \seg{AD}$}{per ipotesi}
+\step{$\ang{B}{A}{E} \cong \ang{C}{A}{D}$}{opposti al vertice}
+\end{steps}
+Per il primo criterio $\tri{ABE} \cong \tri{ACD}$, quindi $\seg{BE} \cong \seg{CD}$. \hfill c.v.d.
+\end{proofbox}
+
+\begin{tutor}[about P6]
+As copied in her notebook, the thesis is $BD \cong CE$, which needs no triangles at all (part a). Textbook versions of this exercise normally ask for $BE \cong CD$ (part b), which is where a congruence criterion is needed. Check with her which one the teacher meant; both are solved here.
+\end{tutor}
+
+\begin{proofbox}{P7, notebook problem 2}{P7, problema 2 del quaderno}
+\emph{In the isosceles triangle $ABC$ with base $AB$, let $G$ be the point where the medians $AM$ and $BN$ to the equal sides meet. Prove that $\tri{AGN} \cong \tri{BGM}$.}\\
+\textbf{Given:} $\seg{AC} \cong \seg{BC}$; $M$ midpoint of $BC$, $N$ midpoint of $AC$.
+\begin{steps}
+\step{$\seg{AN} \cong \seg{BM}$}{halves of congruent sides}
+\step{$\tri{ABN} \cong \tri{BAM}$: $AB$ common, $\seg{AN} \cong \seg{BM}$, $\av{A} \cong \av{B}$}{SAS; base angles, P4}
+\step{so $\ang{A}{N}{B} \cong \ang{B}{M}{A}$ and $\ang{A}{B}{N} \cong \ang{B}{A}{M}$}{corresponding parts}
+\step{$\ang{N}{A}{G} = \av{A} - \ang{B}{A}{M} \cong \av{B} - \ang{A}{B}{N} = \ang{M}{B}{G}$}{differences of congruent angles}
+\end{steps}
+Now $\tri{AGN}$ and $\tri{BGM}$ have $\seg{AN} \cong \seg{BM}$ (step 1) and the two angles next to it congruent: $\ang{N}{A}{G} \cong \ang{M}{B}{G}$ (step 4) and $\ang{A}{N}{G} \cong \ang{B}{M}{G}$ (step 3). By ASA, $\tri{AGN} \cong \tri{BGM}$. \hfill QED
+\tcblower
+\emph{Del triangolo isoscele $ABC$, di base $AB$, sia $G$ il punto d'incontro delle mediane $AM$ e $BN$ relative ai lati congruenti; dimostra che i triangoli $AGN$ e $BGM$ sono congruenti.}\\
+\textbf{Ipotesi:} $\seg{AC} \cong \seg{BC}$; $M$ punto medio di $BC$, $N$ punto medio di $AC$.
+\begin{steps}
+\step{$\seg{AN} \cong \seg{BM}$}{metà di lati congruenti}
+\step{$\tri{ABN} \cong \tri{BAM}$: $AB$ in comune, $\seg{AN} \cong \seg{BM}$, $\av{A} \cong \av{B}$}{primo criterio; angoli alla base, P4}
+\step{quindi $\ang{A}{N}{B} \cong \ang{B}{M}{A}$ e $\ang{A}{B}{N} \cong \ang{B}{A}{M}$}{elementi omologhi}
+\step{$\ang{N}{A}{G} = \av{A} - \ang{B}{A}{M} \cong \av{B} - \ang{A}{B}{N} = \ang{M}{B}{G}$}{differenze di angoli congruenti}
+\end{steps}
+Ora $\tri{AGN}$ e $\tri{BGM}$ hanno $\seg{AN} \cong \seg{BM}$ (passo 1) e i due angoli adiacenti congruenti: $\ang{N}{A}{G} \cong \ang{M}{B}{G}$ (passo 4) e $\ang{A}{N}{G} \cong \ang{B}{M}{G}$ (passo 3). Per il secondo criterio $\tri{AGN} \cong \tri{BGM}$. \hfill c.v.d.
+\end{proofbox}
+
+\begin{think}{find the mistake}{trova l'errore}
+A student writes: ``$\tri{ABC}$ and $\tri{DEF}$ have $\seg{AB} \cong \seg{DE}$, $\seg{BC} \cong \seg{EF}$ and $\av{A} \cong \av{D}$. By the first criterion they are congruent.'' What is wrong?
+\answer The angle $\av{A}$ is not \emph{between} the sides $AB$ and $BC$; the angle between them is $\av{B}$. This is the SSA case of Figure~\ref{fig:ssa}, which is not a criterion. Always check that the angle sits where the two sides meet.
+\tcblower
+Uno studente scrive: «$\tri{ABC}$ e $\tri{DEF}$ hanno $\seg{AB} \cong \seg{DE}$, $\seg{BC} \cong \seg{EF}$ e $\av{A} \cong \av{D}$. Per il primo criterio sono congruenti.» Che cosa c'è di sbagliato?
+\answer L'angolo $\av{A}$ non è \emph{compreso} tra i lati $AB$ e $BC$; l'angolo compreso è $\av{B}$. È il caso LLA della figura~\ref{fig:ssa}, che non è un criterio. Controlla sempre che l'angolo stia dove i due lati si incontrano.
+\end{think}
+
+\begin{keyidea}{}{}
+Congruence is a promise that the tracing fits. Three well chosen facts (SAS, ASA, SSS) are enough to make that promise, and once it is made, every other corresponding part comes for free.
+\tcblower
+La congruenza è la promessa che il ricalco combacia. Tre fatti scelti bene (LAL, ALA, LLL) bastano per fare questa promessa, e una volta fatta, tutti gli altri elementi omologhi arrivano gratis.
+\end{keyidea}

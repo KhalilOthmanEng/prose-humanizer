@@ -1,0 +1,414 @@
+% STATUS: COMPLETE DRAFT
+% Chapter 2 : triangles, sum of the angles, altitudes, median and bisector
+% Every number below is checked in scripts/verify.py
+\bichapter{Triangles and their altitudes}{I triangoli e le loro altezze}\label{ch:triangles}
+
+% ================================================================
+\bisection{What a triangle is made of}{Com'è fatto un triangolo}\label{sec:anatomy}
+% ================================================================
+\begin{bi}
+\colheads
+Take three points that are not on the same line and join them. You get the simplest closed shape there is: a \textbf{triangle}. It has three \textbf{vertices} $A$, $B$, $C$, three \textbf{sides} and three \textbf{angles}. Each side faces one vertex: side $a = \seg{BC}$ is \emph{opposite} vertex $A$, side $b = \seg{CA}$ is opposite $B$, side $c = \seg{AB}$ is opposite $C$. The angles are usually called $\alpha$ at $A$, $\beta$ at $B$, $\gamma$ at $C$.
+\IT
+Prendi tre punti che non stanno sulla stessa retta e uniscili. Ottieni la figura chiusa più semplice che esista: il \textbf{triangolo}. Ha tre \textbf{vertici} $A$, $B$, $C$, tre \textbf{lati} e tre \textbf{angoli}. Ogni lato sta di fronte a un vertice: il lato $a = \seg{BC}$ è \emph{opposto} al vertice $A$, il lato $b = \seg{CA}$ è opposto a $B$, il lato $c = \seg{AB}$ è opposto a $C$. Gli angoli si chiamano di solito $\alpha$ in $A$, $\beta$ in $B$, $\gamma$ in $C$.
+\EN
+Triangles are sorted in two ways. By their \emph{sides}: \textbf{equilateral} (three equal sides), \textbf{isosceles} (two equal sides, called the legs; the third side is the \emph{base}, the angle between the legs is the \emph{vertex angle}, the other two are the \emph{base angles}) and \textbf{scalene} (three different sides). By their \emph{angles}: \textbf{acute} (three acute angles), \textbf{right} (one right angle; the two sides that form it are the \emph{legs}, the longest side is the \emph{hypotenuse}) and \textbf{obtuse} (one obtuse angle).
+\IT
+I triangoli si classificano in due modi. Rispetto ai \emph{lati}: \textbf{equilatero} (tre lati congruenti), \textbf{isoscele} (due lati congruenti, detti lati obliqui; il terzo lato è la \emph{base}, l'angolo tra i lati obliqui è l'\emph{angolo al vertice}, gli altri due sono gli \emph{angoli alla base}) e \textbf{scaleno} (tre lati diversi). Rispetto agli \emph{angoli}: \textbf{acutangolo} (tre angoli acuti), \textbf{rettangolo} (un angolo retto; i due lati che lo formano sono i \emph{cateti}, il lato più lungo è l'\emph{ipotenusa}) e \textbf{ottusangolo} (un angolo ottuso).
+\end{bi}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === (a) A=(0,0), B=(4.2,0), C=(1.5,2.6).
+% (b) six small triangles; right triangle legs 1.6 and 1.2; obtuse triangle angle at A = atan2(1.0,-0.5) = 116.6 deg
+\begin{tikzpicture}
+  \begin{scope}
+    \coordinate (A) at (0,0); \coordinate (B) at (4.2,0); \coordinate (C) at (1.5,2.6);
+    \fill[shade] (A) -- (B) -- (C) -- cycle;
+    \draw[side] (A) -- (B) -- (C) -- cycle;
+    \pic[draw, angA, angle radius=5mm, "$\alpha$", angle eccentricity=1.5] {angle=B--A--C};
+    \pic[draw, angB, angle radius=5mm, "$\beta$", angle eccentricity=1.5] {angle=C--B--A};
+    \pic[draw, angC, angle radius=5mm, "$\gamma$", angle eccentricity=1.5] {angle=A--C--B};
+    \node[below left] at (A) {$A$}; \node[below right] at (B) {$B$}; \node[above] at (C) {$C$};
+    \node[below] at ($(A)!0.5!(B)$) {$c$};
+    \node[above right] at ($(B)!0.5!(C)$) {$a$};
+    \node[above left] at ($(A)!0.5!(C)$) {$b$};
+    \node[font=\small\bfseries] at (2.1,-0.9) {(a)};
+  \end{scope}
+  \begin{scope}[shift={(5.6,1.55)}, scale=0.8]
+    \node[font=\scriptsize\bfseries, anchor=west] at (-0.2,1.75) {sides \textperiodcentered\ \textit{lati}};
+    \draw[side, fill=angB!12] (0,0) -- (1.6,0) -- (0.8,1.386) -- cycle;
+    \draw[tick1] (0,0) -- (1.6,0); \draw[tick1] (1.6,0) -- (0.8,1.386); \draw[tick1] (0.8,1.386) -- (0,0);
+    \node[font=\scriptsize, align=center] at (0.8,-0.45) {equilateral\\\textit{equilatero}};
+    \draw[side, fill=angB!12] (2.4,0) -- (3.8,0) -- (3.1,1.6) -- cycle;
+    \draw[tick1] (3.8,0) -- (3.1,1.6); \draw[tick1] (3.1,1.6) -- (2.4,0);
+    \node[font=\scriptsize, align=center] at (3.1,-0.45) {isosceles\\\textit{isoscele}};
+    \draw[side, fill=angB!12] (4.6,0) -- (6.4,0) -- (5.0,1.3) -- cycle;
+    \node[font=\scriptsize, align=center] at (5.5,-0.45) {scalene\\\textit{scaleno}};
+  \end{scope}
+  \begin{scope}[shift={(5.6,-1.0)}, scale=0.8]
+    \node[font=\scriptsize\bfseries, anchor=west] at (-0.2,1.75) {angles \textperiodcentered\ \textit{angoli}};
+    \draw[side, fill=angD!15] (0,0) -- (1.6,0) -- (0.6,1.4) -- cycle;
+    \node[font=\scriptsize, align=center] at (0.8,-0.45) {acute\\\textit{acutangolo}};
+    \draw[side, fill=angD!15] (2.4,0) -- (4.0,0) -- (2.4,1.2) -- cycle;
+    \draw[line width=0.5pt] (2.62,0) -- (2.62,0.22) -- (2.4,0.22);
+    \node[font=\scriptsize, align=center] at (3.2,-0.45) {right\\\textit{rettangolo}};
+    \draw[side, fill=angD!15] (5.0,0) -- (6.6,0) -- (4.5,1.0) -- cycle;
+    \node[font=\scriptsize, align=center] at (5.6,-0.45) {obtuse\\\textit{ottusangolo}};
+  \end{scope}
+  \node[font=\small\bfseries] at (8.2,-2.05) {(b)};
+\end{tikzpicture}
+\bicap{(a) The parts of a triangle: side $a$ is opposite vertex $A$, and so on. (b) The two classifications. Equal tick marks mean equal sides.}%
+      {(a) Gli elementi di un triangolo: il lato $a$ è opposto al vertice $A$, e così via. (b) Le due classificazioni. Trattini uguali indicano lati congruenti.}
+\label{fig:anatomy}
+\end{figure}
+
+\begin{think}{three sticks}{tre bastoncini}
+You have three sticks of 2\,cm, 3\,cm and 7\,cm. Can you build a triangle with them?
+\answer No. Put the 7\,cm stick down and try to close the triangle with the other two: even laid out flat, $2 + 3 = 5$ is less than 7, so they cannot reach each other. In every triangle, each side is shorter than the sum of the other two (\emph{triangle inequality}). With 3, 4 and 5\,cm it works, because $3 + 4 > 5$.
+\tcblower
+Hai tre bastoncini di 2\,cm, 3\,cm e 7\,cm. Riesci a costruire un triangolo?
+\answer No. Appoggia il bastoncino da 7\,cm e prova a chiudere il triangolo con gli altri due: anche stesi in linea, $2 + 3 = 5$ è meno di 7, quindi non si toccano. In ogni triangolo ciascun lato è minore della somma degli altri due (\emph{disuguaglianza triangolare}). Con 3, 4 e 5\,cm si può, perché $3 + 4 > 5$.
+\end{think}
+
+% ================================================================
+\bisection{The angles of a triangle add up to 180°}{La somma degli angoli di un triangolo è 180°}\label{sec:sum180}
+% ================================================================
+\begin{trap}{big triangles hold more degrees}{i triangoli grandi hanno più gradi}
+A triangle drawn across a whole football pitch looks as if it should contain ``more angle'' than one drawn on a stamp. It does not. Angles measure turns, not size (section~\ref{sec:turn}), and every triangle, big or small, thin or fat, has angles that add up to exactly $180^\circ$.
+\tcblower
+Un triangolo disegnato su tutto un campo di calcio sembra contenere «più angolo» di uno disegnato su un francobollo. Non è così. Gli angoli misurano rotazioni, non grandezze (paragrafo~\ref{sec:turn}), e ogni triangolo, grande o piccolo, magro o grasso, ha angoli la cui somma è esattamente $180^\circ$.
+\end{trap}
+
+\begin{think}{tear off the corners}{strappa gli angoli}
+Cut any triangle out of paper. Colour its three corners, tear them off, and put them next to each other with the three tips touching (Figure~\ref{fig:sum}a). What shape do they make? Do it again with a very different triangle.
+\answer The three corners always fill a straight angle: they line up along a straight line. So $\alpha + \beta + \gamma = 180^\circ$. Paper is a good experiment, but not a proof: the next box shows \emph{why} it must happen.
+\tcblower
+Ritaglia un triangolo qualsiasi da un foglio. Colora i tre angoli, strappali e mettili uno accanto all'altro con le tre punte che si toccano (figura~\ref{fig:sum}a). Che figura formano? Rifallo con un triangolo molto diverso.
+\answer I tre angoli riempiono sempre un angolo piatto: si allineano lungo una retta. Quindi $\alpha + \beta + \gamma = 180^\circ$. La carta è un buon esperimento, ma non una dimostrazione: il prossimo riquadro spiega \emph{perché} deve succedere.
+\end{think}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === triangle with alpha = 50, beta = 60, gamma = 70, AB = 4
+% AC = 4 sin60 / sin70 = 3.6864 ; C = (2.370, 2.824)
+% VERIFIED: python -> angles 50.0, 60.0, 70.0 ; exterior at B = 120 = 50 + 70
+% (a) torn corners around one point: alpha 0..50, gamma 50..120, beta 120..180
+% (b) parallel through C: left angle = alpha (Z with transversal CA), right angle = beta (Z with transversal CB)
+% (c) exterior angle at B between BC and the extension BD: 180 - 60 = 120
+\begin{tikzpicture}[scale=0.8]
+  % (a)
+  \begin{scope}
+    \fill[angA!40] (0,0) -- (0:1.2) arc (0:50:1.2) -- cycle;
+    \fill[angC!40] (0,0) -- (50:1.2) arc (50:120:1.2) -- cycle;
+    \fill[angB!40] (0,0) -- (120:1.2) arc (120:180:1.2) -- cycle;
+    \draw[side] (-2,0) -- (2,0);
+    \draw[thinline] (0,0) -- (50:1.6); \draw[thinline] (0,0) -- (120:1.6);
+    \node[font=\small] at (25:0.8) {$\alpha$};
+    \node[font=\small] at (85:0.8) {$\gamma$};
+    \node[font=\small] at (150:0.8) {$\beta$};
+    \node[font=\small, align=center] at (0,-0.65) {$\alpha+\beta+\gamma = 180^\circ$};
+    \node[font=\small\bfseries] at (0,-1.35) {(a)};
+  \end{scope}
+  % (b)
+  \begin{scope}[shift={(3.2,0)}]
+    \coordinate (A) at (0,0); \coordinate (B) at (4,0); \coordinate (C) at (2.370,2.824);
+    \draw[side] (A) -- (B) -- (C) -- cycle;
+    \draw[side, crimson] ($(C)+(-2.4,0)$) -- ($(C)+(2.2,0)$) node[right, font=\small] {$r \parallel AB$};
+    \fill[angA!40] (A) -- ++(0:0.6) arc (0:50:0.6) -- cycle;
+    \fill[angB!40] (B) -- ++(120:0.6) arc (120:180:0.6) -- cycle;
+    \fill[angA!40] (C) -- ++(180:0.6) arc (180:230:0.6) -- cycle;
+    \fill[angC!40] (C) -- ++(230:0.6) arc (230:300:0.6) -- cycle;
+    \fill[angB!40] (C) -- ++(300:0.6) arc (300:360:0.6) -- cycle;
+    \node[below left] at (A) {$A$}; \node[below right] at (B) {$B$}; \node[above] at ($(C)+(0,0.05)$) {$C$};
+    \node[font=\scriptsize] at ($(A)+(25:0.85)$) {$\alpha$};
+    \node[font=\scriptsize] at ($(B)+(150:0.85)$) {$\beta$};
+    \node[font=\scriptsize] at ($(C)+(205:0.85)$) {$\alpha$};
+    \node[font=\scriptsize] at ($(C)+(265:0.85)$) {$\gamma$};
+    \node[font=\scriptsize] at ($(C)+(330:0.85)$) {$\beta$};
+    \node[font=\small\bfseries] at (2,-1.35) {(b)};
+  \end{scope}
+  % (c)
+  \begin{scope}[shift={(10.6,0)}]
+    \coordinate (A) at (0,0); \coordinate (B) at (4,0); \coordinate (C) at (2.370,2.824); \coordinate (D) at (5.6,0);
+    \draw[side] (A) -- (B) -- (C) -- cycle;
+    \draw[side, dashed] (B) -- (D);
+    \fill[angA!40] (A) -- ++(0:0.6) arc (0:50:0.6) -- cycle;
+    \fill[angC!40] (C) -- ++(230:0.6) arc (230:300:0.6) -- cycle;
+    \fill[angD!45] (B) -- ++(0:0.6) arc (0:120:0.6) -- cycle;
+    \node[below left] at (A) {$A$}; \node[below] at (B) {$B$}; \node[above] at (C) {$C$}; \node[below] at (D) {$D$};
+    \node[font=\scriptsize] at ($(A)+(25:0.85)$) {$50^\circ$};
+    \node[font=\scriptsize] at ($(C)+(265:0.9)$) {$70^\circ$};
+    \node[font=\scriptsize] at ($(B)+(60:0.95)$) {$120^\circ$};
+    \node[font=\small\bfseries] at (2.4,-1.35) {(c)};
+  \end{scope}
+\end{tikzpicture}
+\bicap{(a) The torn corners line up. (b) Why: the line through $C$ parallel to $AB$ makes two Z shapes. (c) The exterior angle at $B$ equals the sum of the two far angles: $120^\circ = 50^\circ + 70^\circ$.}%
+      {(a) Gli angoli strappati si allineano. (b) Perché: la parallela ad $AB$ passante per $C$ forma due Z. (c) L'angolo esterno in $B$ è la somma dei due angoli interni non adiacenti: $120^\circ = 50^\circ + 70^\circ$.}
+\label{fig:sum}
+\end{figure}
+
+\begin{rebuild}{the proof with a parallel line}{la dimostrazione con una parallela}
+\begin{enumerate}[label=\arabic*.]
+\item Draw through $C$ the line $r$ parallel to $AB$ (Figure~\ref{fig:sum}b).
+\item Side $CA$ is a transversal of the parallels $r$ and $AB$. The angle at $C$ on the left and $\alpha$ make a Z, so they are equal (section~\ref{sec:parallel}).
+\item Side $CB$ is another transversal. The angle at $C$ on the right and $\beta$ make a Z, so they are equal.
+\item At $C$, along the line $r$, we now see $\alpha$, $\gamma$, $\beta$ side by side. Together they fill a straight angle, so $\alpha + \beta + \gamma = 180^\circ$.
+\end{enumerate}
+\tcblower
+\begin{enumerate}[label=\arabic*.]
+\item Traccia per $C$ la retta $r$ parallela ad $AB$ (figura~\ref{fig:sum}b).
+\item Il lato $CA$ è una trasversale delle parallele $r$ e $AB$. L'angolo in $C$ a sinistra e $\alpha$ formano una Z, quindi sono congruenti (alterni interni, paragrafo~\ref{sec:parallel}).
+\item Il lato $CB$ è un'altra trasversale. L'angolo in $C$ a destra e $\beta$ formano una Z, quindi sono congruenti.
+\item In $C$, lungo la retta $r$, vediamo ora $\alpha$, $\gamma$, $\beta$ uno accanto all'altro. Insieme riempiono un angolo piatto, quindi $\alpha + \beta + \gamma = 180^\circ$.
+\end{enumerate}
+\end{rebuild}
+
+\begin{bi}
+Three consequences follow at once. A triangle has \emph{at most one} right or obtuse angle, because two of them would already reach $180^\circ$ with nothing left for the third angle. In a right triangle the two acute angles are complementary. In an equilateral triangle the three angles are equal, so each is $180^\circ : 3 = 60^\circ$.
+\IT
+Ne seguono subito tre conseguenze. Un triangolo ha \emph{al massimo un} angolo retto o ottuso, perché due di questi arriverebbero già a $180^\circ$ senza lasciare niente al terzo angolo. In un triangolo rettangolo i due angoli acuti sono complementari. In un triangolo equilatero i tre angoli sono congruenti, quindi ognuno misura $180^\circ : 3 = 60^\circ$.
+\EN
+A fourth consequence is the \textbf{exterior angle}: extend side $AB$ beyond $B$ to a point $D$ (Figure~\ref{fig:sum}c). The angle $\ang{C}{B}{D}$ and $\beta$ are supplementary, so $\ang{C}{B}{D} = 180^\circ - \beta = \alpha + \gamma$. \emph{An exterior angle equals the sum of the two interior angles that are not next to it.}
+\IT
+Una quarta conseguenza riguarda l'\textbf{angolo esterno}: prolunga il lato $AB$ oltre $B$ fino a un punto $D$ (figura~\ref{fig:sum}c). L'angolo $\ang{C}{B}{D}$ e $\beta$ sono adiacenti, quindi $\ang{C}{B}{D} = 180^\circ - \beta = \alpha + \gamma$. \emph{Un angolo esterno è uguale alla somma dei due angoli interni non adiacenti.}
+\end{bi}
+
+\begin{example}{finding missing angles}{trovare gli angoli mancanti}
+\textbf{(a)} Two angles are $50^\circ$ and $60^\circ$. The third is $180^\circ - 50^\circ - 60^\circ = 70^\circ$.\\
+\textbf{(b)} An isosceles triangle has a vertex angle of $40^\circ$. The two base angles are equal (we prove this in chapter~\ref{ch:congruence}), so each is $(180^\circ - 40^\circ) : 2 = 70^\circ$.\\
+\textbf{(c)} An isosceles triangle has base angles of $35^\circ$. The vertex angle is $180^\circ - 2 \times 35^\circ = 110^\circ$: an obtuse isosceles triangle.\\
+\textbf{(d)} A right triangle has an acute angle of $28^\circ$. The other acute angle is $90^\circ - 28^\circ = 62^\circ$.\\
+\textbf{(e)} In the triangle with angles $50^\circ$, $60^\circ$, $70^\circ$, the exterior angle at the $60^\circ$ vertex is $180^\circ - 60^\circ = 120^\circ$, and indeed $50^\circ + 70^\circ = 120^\circ$.
+% VERIFIED: python -> 70 ; 70 ; 110 ; 62 ; 120 = 50 + 70
+\tcblower
+\textbf{(a)} Due angoli misurano $50^\circ$ e $60^\circ$. Il terzo è $180^\circ - 50^\circ - 60^\circ = 70^\circ$.\\
+\textbf{(b)} Un triangolo isoscele ha l'angolo al vertice di $40^\circ$. I due angoli alla base sono congruenti (lo dimostriamo nel capitolo~\ref{ch:congruence}), quindi ognuno misura $(180^\circ - 40^\circ) : 2 = 70^\circ$.\\
+\textbf{(c)} Un triangolo isoscele ha gli angoli alla base di $35^\circ$. L'angolo al vertice è $180^\circ - 2 \cdot 35^\circ = 110^\circ$: un triangolo isoscele ottusangolo.\\
+\textbf{(d)} Un triangolo rettangolo ha un angolo acuto di $28^\circ$. L'altro angolo acuto è $90^\circ - 28^\circ = 62^\circ$.\\
+\textbf{(e)} Nel triangolo con angoli $50^\circ$, $60^\circ$, $70^\circ$, l'angolo esterno nel vertice da $60^\circ$ misura $180^\circ - 60^\circ = 120^\circ$, e infatti $50^\circ + 70^\circ = 120^\circ$.
+\end{example}
+
+\begin{keyidea}{}{}
+Every triangle hides a pair of parallel lines. Draw one through a vertex and the three angles line up on it: $180^\circ$, always.
+\tcblower
+Ogni triangolo nasconde una coppia di rette parallele. Tracciane una per un vertice e i tre angoli si allineano su di essa: $180^\circ$, sempre.
+\end{keyidea}
+
+% ================================================================
+\bisection{Altitudes}{Le altezze}\label{sec:altitudes}
+% ================================================================
+\begin{anchor}{measuring how tall you are}{misurare quanto sei alto}
+When the doctor measures how tall you are, you stand against the wall and a bar comes down to the top of your head. Your height is measured \emph{straight down} to the floor, at a right angle. A tape held at a slant would give a bigger number, and it would be wrong. The altitude of a triangle is exactly this: the straight down distance from a vertex to the opposite side.
+\tcblower
+Quando il medico misura quanto sei alta, ti appoggi al muro e un'asticella scende fino alla testa. L'altezza si misura \emph{in verticale} fino al pavimento, ad angolo retto. Un metro tenuto storto darebbe un numero più grande, e sarebbe sbagliato. L'altezza di un triangolo è proprio questo: la distanza dritta, ad angolo retto, da un vertice al lato opposto.
+\end{anchor}
+
+\begin{defn}{altitude}{altezza}
+The \textbf{altitude} relative to a side is the \emph{segment} that starts at the opposite vertex and meets the line of that side at a right angle. The point where it lands is the \textbf{foot} of the altitude. A triangle has three sides, so it has \textbf{three altitudes}.
+\tcblower
+L'\textbf{altezza} relativa a un lato è il \emph{segmento} che parte dal vertice opposto e cade perpendicolarmente sulla retta di quel lato. Il punto in cui arriva è il \textbf{piede} dell'altezza. Un triangolo ha tre lati, quindi ha \textbf{tre altezze}.
+\end{defn}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION ===
+% (a) A=(0,0), B=(4,0), C=(1.4,2.4): foot H=(1.4,0); slanted segment C-X with X=(2.6,0) is NOT an altitude
+% (b) obtuse at A: A=(0,0), B=(3.4,0), C=(-0.7,2.4): foot from C on line AB is (-0.7,0), OUTSIDE segment AB
+\begin{tikzpicture}
+  \begin{scope}
+    \coordinate (A) at (0,0); \coordinate (B) at (4,0); \coordinate (C) at (1.4,2.4);
+    \coordinate (H) at (1.4,0); \coordinate (X) at (2.6,0);
+    \draw[side] (A) -- (B) -- (C) -- cycle;
+    \draw[line width=1.2pt, angB] (C) -- (H);
+    \draw[helper, angA] (C) -- (X);
+    \rang{C}{H}{B}
+    \node[angA, font=\small] at ($(C)!0.55!(X)+(0.35,0)$) {$\times$};
+    \node[below left] at (A) {$A$}; \node[below right] at (B) {$B$}; \node[above] at (C) {$C$};
+    \node[below] at (H) {$H$}; \node[below] at (X) {$X$};
+    \node[font=\small, align=left, anchor=west] at (4.2,1.6) {$CH$: altitude \textperiodcentered\ \textit{altezza}\\ \textcolor{angA}{$CX$: not an altitude}\\ \textcolor{angA}{\textit{non è un'altezza}}};
+    \node[font=\small\bfseries] at (2,-0.9) {(a)};
+  \end{scope}
+  \begin{scope}[shift={(9.4,0)}]
+    \coordinate (A) at (0,0); \coordinate (B) at (3.4,0); \coordinate (C) at (-0.7,2.4); \coordinate (H) at (-0.7,0);
+    \draw[helper] (-1.5,0) -- (A);
+    \draw[side] (A) -- (B) -- (C) -- cycle;
+    \draw[line width=1.2pt, angB] (C) -- (H);
+    \rang{C}{H}{A}
+    \node[below right] at (A) {$A$}; \node[below right] at (B) {$B$}; \node[above] at (C) {$C$};
+    \node[below] at (H) {$H$};
+    \node[font=\small, align=center] at (2.7,2.0) {foot outside $AB$\\\textit{piede fuori da $AB$}};
+    \node[font=\small\bfseries] at (1.2,-0.9) {(b)};
+  \end{scope}
+\end{tikzpicture}
+\bicap{(a) The altitude from $C$ meets side $AB$ at a right angle; a slanted segment is not an altitude. (b) In an obtuse triangle the side must be extended (dashed) and the foot falls outside.}%
+      {(a) L'altezza da $C$ cade perpendicolarmente sul lato $AB$; un segmento obliquo non è un'altezza. (b) In un triangolo ottusangolo bisogna prolungare il lato (tratteggio) e il piede cade fuori.}
+\label{fig:altitude}
+\end{figure}
+
+\begin{trap}{the altitude is the vertical line inside}{l'altezza è la linea verticale interna}
+Two mistakes hide in this sentence. First, the altitude depends on \emph{which side} you call the base, not on how the page is turned: every triangle has three altitudes, one per side, and two of them are usually slanted on the paper. Second, the altitude is not always inside. In an obtuse triangle two of the altitudes fall outside, and you must extend the side with a dashed line to meet them (Figure~\ref{fig:altitude}b). And one detail from the notebook: the altitude is a \emph{segment}, from the vertex to the foot, not a ray.
+\tcblower
+In questa frase ci sono due errori. Primo, l'altezza dipende da \emph{quale lato} chiami base, non da come giri il foglio: ogni triangolo ha tre altezze, una per lato, e di solito due sono oblique sul foglio. Secondo, l'altezza non è sempre interna. In un triangolo ottusangolo due altezze cadono fuori, e bisogna prolungare il lato con un tratteggio per incontrarle (figura~\ref{fig:altitude}b). E un dettaglio dal quaderno: l'altezza è un \emph{segmento}, dal vertice al piede, non una semiretta.
+\end{trap}
+
+\begin{bi}
+Draw the three altitudes of any triangle, extending them when needed. Something surprising happens: the three lines always pass through the \emph{same point}. This point is called the \textbf{orthocentre}. Figure~\ref{fig:ortho} shows where it goes: inside an acute triangle, exactly on the right angle vertex of a right triangle, and outside an obtuse triangle. Careful: in the obtuse case the altitude \emph{segments} do not touch each other; it is the lines they lie on that meet.
+\IT
+Disegna le tre altezze di un triangolo qualsiasi, prolungandole quando serve. Succede una cosa sorprendente: le tre rette passano sempre per lo \emph{stesso punto}. Questo punto si chiama \textbf{ortocentro}. La figura~\ref{fig:ortho} mostra dove si trova: dentro un triangolo acutangolo, proprio sul vertice dell'angolo retto in un triangolo rettangolo, fuori da un triangolo ottusangolo. Attenzione: nel caso ottusangolo i \emph{segmenti} delle altezze non si toccano; sono le rette su cui stanno che si incontrano.
+\end{bi}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === (python: foot() and orthocentre() in scripts/verify.py)
+% acute : A(0,0) B(4,0) C(1.6,3.0); feet (2.439,1.951) (0.886,1.661) (1.600,0.000); orthocentre (1.600,1.280)
+% right : A(0,0) B(4,0) C(0,3.0);   feet (1.440,1.920) (0,0) (0,0);             orthocentre (0,0) = A
+% obtuse: A(0,0) B(3.4,0) C(-0.7,2.4); feet (0.868,1.482) (0.267,-0.914) (-0.700,0); orthocentre (-0.700,-1.196)
+% VERIFIED: python -> third altitude passes through the orthocentre in all three cases
+\begin{tikzpicture}[scale=0.82]
+  % acute
+  \begin{scope}
+    \coordinate (A) at (0,0); \coordinate (B) at (4,0); \coordinate (C) at (1.6,3.0);
+    \coordinate (Ha) at ($(B)!(A)!(C)$); \coordinate (Hb) at ($(A)!(B)!(C)$); \coordinate (Hc) at ($(A)!(C)!(B)$);
+    \draw[side, fill=shade] (A) -- (B) -- (C) -- cycle;
+    \draw[angB, line width=0.8pt] (A) -- (Ha); \draw[angB, line width=0.8pt] (B) -- (Hb); \draw[angB, line width=0.8pt] (C) -- (Hc);
+    \node[circle, fill=crimson, inner sep=1.8pt] at (1.6,1.28) {};
+    \node[below left] at (A) {$A$}; \node[below right] at (B) {$B$}; \node[above] at (C) {$C$};
+    \node[crimson, font=\small, right] at (1.65,1.18) {$O$};
+    \node[font=\small, align=center] at (2,-0.85) {acute: inside\\\textit{acutangolo: dentro}};
+  \end{scope}
+  % right
+  \begin{scope}[shift={(6.3,0)}]
+    \coordinate (A) at (0,0); \coordinate (B) at (4,0); \coordinate (C) at (0,3.0);
+    \coordinate (Ha) at ($(B)!(A)!(C)$);
+    \draw[side, fill=shade] (A) -- (B) -- (C) -- cycle;
+    \draw[angB, line width=0.8pt] (A) -- (Ha);
+    \draw[angB, line width=2pt, opacity=0.45] (A) -- (B); \draw[angB, line width=2pt, opacity=0.45] (A) -- (C);
+    \rang{B}{A}{C}
+    \node[circle, fill=crimson, inner sep=1.8pt] at (A) {};
+    \node[left, xshift=-3pt] at (A) {$A = O$}; \node[below right] at (B) {$B$}; \node[above] at (C) {$C$};
+    \node[font=\small, align=center] at (2,-0.85) {right: at the right angle\\\textit{rettangolo: sul vertice retto}};
+  \end{scope}
+  % obtuse
+  \begin{scope}[shift={(13.2,1.0)}]
+    \coordinate (A) at (0,0); \coordinate (B) at (3.4,0); \coordinate (C) at (-0.7,2.4); \coordinate (O) at (-0.700,-1.196);
+    \coordinate (Ha) at ($(B)!(A)!(C)$); \coordinate (Hb) at ($(A)!(B)!(C)$); \coordinate (Hc) at ($(A)!(C)!(B)$);
+    \draw[helper] (Hc) -- (A); \draw[helper] (A) -- (Hb);
+    \draw[helper, angB!70] (Hc) -- (O); \draw[helper, angB!70] (Hb) -- (O); \draw[helper, angB!70] (A) -- (O);
+    \draw[side, fill=shade] (A) -- (B) -- (C) -- cycle;
+    \draw[angB, line width=0.8pt] (A) -- (Ha); \draw[angB, line width=0.8pt] (B) -- (Hb); \draw[angB, line width=0.8pt] (C) -- (Hc);
+    \node[circle, fill=crimson, inner sep=1.8pt] at (O) {};
+    \node[below right] at (A) {$A$}; \node[below right] at (B) {$B$}; \node[above] at (C) {$C$};
+    \node[crimson, font=\small, left] at (O) {$O$};
+    \node[font=\small, align=center] at (1.5,-1.75) {obtuse: outside\\\textit{ottusangolo: fuori}};
+  \end{scope}
+\end{tikzpicture}
+\bicap{The three altitudes (blue) and the orthocentre $O$ (red). In the right triangle two altitudes are the legs themselves. In the obtuse triangle the dashed extensions meet outside.}%
+      {Le tre altezze (blu) e l'ortocentro $O$ (rosso). Nel triangolo rettangolo due altezze sono i cateti stessi. Nel triangolo ottusangolo i prolungamenti tratteggiati si incontrano fuori.}
+\label{fig:ortho}
+\end{figure}
+
+\begin{tutor}[why the altitudes meet]
+The concurrency of the altitudes is usually stated, not proved, in the first year. If she asks: draw through each vertex the parallel to the opposite side. The three new lines form a triangle twice as big, and the altitudes of $ABC$ are the perpendicular bisectors of its sides, which meet at one point. Her teacher will probably not expect this.
+\end{tutor}
+
+\begin{example}{one triangle, three bases, one area}{un triangolo, tre basi, una sola area}
+The right triangle with sides 3, 4 and 5 (Figure~\ref{fig:345}). The area is $\dfrac{\text{base} \times \text{height}}{2}$, and every side can be the base \emph{if you use its own altitude}.\\
+Base 4, altitude 3 (a leg): $\dfrac{4 \times 3}{2} = 6$.\\
+Base 3, altitude 4 (the other leg): $\dfrac{3 \times 4}{2} = 6$.\\
+Base 5, altitude $h$: the area is still 6, so $\dfrac{5 \times h}{2} = 6$, $h = \dfrac{12}{5} = 2.4$.\\
+The same area three times: the altitude always travels with its own base.
+% VERIFIED: python -> area 6.0 ; altitude to hypotenuse 2.4 ; 5*2.4/2 = 6.0
+\tcblower
+Il triangolo rettangolo con lati 3, 4 e 5 (figura~\ref{fig:345}). L'area è $\dfrac{\text{base} \cdot \text{altezza}}{2}$, e ogni lato può fare da base \emph{se usi la sua altezza}.\\
+Base 4, altezza 3 (un cateto): $\dfrac{4 \cdot 3}{2} = 6$.\\
+Base 3, altezza 4 (l'altro cateto): $\dfrac{3 \cdot 4}{2} = 6$.\\
+Base 5, altezza $h$: l'area è sempre 6, quindi $\dfrac{5 \cdot h}{2} = 6$, $h = \dfrac{12}{5} = 2{,}4$.\\
+La stessa area tre volte: l'altezza viaggia sempre insieme alla sua base.
+\end{example}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === 3-4-5 right triangle in three positions (units: 1 = 0.55 cm)
+% (1) base 4 horizontal, altitude = leg 3 ; (2) base 3 horizontal, altitude = leg 4
+% (3) base 5 horizontal: B'=(0,0), C'=(5,0), A'=(3.2,2.4): |B'A'| = 4, |A'C'| = 3, altitude 2.4 with foot (3.2,0)
+% VERIFIED: python -> 4.0, 3.0, 2.4
+\begin{tikzpicture}[scale=0.62]
+  \begin{scope}
+    \coordinate (P1) at (0,0); \coordinate (P2) at (4,0); \coordinate (P3) at (0,3);
+    \draw[side, fill=shade] (P1) -- (P2) -- (P3) -- cycle;
+    \draw[line width=2.2pt, angD] (P1) -- (P2);
+    \draw[line width=1.4pt, angB] (P1) -- (P3);
+    \rang{P2}{P1}{P3}
+    \node[below] at (2,0) {$4$}; \node[left] at (0,1.5) {$3$}; \node[above right] at (2,1.5) {$5$};
+    \node[font=\small] at (2,-1.2) {$\frac{4 \cdot 3}{2} = 6$};
+  \end{scope}
+  \begin{scope}[shift={(6.5,0)}]
+    \coordinate (P1) at (0,0); \coordinate (P2) at (3,0); \coordinate (P3) at (0,4);
+    \draw[side, fill=shade] (P1) -- (P2) -- (P3) -- cycle;
+    \draw[line width=2.2pt, angD] (P1) -- (P2);
+    \draw[line width=1.4pt, angB] (P1) -- (P3);
+    \rang{P2}{P1}{P3}
+    \node[below] at (1.5,0) {$3$}; \node[left] at (0,2) {$4$}; \node[above right] at (1.5,2) {$5$};
+    \node[font=\small] at (1.5,-1.2) {$\frac{3 \cdot 4}{2} = 6$};
+  \end{scope}
+  \begin{scope}[shift={(12,0)}]
+    \coordinate (P1) at (0,0); \coordinate (P2) at (5,0); \coordinate (P3) at (3.2,2.4); \coordinate (F) at (3.2,0);
+    \draw[side, fill=shade] (P1) -- (P2) -- (P3) -- cycle;
+    \draw[line width=2.2pt, angD] (P1) -- (P2);
+    \draw[line width=1.4pt, angB] (P3) -- (F);
+    \rang{P3}{F}{P2}
+    \rang{P1}{P3}{P2}
+    \node[below] at (2.5,0) {$5$}; \node[above left] at (1.6,1.2) {$4$}; \node[above right] at (4.1,1.2) {$3$};
+    \node[right, font=\small, angB] at (3.2,1.0) {$2.4$};
+    \node[font=\small] at (2.5,-1.2) {$\frac{5 \cdot 2.4}{2} = 6$};
+  \end{scope}
+  \node[font=\small, anchor=west] at (18,2.2) {\textcolor{angD}{\rule{0.5cm}{2pt}} base};
+  \node[font=\small, anchor=west] at (18,1.4) {\textcolor{angB}{\rule{0.5cm}{1.4pt}} altitude};
+  \node[font=\small, anchor=west] at (18,0.6) {\textit{\textcolor{angB}{altezza}}};
+\end{tikzpicture}
+\bicap{The same 3, 4, 5 triangle turned three ways. Each base (orange) has its own altitude (blue), and every pair gives area 6.}%
+      {Lo stesso triangolo 3, 4, 5 girato in tre modi. Ogni base (arancione) ha la sua altezza (blu), e ogni coppia dà area 6.}
+\label{fig:345}
+\end{figure}
+
+\bisubsection{Altitude, median, bisector}{Altezza, mediana, bisettrice}
+\begin{bi}
+From each vertex start three famous segments, and it is easy to mix them up. The \textbf{altitude} arrives at a right angle. The \textbf{median} arrives at the \emph{midpoint} of the opposite side. The \textbf{bisector} cuts the angle at the vertex into two equal halves. In a scalene triangle they are three different segments (Figure~\ref{fig:amb}). The three medians of a triangle meet at the \textbf{centroid} $G$, the point where a cardboard triangle balances on a pencil tip; in the problem from the notebook (section~\ref{sec:notebook}) $G$ is exactly this point.
+\IT
+Da ogni vertice partono tre segmenti famosi, ed è facile confonderli. L'\textbf{altezza} arriva ad angolo retto. La \textbf{mediana} arriva nel \emph{punto medio} del lato opposto. La \textbf{bisettrice} divide l'angolo nel vertice in due metà congruenti. In un triangolo scaleno sono tre segmenti diversi (figura~\ref{fig:amb}). Le tre mediane di un triangolo si incontrano nel \textbf{baricentro} $G$, il punto in cui un triangolo di cartone sta in equilibrio sulla punta di una matita; nel problema del quaderno (paragrafo~\ref{sec:notebook}) $G$ è proprio questo punto.
+\end{bi}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === A(0,0), B(5.5,0), C(1.2,3.2); CA = 3.4176, CB = 5.3600
+% altitude foot H = (1.2,0); bisector foot D: AD = 5.5*CA/(CA+CB) = 2.1414 -> D = (2.141,0); median foot M = (2.75,0)
+% VERIFIED: python -> angle ACD = angle DCB = 36.950 deg
+\begin{tikzpicture}[scale=1.05]
+  \coordinate (A) at (0,0); \coordinate (B) at (5.5,0); \coordinate (C) at (1.2,3.2);
+  \coordinate (H) at (1.2,0); \coordinate (D) at (2.141,0); \coordinate (M) at (2.75,0);
+  \draw[side, fill=shade] (A) -- (B) -- (C) -- cycle;
+  \draw[angB, line width=1.1pt] (C) -- (H);
+  \draw[angC, line width=1.1pt] (C) -- (D);
+  \draw[angA, line width=1.1pt] (C) -- (M);
+  \rang{C}{H}{B}
+  \pic[draw, angC, angle radius=9mm] {angle=A--C--D};
+  \pic[draw, angC, angle radius=10mm] {angle=D--C--B};
+  \draw[angA, line width=0.7pt] ($(A)!0.5!(M)+(0,-0.12)$) -- ++(0,0.24);
+  \draw[angA, line width=0.7pt] ($(M)!0.5!(B)+(0,-0.12)$) -- ++(0,0.24);
+  \node[below left] at (A) {$A$}; \node[below right] at (B) {$B$}; \node[above] at (C) {$C$};
+  \node[below, angB] at (H) {$H$}; \node[below, angC] at (D) {$D$}; \node[below, angA] at (M) {$M$};
+  \node[font=\small, anchor=west, align=left] at (6.0,2.4) {\textcolor{angB}{$CH$ altitude \textperiodcentered\ \textit{altezza}}};
+  \node[font=\small, anchor=west, align=left] at (6.0,1.8) {\textcolor{angC}{$CD$ bisector \textperiodcentered\ \textit{bisettrice}}};
+  \node[font=\small, anchor=west, align=left] at (6.0,1.2) {\textcolor{angA}{$CM$ median \textperiodcentered\ \textit{mediana}}};
+\end{tikzpicture}
+\bicap{Three segments from the same vertex $C$ of a scalene triangle: altitude, bisector, median. In an isosceles triangle, from the vertex angle, they become one segment (chapter~\ref{ch:congruence}).}%
+      {Tre segmenti dallo stesso vertice $C$ di un triangolo scaleno: altezza, bisettrice, mediana. In un triangolo isoscele, dall'angolo al vertice, diventano un solo segmento (capitolo~\ref{ch:congruence}).}
+\label{fig:amb}
+\end{figure}
+
+\begin{keyidea}{}{}
+An altitude is a right angle looking for its base. Name the side first; the altitude is the straight line from the opposite vertex that lands on that side, or on its extension, at $90^\circ$.
+\tcblower
+Un'altezza è un angolo retto in cerca della sua base. Prima scegli il lato; l'altezza è il segmento che parte dal vertice opposto e cade su quel lato, o sul suo prolungamento, a $90^\circ$.
+\end{keyidea}

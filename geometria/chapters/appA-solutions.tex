@@ -1,0 +1,74 @@
+% STATUS: COMPLETE DRAFT
+% Appendix A : solutions. Every number is checked in scripts/verify.py
+\bichapter{Solutions}{Soluzioni}\label{app:solutions}
+
+\begin{solution}{A, angles}{A, angoli}
+\begin{enumerate}[label=\textbf{A\arabic*.}, leftmargin=2.2em]
+\item Complement $90 - 72 = 18^\circ$; supplement $180 - 72 = 108^\circ$; explement $360 - 72 = 288^\circ$.
+\item Minute hand: $20 \times 6^\circ = 120^\circ$. Hour hand: $7 \times 30^\circ + 20 \times 0.5^\circ = 220^\circ$. Angle: $220^\circ - 120^\circ = 100^\circ$.
+\item $\frac{14}{40} \cdot 360^\circ = 126^\circ$, $\frac{10}{40} \cdot 360^\circ = 90^\circ$, $\frac{8}{40} \cdot 360^\circ = 72^\circ$ twice. Check: $126 + 90 + 72 + 72 = 360$.
+\item (a) $x = 90 - x$, so $x = 45^\circ$. (b) $x = 3(180 - x)$, so $4x = 540$ and $x = 135^\circ$; its supplement is $45^\circ$ and $3 \times 45 = 135$.
+\item Vertical angles are equal: $4x + 10 = 2x + 50$, $x = 20$. Each is $90^\circ$, so the two neighbours are $90^\circ$ too: the lines are perpendicular.
+\end{enumerate}
+% VERIFIED: python -> 18, 108, 288 ; clock(7,20) = 100 ; 126, 90, 72, 72 ; 45 ; 135 ; x = 20 -> 90
+\tcblower
+\begin{enumerate}[label=\textbf{A\arabic*.}, leftmargin=2.2em]
+\item Complementare $90 - 72 = 18^\circ$; supplementare $180 - 72 = 108^\circ$; esplementare $360 - 72 = 288^\circ$.
+\item Minuti: $20 \cdot 6^\circ = 120^\circ$. Ore: $7 \cdot 30^\circ + 20 \cdot 0{,}5^\circ = 220^\circ$. Angolo: $220^\circ - 120^\circ = 100^\circ$.
+\item $\frac{14}{40} \cdot 360^\circ = 126^\circ$, $\frac{10}{40} \cdot 360^\circ = 90^\circ$, $\frac{8}{40} \cdot 360^\circ = 72^\circ$ due volte. Verifica: $126 + 90 + 72 + 72 = 360$.
+\item (a) $x = 90 - x$, quindi $x = 45^\circ$. (b) $x = 3(180 - x)$, quindi $4x = 540$ e $x = 135^\circ$; il suo supplementare è $45^\circ$ e $3 \cdot 45 = 135$.
+\item Gli angoli opposti al vertice sono congruenti: $4x + 10 = 2x + 50$, $x = 20$. Ognuno misura $90^\circ$, quindi anche gli altri due: le rette sono perpendicolari.
+\end{enumerate}
+\end{solution}
+
+\begin{solution}{B, parallel lines}{B, rette parallele}
+\begin{enumerate}[label=\textbf{B\arabic*.}, leftmargin=2.2em]
+\item Only two values appear, $118^\circ$ and $180 - 118 = 62^\circ$. At the same crossing: the vertical angle is $118^\circ$, the two adjacent ones are $62^\circ$. At the other crossing: the corresponding angle and the alternate interior angle are $118^\circ$; the same side interior angle is $62^\circ$, and the angle vertical to it is $62^\circ$.
+\item $5x - 20 = 3x + 30$, so $x = 25$ and each angle is $105^\circ$.
+\item (a) False: they are equal. (b) True. (c) True: this is the test for parallel lines.
+\end{enumerate}
+% VERIFIED: python -> 62 ; x = 25 -> 105
+\tcblower
+\begin{enumerate}[label=\textbf{B\arabic*.}, leftmargin=2.2em]
+\item Compaiono solo due valori, $118^\circ$ e $180 - 118 = 62^\circ$. Nello stesso incrocio: l'opposto al vertice misura $118^\circ$, i due adiacenti $62^\circ$. Nell'altro incrocio: il corrispondente e l'alterno interno misurano $118^\circ$; il coniugato interno misura $62^\circ$, e anche il suo opposto al vertice.
+\item $5x - 20 = 3x + 30$, quindi $x = 25$ e ogni angolo misura $105^\circ$.
+\item (a) Falso: sono congruenti. (b) Vero. (c) Vero: è il criterio di parallelismo.
+\end{enumerate}
+\end{solution}
+
+\begin{solution}{C, triangles and altitudes}{C, triangoli e altezze}
+\begin{enumerate}[label=\textbf{C\arabic*.}, leftmargin=2.2em]
+\item $2k + 3k + 4k = 180^\circ$, $k = 20^\circ$: the angles are $40^\circ$, $60^\circ$, $80^\circ$ (acute triangle).
+\item $x + x + 2x = 180^\circ$, $x = 45^\circ$: angles $45^\circ$, $45^\circ$, $90^\circ$. A right isosceles triangle, half of a square.
+\item No to both. Two obtuse angles already exceed $180^\circ$. Two right angles already make $180^\circ$ and leave $0^\circ$ for the third, so the two sides would be parallel and never meet.
+\item Area $= \frac{10 \times 6}{2} = 30\,\text{cm}^2$. With base 12: $\frac{12 \times h}{2} = 30$, so $h = 5$\,cm.
+\item Outside the triangle, beyond the vertex of the obtuse angle (Figure~\ref{fig:ortho}, right).
+\end{enumerate}
+% VERIFIED: python -> k = 20 ; 45 ; area 30 ; altitude 5
+\tcblower
+\begin{enumerate}[label=\textbf{C\arabic*.}, leftmargin=2.2em]
+\item $2k + 3k + 4k = 180^\circ$, $k = 20^\circ$: gli angoli sono $40^\circ$, $60^\circ$, $80^\circ$ (triangolo acutangolo).
+\item $x + x + 2x = 180^\circ$, $x = 45^\circ$: angoli $45^\circ$, $45^\circ$, $90^\circ$. Un triangolo rettangolo isoscele, metà di un quadrato.
+\item No in entrambi i casi. Due angoli ottusi superano già $180^\circ$. Due angoli retti fanno già $180^\circ$ e lasciano $0^\circ$ al terzo, quindi i due lati sarebbero paralleli e non si incontrerebbero.
+\item Area $= \frac{10 \cdot 6}{2} = 30\,\text{cm}^2$. Con base 12: $\frac{12 \cdot h}{2} = 30$, quindi $h = 5$\,cm.
+\item Fuori dal triangolo, oltre il vertice dell'angolo ottuso (figura~\ref{fig:ortho}, a destra).
+\end{enumerate}
+\end{solution}
+
+\begin{solution}{D, congruence proofs}{D, dimostrazioni di congruenza}
+\begin{enumerate}[label=\textbf{D\arabic*.}, leftmargin=2.2em]
+\item In $\tri{ABE}$ and $\tri{ACD}$: $\seg{AB} \cong \seg{AC}$ (given), $\seg{AE} \cong \seg{AD}$ (given), $\av{A}$ common. By SAS they are congruent, so $\seg{BE} \cong \seg{CD}$.
+\item $\seg{AF} = \seg{AC} - \seg{CF}$, $\seg{BD} = \seg{BA} - \seg{AD}$, $\seg{CE} = \seg{CB} - \seg{BE}$: differences of congruent segments, so $\seg{AF} \cong \seg{BD} \cong \seg{CE}$. Triangles $ADF$, $BED$, $CFE$ have two sides congruent ($AD \cong BE \cong CF$ and $AF \cong BD \cong CE$) and the angle between them equal to $60^\circ$. By SAS they are congruent, so $\seg{DF} \cong \seg{ED} \cong \seg{FE}$.
+\item In $\tri{ABM}$ and $\tri{ACM}$: $\seg{AB} \cong \seg{AC}$, $\seg{BM} \cong \seg{MC}$, $\seg{AM}$ common. By SSS $\ang{A}{M}{B} \cong \ang{A}{M}{C}$. They are adjacent, so they add up to $180^\circ$ and each is $90^\circ$.
+\item In $\tri{AMH}$ and $\tri{BMK}$: $\seg{AM} \cong \seg{MB}$; $\ang{A}{M}{H} \cong \ang{B}{M}{K}$ (vertical); the angles at $H$ and $K$ are right, so $\ang{M}{A}{H} \cong \ang{M}{B}{K}$ (angle sum). By ASA, $\seg{AH} \cong \seg{BK}$.
+\item Three equal angles (AAA) are not a criterion: the triangles have the same shape but may have different sizes (Figure~\ref{fig:notcong}b).
+\end{enumerate}
+\tcblower
+\begin{enumerate}[label=\textbf{D\arabic*.}, leftmargin=2.2em]
+\item In $\tri{ABE}$ e $\tri{ACD}$: $\seg{AB} \cong \seg{AC}$ (ipotesi), $\seg{AE} \cong \seg{AD}$ (ipotesi), $\av{A}$ in comune. Per il primo criterio sono congruenti, quindi $\seg{BE} \cong \seg{CD}$.
+\item $\seg{AF} = \seg{AC} - \seg{CF}$, $\seg{BD} = \seg{BA} - \seg{AD}$, $\seg{CE} = \seg{CB} - \seg{BE}$: differenze di segmenti congruenti, quindi $\seg{AF} \cong \seg{BD} \cong \seg{CE}$. I triangoli $ADF$, $BED$, $CFE$ hanno due lati congruenti ($AD \cong BE \cong CF$ e $AF \cong BD \cong CE$) e l'angolo compreso di $60^\circ$. Per il primo criterio sono congruenti, quindi $\seg{DF} \cong \seg{ED} \cong \seg{FE}$.
+\item In $\tri{ABM}$ e $\tri{ACM}$: $\seg{AB} \cong \seg{AC}$, $\seg{BM} \cong \seg{MC}$, $\seg{AM}$ in comune. Per il terzo criterio $\ang{A}{M}{B} \cong \ang{A}{M}{C}$. Sono adiacenti, quindi la somma è $180^\circ$ e ognuno è retto.
+\item In $\tri{AMH}$ e $\tri{BMK}$: $\seg{AM} \cong \seg{MB}$; $\ang{A}{M}{H} \cong \ang{B}{M}{K}$ (opposti al vertice); gli angoli in $H$ e $K$ sono retti, quindi $\ang{M}{A}{H} \cong \ang{M}{B}{K}$ (somma degli angoli). Per il secondo criterio $\seg{AH} \cong \seg{BK}$.
+\item Tre angoli congruenti (AAA) non sono un criterio: i triangoli hanno la stessa forma ma possono avere grandezze diverse (figura~\ref{fig:notcong}b).
+\end{enumerate}
+\end{solution}

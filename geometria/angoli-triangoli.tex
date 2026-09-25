@@ -1,0 +1,2601 @@
+% ==================================================================
+%  Angles and Congruent Triangles  |  Angoli e triangoli congruenti
+%  A bilingual booklet: English (tutor) | Italiano (studentessa)
+%
+%  Register agreed with the author (Phase 0):
+%    * simplified Feynman style: one picture per idea, a trap box,
+%      a thought experiment, worked examples, one "click" per section
+%    * parallel columns, English left, Italian right
+%    * 30 to 40 pages; includes the two proofs from the student's
+%      notebook, exercises with solutions, a summary sheet
+%
+%  Compile:  pdflatex main  (three passes)
+%  Numbers:  every value is checked by  scripts/verify.py
+% ==================================================================
+% ===== begin preamble.tex =====
+% ==================================================================
+%  preamble.tex : bilingual (English | Italiano) geometry booklet
+%  Register (agreed with the author): simplified Feynman style,
+%  English column for the tutor, Italian column for the student.
+% ==================================================================
+\documentclass[10pt,a4paper,oneside]{book}
+
+% ---------------------------------------------------------- fonts
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{libertinus}          % text
+\usepackage{libertinust1math}    % matching math
+\usepackage[italian,english]{babel}
+
+% ---------------------------------------------------------- layout
+\usepackage{geometry}
+\geometry{a4paper, left=1.7cm, right=1.7cm, top=2.1cm, bottom=2.0cm,
+          headheight=15pt, headsep=10pt, footskip=24pt}
+\usepackage{setspace}
+\setstretch{1.06}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt plus 1pt}
+\usepackage{microtype}
+
+% ---------------------------------------------------------- colours
+\usepackage[table]{xcolor}
+\definecolor{navy}{HTML}{1B2A4A}
+\definecolor{crimson}{HTML}{A51C30}
+\definecolor{slate}{HTML}{4A4A4A}
+\definecolor{forest}{HTML}{23703F}
+\definecolor{deeporange}{HTML}{C45A12}
+\definecolor{deeppurple}{HTML}{5B2A86}
+\definecolor{itgreen}{HTML}{1D6B45}   % accent of the Italian column
+\definecolor{enblue}{HTML}{1B2A4A}    % accent of the English column
+\definecolor{lightblue}{HTML}{EAF0FA}
+\definecolor{lightgray}{HTML}{F2F2F2}
+\definecolor{lightgreen}{HTML}{E9F5EC}
+\definecolor{lightyellow}{HTML}{FFF8E1}
+\definecolor{lightorange}{HTML}{FFF1E3}
+\definecolor{lightpurple}{HTML}{F3ECF8}
+\definecolor{tutorbg}{HTML}{F4F6F8}
+% figure palette (used only inside TikZ)
+\definecolor{angA}{HTML}{C0392B}   % red
+\definecolor{angB}{HTML}{1F6FB2}   % blue
+\definecolor{angC}{HTML}{2E8B57}   % green
+\definecolor{angD}{HTML}{D68910}   % amber
+\definecolor{shade}{HTML}{DCE6F2}
+
+% ---------------------------------------------------------- packages
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, calc, angles, quotes, positioning,
+                decorations.pathreplacing, decorations.markings,
+                patterns, intersections, shapes.geometric}
+\usepackage[most]{tcolorbox}
+\usepackage{paracol}
+\usepackage{booktabs, tabularx, array, multirow}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{ifthen}
+\usepackage{needspace}
+\usepackage[hidelinks]{hyperref}
+
+\setlist{nosep, leftmargin=1.4em, topsep=2pt}
+
+% ---------------------------------------------------------- paracol
+\setlength{\columnsep}{0.75cm}
+\setlength{\columnseprule}{0.4pt}
+\colseprulecolor{black!20}
+\globalcounter*             % figure/equation counters shared by both columns
+
+% language state (global so tcolorbox titles know which column they sit in)
+\newif\ifIT
+% \begin{bi} English ... \IT Italiano ... \EN English ... \IT ... \end{bi}
+\newenvironment{bi}%
+  {\begin{paracol}{2}\global\ITfalse\selectlanguage{english}}%
+  {\end{paracol}}
+\newcommand{\IT}{\switchcolumn\global\ITtrue\selectlanguage{italian}}
+\newcommand{\EN}{\switchcolumn*\global\ITfalse\selectlanguage{english}}
+
+% column heads, placed once at the top of each chapter
+\newcommand{\colheads}{%
+  {\small\sffamily\bfseries\color{enblue}ENGLISH \textperiodcentered\ for the tutor}\par\vspace{-2pt}
+  {\color{enblue}\rule{\linewidth}{0.8pt}}%
+  \IT
+  {\small\sffamily\bfseries\color{itgreen}ITALIANO \textperiodcentered\ per la studentessa}\par\vspace{-2pt}
+  {\color{itgreen}\rule{\linewidth}{0.8pt}}%
+  \EN}
+
+% ---------------------------------------------------------- headings
+\titleformat{\chapter}[display]
+  {\normalfont\bfseries\color{navy}}
+  {\LARGE\sffamily Chapter\,/\,Capitolo \thechapter}
+  {6pt}
+  {\Huge}
+\titlespacing*{\chapter}{0pt}{-10pt}{14pt}
+\titleformat{\section}
+  {\normalfont\Large\bfseries\color{navy}}{\thesection}{0.7em}{}
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\color{slate}}{\thesubsection}{0.7em}{}
+\titlespacing*{\section}{0pt}{14pt}{6pt}
+\titlespacing*{\subsection}{0pt}{10pt}{4pt}
+
+% bilingual headings:  \bichapter{English}{Italiano}
+\newcommand{\bichapter}[2]{%
+  \chapter[#1 \textperiodcentered\ #2]{#1\\[2pt]{\color{itgreen}\itshape #2}}}
+\newcommand{\bisection}[2]{%
+  \Needspace{7\baselineskip}%
+  \section[#1 \textperiodcentered\ #2]{#1 {\color{itgreen}\itshape\,\textperiodcentered\ #2}}}
+\newcommand{\bisubsection}[2]{%
+  \Needspace{6\baselineskip}%
+  \subsection[#1 \textperiodcentered\ #2]{#1 {\color{itgreen}\itshape\,\textperiodcentered\ #2}}}
+
+% ---------------------------------------------------------- header/footer
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{slate}\nouppercase{\leftmark}}
+\fancyhead[R]{\small\color{slate}Angles \& Congruence \textperiodcentered\ \textit{Angoli e congruenza}}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\chaptermark}[1]{\markboth{\thechapter.\ #1}{}}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\thepage}\renewcommand{\headrulewidth}{0pt}}
+
+% ---------------------------------------------------------- captions
+\captionsetup{font=small, labelfont={bf,color=navy}, labelsep=period,
+              justification=centering, skip=4pt}
+\captionsetup[figure]{name={Figure\,/\,Figura}}
+\captionsetup[table]{name={Table\,/\,Tabella}}
+% \bicap{English caption}{Didascalia italiana}
+\newcommand{\bicap}[2]{\caption{#1\\{\color{itgreen}\itshape #2}}}
+
+% ---------------------------------------------------------- math shorthands
+\newcommand{\ang}[3]{#1\widehat{#2}#3}      % angle ABC  ->  A \hat B C
+\newcommand{\av}[1]{\widehat{#1}}           % angle named by its vertex
+\newcommand{\seg}[1]{\overline{#1}}         % segment
+\newcommand{\tri}[1]{\triangle #1}          % triangle
+\newcommand{\gradi}{^\circ}
+
+% ---------------------------------------------------------- boxes
+% Every box is FULL WIDTH and split in two like the page:
+%   \begin{trap}{English subtitle}{Sottotitolo italiano}
+%     English text
+%   \tcblower
+%     Testo italiano
+%   \end{trap}
+% Either subtitle may be empty.
+\newlength{\halfcol}
+\newcommand{\bxhalf}[3]{\if\relax\detokenize{#2}\relax#1\else#1: #2\fi}
+% title bar split at the same place as the box body
+\newcommand{\bxt}[4]{%
+  \setlength{\halfcol}{\dimexpr(\linewidth-\columnsep)/2\relax}%
+  \parbox[t]{\halfcol}{\raggedright\bxhalf{#1}{#3}{}}\hfill
+  \parbox[t]{\halfcol}{\raggedright\bxhalf{#2}{#4}{}}}
+\tcbset{bookbase/.style={enhanced, sharp corners=south, arc=2.5pt,
+        boxrule=0.8pt, left=5pt, right=5pt, top=3pt, bottom=4pt,
+        fonttitle=\sffamily\bfseries\small, coltitle=white,
+        before skip=7pt plus 2pt, after skip=7pt plus 2pt, toptitle=1pt, bottomtitle=1pt,
+        sidebyside, sidebyside align=top seam, sidebyside gap=\columnsep,
+        lefthand ratio=0.5,
+        before upper={\global\ITfalse\selectlanguage{english}},
+        before lower={\global\ITtrue\selectlanguage{italian}},
+        after={\global\ITfalse\selectlanguage{english}}}}
+
+\newtcolorbox{trap}[2]{bookbase, colback=lightgray, colframe=slate,
+  segmentation style={slate!40, solid},
+  title={\bxt{The trap}{La trappola}{#1}{#2}}}
+\newtcolorbox{rebuild}[2]{bookbase, colback=lightblue, colframe=navy,
+  segmentation style={navy!30, solid},
+  title={\bxt{Step by step}{Passo dopo passo}{#1}{#2}}}
+\newtcolorbox{anchor}[2]{bookbase, colback=lightgreen, colframe=forest,
+  segmentation style={forest!30, solid},
+  title={\bxt{Picture it}{Immagina}{#1}{#2}}}
+\newtcolorbox{think}[2]{bookbase, colback=lightorange, colframe=deeporange,
+  segmentation style={deeporange!30, solid},
+  title={\bxt{Think first}{Pensaci prima}{#1}{#2}}}
+\newtcolorbox{example}[2]{bookbase, colback=lightpurple, colframe=deeppurple,
+  segmentation style={deeppurple!30, solid},
+  title={\bxt{Worked example}{Esempio svolto}{#1}{#2}}}
+\newtcolorbox{keyidea}[2]{bookbase, colback=white, colframe=crimson, boxrule=1.3pt,
+  segmentation style={crimson!30, solid}, fontupper=\itshape, fontlower=\itshape,
+  title={\bxt{The click}{Il clic}{#1}{#2}}}
+\newtcolorbox{defn}[2]{bookbase, colback=white, colframe=navy, boxrule=0.8pt,
+  segmentation style={navy!30, solid},
+  title={\bxt{Definition}{Definizione}{#1}{#2}}}
+\newtcolorbox{history}[2]{bookbase, colback=lightyellow, colframe=crimson!80!black,
+  segmentation style={crimson!30, solid},
+  title={\bxt{A bit of history}{Un po' di storia}{#1}{#2}}}
+\newtcolorbox{proofbox}[2]{bookbase, colback=white, colframe=navy!70,
+  segmentation style={navy!30, solid},
+  title={\bxt{Proof}{Dimostrazione}{#1}{#2}}}
+\newtcolorbox{exercise}[2]{bookbase, colback=white, colframe=forest!80!black,
+  segmentation style={forest!30, solid},
+  title={\bxt{Exercise}{Esercizio}{#1}{#2}}}
+\newtcolorbox{solution}[2]{bookbase, colback=white, colframe=slate!80,
+  segmentation style={slate!30, solid},
+  title={\bxt{Solution}{Soluzione}{#1}{#2}}}
+
+% full width note for the tutor only (outside the parallel columns)
+\newtcolorbox{tutor}[1][]{enhanced, colback=tutorbg, colframe=navy!40, boxrule=0.5pt,
+  borderline west={2.5pt}{0pt}{navy}, sharp corners, left=7pt, right=6pt, top=3pt, bottom=3pt,
+  fontupper=\small, before skip=8pt, after skip=8pt,
+  title={For the tutor\if\relax\detokenize{#1}\relax\else: #1\fi},
+  fonttitle=\sffamily\bfseries\small, coltitle=navy, colbacktitle=tutorbg,
+  attach title to upper, after title={.\ }}
+
+% "answer" line inside think boxes
+\newcommand{\answer}{\par\vspace{2pt}{\color{deeporange}\rule[0.5ex]{\linewidth}{0.4pt}}\par
+  {\sffamily\bfseries\small\color{deeporange}\ifIT Risposta\else Answer\fi.}\ }
+
+% statement / reason proof lines
+\newcommand{\step}[2]{\item #1\hfill{\small\color{slate}\itshape(#2)}}
+\newenvironment{steps}{\begin{enumerate}[label=\arabic*., leftmargin=1.5em, itemsep=1pt]}{\end{enumerate}}
+
+% ---------------------------------------------------------- TikZ styles
+\tikzset{
+  pt/.style={circle, fill=black, inner sep=1.1pt},
+  lbl/.style={font=\small},
+  side/.style={line width=0.9pt, line cap=round, line join=round},
+  thinline/.style={line width=0.5pt},
+  helper/.style={line width=0.5pt, dashed, black!55},
+  ray/.style={line width=0.9pt, -{Stealth[length=2.2mm]}},
+  rightangle/.style={draw, line width=0.5pt},
+  % tick marks for congruent segments
+  tick1/.style={postaction={decorate, decoration={markings,
+      mark=at position 0.5 with {\draw[line width=0.7pt] (0,-3pt)--(0,3pt);}}}},
+  tick2/.style={postaction={decorate, decoration={markings,
+      mark=at position 0.5 with {\draw[line width=0.7pt] (-1.2pt,-3pt)--(-1.2pt,3pt) (1.2pt,-3pt)--(1.2pt,3pt);}}}},
+  tick3/.style={postaction={decorate, decoration={markings,
+      mark=at position 0.5 with {\draw[line width=0.7pt] (-2.2pt,-3pt)--(-2.2pt,3pt) (0,-3pt)--(0,3pt) (2.2pt,-3pt)--(2.2pt,3pt);}}}},
+}
+% right angle mark at vertex #2 between points #1 and #3:  \rang{A}{H}{B}
+\newcommand{\rang}[3]{%
+  \pic[draw, line width=0.5pt, angle radius=2.2mm] {right angle=#1--#2--#3};}
+
+% ===== end preamble.tex =====
+
+\begin{document}
+\frontmatter
+\pagestyle{empty}
+
+% ------------------------------------------------------------ title page
+\begin{titlepage}
+\centering
+\vspace*{1.2cm}
+{\sffamily\large\color{slate} Geometria piana \textperiodcentered\ Plane geometry\par}
+\vspace{0.8cm}
+{\fontsize{34}{40}\selectfont\bfseries\color{navy} Angles and\\[4pt] Congruent Triangles\par}
+\vspace{0.4cm}
+{\fontsize{26}{32}\selectfont\itshape\color{itgreen} Angoli e\\[2pt] triangoli congruenti\par}
+\vspace{1.2cm}
+% decorative figure: a full turn with a highlighted angle and two congruent triangles
+\begin{tikzpicture}[scale=1.05]
+  \fill[shade] (0,0) -- (0:2.6) arc (0:50:2.6) -- cycle;
+  \draw[black!25] (0,0) circle (2.6);
+  \foreach \a in {0,10,...,350} \draw[black!35] (\a:2.45) -- (\a:2.6);
+  \foreach \a in {0,30,...,330} \draw[black!60, line width=0.6pt] (\a:2.35) -- (\a:2.6);
+  \draw[ray] (0,0) -- (0:3.1);
+  \draw[ray] (0,0) -- (50:3.1);
+  \draw[angA, line width=1pt, -{Stealth[length=2mm]}] (0:1.0) arc (0:50:1.0);
+  \node[angA, font=\large] at (25:1.35) {$50^\circ$};
+  \node[pt] at (0,0) {};
+  \node[font=\small, black!60] at (180:2.95) {$180^\circ$};
+  \node[font=\small, black!60] at (90:2.95) {$90^\circ$};
+  \node[font=\small, black!60] at (270:2.95) {$270^\circ$};
+  % congruent triangles
+  \begin{scope}[shift={(4.3,-1.4)}]
+    \draw[side, fill=angB!12, tick1] (0,0) -- (2,0);
+    \draw[side, fill=angB!12] (0,0) -- (2,0) -- (0.6,1.6) -- cycle;
+    \draw[side, tick1] (0,0) -- (2,0);
+    \draw[side, tick2] (2,0) -- (0.6,1.6);
+    \draw[side, tick3] (0.6,1.6) -- (0,0);
+  \end{scope}
+  \begin{scope}[shift={(4.9,2.3)}, rotate=-150]
+    \draw[side, fill=angC!12] (0,0) -- (2,0) -- (0.6,1.6) -- cycle;
+    \draw[side, tick1] (0,0) -- (2,0);
+    \draw[side, tick2] (2,0) -- (0.6,1.6);
+    \draw[side, tick3] (0.6,1.6) -- (0,0);
+  \end{scope}
+  \node[font=\Large, navy] at (5.9,0.55) {$\cong$};
+\end{tikzpicture}
+\vspace{1.4cm}
+
+{\large\color{navy} English for the tutor \textperiodcentered\ \textcolor{itgreen}{\itshape Italiano per la studentessa}\par}
+\vspace{0.3cm}
+{\small\color{slate} A booklet with pictures, traps, thought experiments and solved problems\\
+\textit{Un quaderno con disegni, trappole, esperimenti mentali e problemi svolti}\par}
+\vfill
+{\small\color{slate} Classe prima \textperiodcentered\ First year of secondary school\par}
+\end{titlepage}
+
+% ------------------------------------------------------------ epigraph
+\vspace*{\fill}
+\begin{center}
+\begin{minipage}{0.72\textwidth}
+\raggedleft
+{\large\itshape There is no royal road to geometry.}\\[2pt]
+{\large\itshape\color{itgreen} Non esiste una via regia per la geometria.}\\[8pt]
+{\small Euclid, answering King Ptolemy I, as reported by Proclus}\\
+{\small\color{itgreen}Euclide al re Tolomeo I, secondo il racconto di Proclo}\\[2pt]
+{\footnotesize\color{slate} (Proclus, \textit{Commentary on the First Book of Euclid's Elements}, trans. G.\,R.~Morrow, 1970)}
+\end{minipage}
+\end{center}
+\vspace*{\fill}
+\clearpage
+
+% ------------------------------------------------------------ how to use
+\pagestyle{fancy}
+\chapter*{How to use this booklet \textperiodcentered\ {\color{itgreen}\itshape Come usare questo quaderno}}
+\markboth{How to use \textperiodcentered\ Come usare}{}
+\addcontentsline{toc}{chapter}{How to use this booklet \textperiodcentered\ Come usare questo quaderno}
+
+\begin{bi}
+\colheads
+Every page is split in two. The left column is in English and is written for you, the tutor. The right column says the same thing in Italian and is written for the student. Paragraphs are aligned, so you can point at a sentence on the left and she can read the same sentence on the right.
+\IT
+Ogni pagina è divisa in due. La colonna di sinistra è in inglese ed è per il tutor. La colonna di destra dice la stessa cosa in italiano ed è per te. I paragrafi sono allineati: quando il tutor indica una frase a sinistra, tu trovi la stessa frase a destra.
+\EN
+Each idea goes through the same short journey, and each step has its own coloured box:
+\begin{itemize}
+  \item \textbf{\color{slate}The trap}: what people usually think, and why it is not quite right.
+  \item \textbf{\color{forest}Picture it}: one everyday image that carries the idea.
+  \item \textbf{\color{navy}Step by step}: the idea rebuilt from zero.
+  \item \textbf{\color{deeporange}Think first}: a question to answer before reading on.
+  \item \textbf{\color{deeppurple}Worked example}: a solved problem with every step.
+  \item \textbf{\color{crimson}The click}: the one sentence to remember.
+\end{itemize}
+\IT
+Ogni idea fa lo stesso breve percorso, e ogni tappa ha il suo riquadro colorato:
+\begin{itemize}
+  \item \textbf{\color{slate}La trappola}: quello che si pensa di solito, e perché non è del tutto giusto.
+  \item \textbf{\color{forest}Immagina}: un'immagine della vita di tutti i giorni che porta con sé l'idea.
+  \item \textbf{\color{navy}Passo dopo passo}: l'idea ricostruita da zero.
+  \item \textbf{\color{deeporange}Pensaci prima}: una domanda a cui rispondere prima di andare avanti.
+  \item \textbf{\color{deeppurple}Esempio svolto}: un problema risolto passo per passo.
+  \item \textbf{\color{crimson}Il clic}: la frase da ricordare.
+\end{itemize}
+\EN
+The booklet has three chapters. Chapter~\ref{ch:angles} explains what an angle is, why a full turn is $360^\circ$, and how angles behave in pairs and around parallel lines. Chapter~\ref{ch:triangles} uses those facts to show why the angles of a triangle add up to $180^\circ$ and what an altitude really is. Chapter~\ref{ch:congruence} explains what \emph{congruent} means, gives the three criteria with a picture for each, and ends with seven complete proofs, including the two problems from her notebook. Exercises follow, then the solutions, a one page summary and an English and Italian glossary.
+\IT
+Il quaderno ha tre capitoli. Il capitolo~\ref{ch:angles} spiega che cos'è un angolo, perché un giro completo misura $360^\circ$ e come si comportano gli angoli a coppie e vicino alle rette parallele. Il capitolo~\ref{ch:triangles} usa questi fatti per capire perché la somma degli angoli di un triangolo è $180^\circ$ e che cos'è davvero un'altezza. Il capitolo~\ref{ch:congruence} spiega che cosa vuol dire \emph{congruente}, presenta i tre criteri con un disegno per ciascuno e termina con sette dimostrazioni complete, compresi i due problemi del tuo quaderno. Poi ci sono gli esercizi, le soluzioni, un formulario di una pagina e un glossario inglese e italiano.
+\EN
+Take a pencil, a ruler, a protractor and a sheet of paper you are allowed to cut. Several ideas in this booklet are best understood with the hands before the head.
+\IT
+Prendi una matita, un righello, un goniometro e un foglio che puoi ritagliare. Molte idee di questo quaderno si capiscono prima con le mani e poi con la testa.
+\end{bi}
+
+\begin{tutor}[notation]
+Italian schools write the angle with vertex $B$ as $\ang{A}{B}{C}$ (hat on the middle letter) and a segment as $\seg{AB}$. They write $\cong$ for \emph{congruent}; her notebook uses $=$ for the same thing, and both will be understood by her teacher. Italian textbooks call corresponding parts of congruent triangles \emph{elementi omologhi}. The Italian decimal separator is a comma, so the Italian column writes $2{,}4$ where the English column writes $2.4$.
+\end{tutor}
+
+\tableofcontents
+
+\mainmatter
+% ===== begin ch1-angles.tex =====
+% STATUS: COMPLETE DRAFT
+% Chapter 1 : angles, measure on a circle, why 360, types, pairs, parallels
+% Every number below is checked in scripts/verify.py
+\bichapter{Angles}{Gli angoli}\label{ch:angles}
+
+% ================================================================
+\bisection{An angle is a turn}{Un angolo è una rotazione}\label{sec:turn}
+% ================================================================
+\begin{bi}
+\colheads
+Open a door a little. Now open it wide. Something grew, but it was not the door: the door is exactly as long as before. What grew is the \emph{turn} the door made around its hinge. That turn is an angle.
+\IT
+Apri una porta di poco. Ora aprila tutta. Qualcosa è cresciuto, ma non è la porta: la porta è lunga esattamente come prima. È cresciuta la \emph{rotazione} che la porta ha fatto intorno al cardine. Quella rotazione è un angolo.
+\EN
+Geometry keeps only the essentials of the door. The hinge becomes a point, the \textbf{vertex}. The wall and the door become two \textbf{rays}, half lines that start at the vertex and go on forever in one direction. The opening between them is the angle.
+\IT
+La geometria tiene solo l'essenziale della porta. Il cardine diventa un punto, il \textbf{vertice}. Il muro e la porta diventano due \textbf{semirette}, cioè mezze rette che partono dal vertice e proseguono all'infinito in una direzione. L'apertura tra le due semirette è l'angolo.
+\end{bi}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION ===  door opened by 70 deg; door length 2.6; arc radius 1.1
+% ray directions 0 and 70 deg; label of alpha at 35 deg, radius 1.45
+\begin{tikzpicture}
+  % (a) the door seen from above
+  \begin{scope}
+    \fill[black!12] (-0.4,-0.25) rectangle (0,0.1);
+    \fill[black!12] (2.9,-0.25) rectangle (3.3,0.1);
+    \draw[black!40, dashed] (0,0) -- (2.6,0);
+    \draw[line width=3pt, brown!70!black] (0,0) -- (70:2.6);
+    \draw[angA, line width=0.9pt, -{Stealth[length=2mm]}] (0:1.1) arc (0:70:1.1);
+    \node[angA] at (35:1.45) {$70^\circ$};
+    \node[pt] at (0,0) {};
+    \node[lbl, below left] at (0,-0.2) {hinge \textperiodcentered\ \textit{cardine}};
+    \node[lbl, rotate=70, above] at (70:1.6) {door \textperiodcentered\ \textit{porta}};
+    \node[lbl, below] at (1.5,-0.3) {closed \textperiodcentered\ \textit{chiusa}};
+    \node[font=\small\bfseries] at (1.3,-1.25) {(a)};
+  \end{scope}
+  % (b) the geometric angle
+  \begin{scope}[shift={(6.2,0)}]
+    \coordinate (O) at (0,0); \coordinate (A) at (3,0); \coordinate (B) at (70:3);
+    \fill[shade] (O) -- (1.6,0) arc (0:70:1.6) -- cycle;
+    \draw[ray] (O) -- (A); \draw[ray] (O) -- (B);
+    \pic[draw, angA, line width=0.9pt, angle radius=9mm, "$\alpha$", angle eccentricity=1.35] {angle=A--O--B};
+    \node[pt] at (O) {};
+    \node[below left] at (O) {$O$};
+    \node[below] at (A) {$a$};
+    \node[left] at (B) {$b$};
+    \node[lbl, align=left, anchor=west] at (1.3,1.95) {vertex $O$ \textperiodcentered\ \textit{vertice}\\ sides $a$, $b$ \textperiodcentered\ \textit{lati}};
+    \node[font=\small\bfseries] at (1.3,-1.25) {(b)};
+  \end{scope}
+\end{tikzpicture}
+\bicap{(a) A door seen from above: the angle is the turn around the hinge. (b) The same idea in geometry: vertex $O$, sides $a$ and $b$.}%
+      {(a) Una porta vista dall'alto: l'angolo è la rotazione intorno al cardine. (b) La stessa idea in geometria: vertice $O$, lati $a$ e $b$.}
+\label{fig:door}
+\end{figure}
+
+\begin{defn}{angle}{angolo}
+An \textbf{angle} is each of the two parts into which the plane is divided by two rays with the same starting point. The common point is the \textbf{vertex}; the two rays are the \textbf{sides}.
+\tcblower
+Si chiama \textbf{angolo} ciascuna delle due parti in cui il piano è diviso da due semirette che hanno la stessa origine. L'origine comune è il \textbf{vertice}; le due semirette sono i \textbf{lati}.
+\end{defn}
+
+\begin{bi}
+We name an angle in three ways: with three letters and the vertex in the middle, $\ang{A}{O}{B}$; with the vertex alone, $\av{O}$, when nothing can be confused; or with a Greek letter, $\alpha$ (alpha), $\beta$ (beta), $\gamma$ (gamma).
+\IT
+Un angolo si indica in tre modi: con tre lettere e il vertice al centro, $\ang{A}{O}{B}$; con il solo vertice, $\av{O}$, quando non ci sono confusioni; oppure con una lettera greca, $\alpha$ (alfa), $\beta$ (beta), $\gamma$ (gamma).
+\end{bi}
+
+\begin{trap}{longer sides, bigger angle?}{lati più lunghi, angolo più grande?}
+Many students think that if you draw the sides of an angle longer, the angle becomes bigger. Look at Figure~\ref{fig:sides}: the two angles have very different sides, yet they are the same angle. The sides are rays, so they are infinitely long anyway. The drawing only shows a piece of them.
+\tcblower
+Molti pensano che, se si disegnano i lati più lunghi, l'angolo diventi più grande. Guarda la figura~\ref{fig:sides}: i due angoli hanno lati molto diversi, eppure sono lo stesso angolo. I lati sono semirette, quindi sono comunque infinitamente lunghi. Il disegno ne mostra solo un pezzo.
+\end{trap}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === both angles 40 deg; short sides 1.2, long sides 4.0
+\begin{tikzpicture}
+  \begin{scope}
+    \coordinate (O1) at (0,0); \coordinate (A1) at (1.2,0); \coordinate (B1) at (40:1.2);
+    \draw[side] (A1) -- (O1) -- (B1);
+    \pic[draw, angA, line width=0.9pt, angle radius=5mm, "$40^\circ$", angle eccentricity=1.9] {angle=A1--O1--B1};
+  \end{scope}
+  \begin{scope}[shift={(3.2,0)}]
+    \coordinate (O2) at (0,0); \coordinate (A2) at (4,0); \coordinate (B2) at (40:4);
+    \draw[side] (A2) -- (O2) -- (B2);
+    \pic[draw, angA, line width=0.9pt, angle radius=5mm, "$40^\circ$", angle eccentricity=1.9] {angle=A2--O2--B2};
+  \end{scope}
+  \node[lbl, align=center] at (0.6,-0.55) {short sides\\\textit{lati corti}};
+  \node[lbl, align=center] at (5.2,-0.55) {long sides\\\textit{lati lunghi}};
+  \node[font=\Large] at (2.35,0.55) {$=$};
+\end{tikzpicture}
+\bicap{Same angle, different drawings. The size of an angle does not depend on how long you draw its sides.}%
+      {Stesso angolo, disegni diversi. L'ampiezza di un angolo non dipende da quanto sono lunghi i lati disegnati.}
+\label{fig:sides}
+\end{figure}
+
+\begin{bi}
+There is a second surprise. Two rays from the same point always make \emph{two} angles, not one: the small opening and the big one that goes the long way round (Figure~\ref{fig:convex}). The small one is called \textbf{convex}; the big one, which contains the extensions of its sides, is called \textbf{concave} (or reflex). Unless we say otherwise, ``the angle'' means the convex one.
+\IT
+C'è una seconda sorpresa. Due semirette con la stessa origine formano sempre \emph{due} angoli, non uno: l'apertura piccola e quella grande che fa il giro lungo (figura~\ref{fig:convex}). Quello piccolo si chiama \textbf{convesso}; quello grande, che contiene i prolungamenti dei suoi lati, si chiama \textbf{concavo}. Se non diciamo altro, «l'angolo» è quello convesso.
+\end{bi}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === rays at 20 and 110 deg: convex part 90 deg, concave part 270 deg
+\begin{tikzpicture}
+  \begin{scope}
+    \fill[angB!18] (0,0) -- (20:1.9) arc (20:110:1.9) -- cycle;
+    \draw[ray] (0,0) -- (20:2.3); \draw[ray] (0,0) -- (110:2.3);
+    \draw[helper] (0,0) -- (200:1.3); \draw[helper] (0,0) -- (290:1.3);
+    \node[pt] at (0,0) {};
+    \node[angB, font=\small, align=center] at (65:1.2) {convex\\\textit{convesso}};
+    \node[font=\small\bfseries] at (0,-1.7) {(a)};
+  \end{scope}
+  \begin{scope}[shift={(6,0)}]
+    \fill[angD!22] (0,0) -- (110:1.9) arc (110:380:1.9) -- cycle;
+    \draw[ray] (0,0) -- (20:2.3); \draw[ray] (0,0) -- (110:2.3);
+    \node[pt] at (0,0) {};
+    \node[angD!80!black, font=\small, align=center] at (245:1.05) {concave\\\textit{concavo}};
+    \node[font=\small\bfseries] at (0,-2.3) {(b)};
+  \end{scope}
+\end{tikzpicture}
+\bicap{Two rays, two angles. (a) The convex angle does not contain the extensions of its sides (dashed). (b) The concave angle does.}%
+      {Due semirette, due angoli. (a) L'angolo convesso non contiene i prolungamenti dei lati (tratteggiati). (b) L'angolo concavo li contiene.}
+\label{fig:convex}
+\end{figure}
+
+\begin{keyidea}{}{}
+An angle measures a \emph{turn}, not a length. Long sides or short sides, the opening is the same if the turn is the same.
+\tcblower
+Un angolo misura una \emph{rotazione}, non una lunghezza. Con lati lunghi o corti, l'apertura è la stessa se la rotazione è la stessa.
+\end{keyidea}
+
+% ================================================================
+\bisection{Measuring an angle on a circle}{Misurare un angolo su una circonferenza}\label{sec:circle}
+% ================================================================
+\begin{bi}
+If an angle is a turn, the natural thing to measure is \emph{how much of a full turn} it is. The circle is the tool that shows this. Put the vertex at the centre of a circle. The two sides cut out an arc, a piece of the circle. The angle is the fraction of the circle that the arc covers.
+\IT
+Se un angolo è una rotazione, la cosa più naturale da misurare è \emph{quanta parte di un giro completo} rappresenta. La circonferenza è lo strumento che lo mostra. Metti il vertice nel centro di una circonferenza. I due lati tagliano un arco, cioè un pezzo di circonferenza. L'angolo è la frazione di circonferenza coperta dall'arco.
+\end{bi}
+
+\begin{anchor}{a slice of pizza}{una fetta di pizza}
+Cut a pizza into 6 equal slices. Each slice has a pointed tip at the centre. Now cut a much bigger pizza into 6 slices: the slices are bigger, but the \emph{tip} of each slice is exactly as sharp as before, because it is still one sixth of a full turn. The size of the pizza plays the role of the length of the sides: it does not matter.
+\tcblower
+Taglia una pizza in 6 fette uguali. Ogni fetta ha una punta al centro. Ora taglia in 6 fette una pizza molto più grande: le fette sono più grandi, ma la \emph{punta} di ogni fetta è appuntita esattamente come prima, perché è sempre un sesto di giro. La grandezza della pizza fa la parte della lunghezza dei lati: non conta.
+\end{anchor}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === rays at 0 and 60 deg (1/6 of a turn); circles r = 0.9, 1.8, 2.7
+% arc lengths 2*pi*r/6 = 0.942, 1.885, 2.827 ; ratio arc/circumference = 1/6 for all
+% VERIFIED: python -> (2*pi*r/6)/(2*pi*r) = 0.16667 for r in (0.9, 1.8, 2.7)
+\begin{tikzpicture}
+  \foreach \r/\c in {0.9/angA, 1.8/angB, 2.7/angC} {
+    \draw[black!25] (0,0) circle (\r);
+    \draw[\c, line width=2.2pt] (0:\r) arc (0:60:\r);
+  }
+  \draw[ray] (0,0) -- (0:3.3); \draw[ray] (0,0) -- (60:3.3);
+  \node[pt] at (0,0) {};
+  \node[below left] at (0,0) {$O$};
+  \node[lbl, anchor=west, align=left] at (3.4,1.4) {each coloured arc is $\tfrac{1}{6}$ of its circle\\\textit{ogni arco colorato è $\tfrac{1}{6}$ della sua circonferenza}\\[3pt] so the angle is $\tfrac{1}{6}$ of a turn $=60^\circ$\\\textit{quindi l'angolo è $\tfrac{1}{6}$ di giro $=60^\circ$}};
+\end{tikzpicture}
+\bicap{Three circles with the same centre. The arcs have different lengths, but each is one sixth of its own circle. The fraction does not depend on the radius, and that is why we can measure angles with it.}%
+      {Tre circonferenze con lo stesso centro. Gli archi hanno lunghezze diverse, ma ognuno è un sesto della sua circonferenza. La frazione non dipende dal raggio: per questo possiamo usarla per misurare gli angoli.}
+\label{fig:concentric}
+\end{figure}
+
+\begin{rebuild}{from a turn to degrees}{dal giro ai gradi}
+\begin{enumerate}[label=\arabic*.]
+\item A full turn is the biggest natural unit: the door goes all the way round and comes back.
+\item We cut the full turn into \textbf{360 equal parts}. Each part is called a \textbf{degree} and is written $1^\circ$.
+\item So a full turn is $360^\circ$, half a turn is $180^\circ$, a quarter turn is $90^\circ$.
+\item Measuring an angle means counting how many of these small parts fit inside it.
+\end{enumerate}
+\tcblower
+\begin{enumerate}[label=\arabic*.]
+\item Il giro completo è l'unità più naturale: la porta fa tutto il giro e torna al punto di partenza.
+\item Dividiamo il giro in \textbf{360 parti uguali}. Ogni parte si chiama \textbf{grado} e si scrive $1^\circ$.
+\item Quindi un giro misura $360^\circ$, mezzo giro $180^\circ$, un quarto di giro $90^\circ$.
+\item Misurare un angolo vuol dire contare quante di queste piccole parti ci stanno dentro.
+\end{enumerate}
+\end{rebuild}
+
+\begin{bi}
+The number of degrees is called the \textbf{measure} of the angle. The tool that counts them is the \textbf{protractor}: a half circle already divided into $180$ degrees.
+\IT
+Il numero di gradi si chiama \textbf{ampiezza} dell'angolo. Lo strumento che li conta è il \textbf{goniometro}: un semicerchio già diviso in $180$ gradi.
+\end{bi}
+
+\begin{trap}{the two scales of the protractor}{le due scale del goniometro}
+A protractor has two rows of numbers, one running from left to right and one from right to left. The side of the angle that lies on the base line must sit on the $0$ of the scale you read. In Figure~\ref{fig:protractor} the angle is $50^\circ$; reading the wrong row gives $130^\circ$. Quick check: is the angle smaller or bigger than a right angle? Here it is clearly smaller, so $130^\circ$ cannot be right.
+\tcblower
+Il goniometro ha due file di numeri, una che va da sinistra a destra e una da destra a sinistra. Il lato dell'angolo che sta sulla linea di base deve stare sullo $0$ della scala che leggi. Nella figura~\ref{fig:protractor} l'angolo misura $50^\circ$; leggendo la fila sbagliata si ottiene $130^\circ$. Controllo veloce: l'angolo è più piccolo o più grande di un angolo retto? Qui è chiaramente più piccolo, quindi $130^\circ$ non può essere giusto.
+\end{trap}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === protractor radius 4.0; inner scale value = position angle theta (0 at the right);
+% outer scale value = 180 - theta.  Measured ray at theta = 50 -> inner 50, outer 130.
+% VERIFIED: python -> 180 - 50 = 130
+\begin{tikzpicture}[scale=0.95]
+  \def\R{4.0}
+  \fill[navy!6] (\R,0) arc (0:180:\R) -- cycle;
+  \draw[navy!70, line width=0.7pt] (\R,0) arc (0:180:\R) -- cycle;
+  \draw[navy!30] (2.55,0) arc (0:180:2.55);
+  \foreach \t in {0,1,...,180} \draw[navy!60, line width=0.3pt] (\t:\R) -- (\t:\R-0.12);
+  \foreach \t in {0,5,...,180} \draw[navy!70] (\t:\R) -- (\t:\R-0.22);
+  \foreach \t in {0,10,...,180} {
+    \draw[navy!80, line width=0.6pt] (\t:\R) -- (\t:\R-0.32);
+    \pgfmathtruncatemacro{\o}{180-\t}
+    \node[font=\scriptsize, navy!55, rotate=\t-90] at (\t:\R-0.55) {\o};
+    \node[font=\scriptsize\bfseries, black, rotate=\t-90] at (\t:\R-0.95) {\t};
+  }
+  \draw[ray, angA] (0,0) -- (0:\R+0.9);
+  \draw[ray, angA] (0,0) -- (50:\R+0.9);
+  \draw[angA, line width=0.9pt] (0:1.0) arc (0:50:1.0);
+  \node[angA] at (25:1.4) {$50^\circ$};
+  \node[pt] at (0,0) {};
+  \draw[-{Stealth[length=2mm]}, black] (5.1,3.9) node[right, font=\small, align=left] {inner scale: $50$ (right)\\\textit{scala interna: $50$ (giusto)}} -- (50:\R-0.75);
+  \draw[-{Stealth[length=2mm]}, navy!60] (-4.3,4.3) node[left, font=\small, align=right] {outer scale: $130$ (wrong)\\\textit{scala esterna: $130$ (sbagliato)}} -- ($(52:\R-0.45)$);
+\end{tikzpicture}
+\bicap{Reading a protractor. The lower side of the angle lies on the $0$ of the inner scale, so the inner scale gives the measure: $50^\circ$.}%
+      {Come si legge il goniometro. Il lato di base dell'angolo sta sullo $0$ della scala interna, quindi è la scala interna a dare l'ampiezza: $50^\circ$.}
+\label{fig:protractor}
+\end{figure}
+
+% ================================================================
+\bisection{Why 360?}{Perché proprio 360?}\label{sec:why360}
+% ================================================================
+\begin{trap}{360 is a law of nature}{360 è una legge della natura}
+It is tempting to think that circles ``contain'' 360 degrees the way a week contains 7 days. They do not. Nature gives us the full turn; the number 360 is a human choice. Surveyors sometimes divide the turn into 400 parts, and scientists often use another unit, the radian. The angle is the same; only the ruler changes.
+\tcblower
+Viene da pensare che le circonferenze «contengano» 360 gradi come una settimana contiene 7 giorni. Non è così. La natura ci dà il giro completo; il numero 360 è una scelta degli esseri umani. I topografi a volte dividono il giro in 400 parti, e gli scienziati usano spesso un'altra unità, il radiante. L'angolo è lo stesso; cambia solo il righello.
+\end{trap}
+
+\begin{bi}
+So why did people choose 360 and not 100, which would seem easier? There are three reasons. The first one is certain, the second is historical fact, the third is a likely guess.
+\IT
+Allora perché si è scelto 360 e non 100, che sembrerebbe più comodo? Ci sono tre motivi. Il primo è sicuro, il secondo è un fatto storico, il terzo è un'ipotesi probabile.
+\EN
+\textbf{Reason 1: 360 can be shared fairly in many ways.} 360 can be divided exactly by 24 different whole numbers: 1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 18, 20, 24, 30, 36, 40, 45, 60, 72, 90, 120, 180, 360. This means you can cut a full turn into 2, 3, 4, 5, 6, 8, 9, 10 or 12 equal slices and every slice is a whole number of degrees. Try the same with 100: a third is $33.33\ldots$ and a sixth is $16.66\ldots$, which never end.
+\IT
+\textbf{Motivo 1: 360 si divide bene in tanti modi.} 360 è divisibile esattamente per 24 numeri interi diversi: 1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 18, 20, 24, 30, 36, 40, 45, 60, 72, 90, 120, 180, 360. Vuol dire che puoi tagliare il giro in 2, 3, 4, 5, 6, 8, 9, 10 o 12 fette uguali e ogni fetta è un numero intero di gradi. Prova con 100: un terzo è $33{,}33\ldots$ e un sesto è $16{,}66\ldots$, numeri che non finiscono mai.
+\end{bi}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === 360/n for n = 2,3,4,5,6,8 -> 180,120,90,72,60,45 (all integers)
+% VERIFIED: python -> [180.0, 120.0, 90.0, 72.0, 60.0, 45.0]
+\begin{tikzpicture}
+  \foreach \n/\d [count=\i from 0] in {2/180,3/120,4/90,5/72,6/60,8/45} {
+    \begin{scope}[shift={(\i*2.45,0)}]
+      \fill[angD!15] (0,0) circle (0.95);
+      \fill[angD!55] (0,0) -- (90:0.95) arc (90:90+\d:0.95) -- cycle;
+      \draw[angD!80!black, line width=0.6pt] (0,0) circle (0.95);
+      \foreach \k in {1,...,\n} \draw[angD!80!black, line width=0.6pt] (0,0) -- ({90+(\k-1)*\d}:0.95);
+      \node[font=\small\bfseries] at (0,-1.25) {$360 : \n = \d$};
+    \end{scope}
+  }
+\end{tikzpicture}
+\bicap{A full turn shared into 2, 3, 4, 5, 6 and 8 equal slices. Every slice is a whole number of degrees.}%
+      {Il giro diviso in 2, 3, 4, 5, 6 e 8 fette uguali. Ogni fetta è un numero intero di gradi.}
+\label{fig:pizzas}
+\end{figure}
+
+\begin{bi}
+\textbf{Reason 2: the Babylonians counted in sixties.} About 4000 years ago the scribes of Babylon (in today's Iraq) did their calculations in base 60, while we count in base 10. We still use their system every day: an hour has 60 minutes and a minute has 60 seconds. Degrees use it too: $1^\circ$ is split into 60 \emph{minutes} ($60'$) and one minute into 60 \emph{seconds} ($60''$). A full turn is six sixties: $6 \times 60 = 360$.
+\IT
+\textbf{Motivo 2: i Babilonesi contavano a sessanta.} Circa 4000 anni fa gli scribi di Babilonia (nell'attuale Iraq) facevano i calcoli in base 60, mentre noi contiamo in base 10. Usiamo ancora il loro sistema ogni giorno: un'ora ha 60 minuti e un minuto ha 60 secondi. Anche i gradi lo usano: $1^\circ$ si divide in 60 \emph{primi} ($60'$) e un primo in 60 \emph{secondi} ($60''$). Per questo si parla di gradi \emph{sessagesimali}. Un giro sono sei volte sessanta: $6 \times 60 = 360$.
+\EN
+\textbf{Reason 3 (probable): the year has about 360 days.} The Sun seems to go once round the sky in a year, a bit more than 360 days. Moving about one degree per day is a neat coincidence, and many historians think it helped. Nobody has a document that proves it, so treat it as a good story, not as a fact.
+\IT
+\textbf{Motivo 3 (probabile): l'anno ha circa 360 giorni.} Il Sole sembra fare un giro del cielo in un anno, cioè in poco più di 360 giorni. Spostarsi di circa un grado al giorno è una bella coincidenza, e molti storici pensano che abbia contato. Nessun documento lo dimostra, quindi consideralo una bella storia, non un fatto.
+\end{bi}
+
+\begin{figure}[htbp]
+\centering
+% Vertical timeline (5 milestones). Dates are approximate and written with "c." (circa).
+% Layout: dates left of the spine, English text column, Italian text column (same as the page).
+\begin{tikzpicture}[yscale=-1]
+  \draw[navy, line width=1.2pt] (0,-0.2) -- (0,6.3);
+  \foreach \y/\date/\en/\itl in {
+    0.2/{c. 1800 BC\\\textit{c. 1800 a.C.}}/{Babylonian scribes calculate in base 60.}/{Gli scribi babilonesi calcolano in base 60.},
+    1.6/{c. 300 BC\\\textit{c. 300 a.C.}}/{Euclid's \emph{Elements}: angles are compared with the right angle, no degrees yet. The congruence criteria are already there.}/{Gli \emph{Elementi} di Euclide: gli angoli si confrontano con l'angolo retto, i gradi non ci sono ancora. I criteri di congruenza ci sono già.},
+    3.0/{2nd cent. BC\\\textit{II sec. a.C.}}/{Greek astronomers (Hypsicles, Hipparchus) divide the circle into 360 parts.}/{Gli astronomi greci (Ipsicle, Ipparco) dividono la circonferenza in 360 parti.},
+    4.4/{c. AD 150\\\textit{c. 150 d.C.}}/{Ptolemy's \emph{Almagest} splits each degree into 60 minutes and each minute into 60 seconds.}/{L'\emph{Almagesto} di Tolomeo divide ogni grado in 60 primi e ogni primo in 60 secondi.},
+    5.8/{1873}/{The word \emph{radian} appears in print (James Thomson): a unit that does not use 360.}/{Compare in stampa la parola \emph{radiante} (James Thomson): un'unità che non usa 360.}} {
+    \node[circle, fill=crimson, inner sep=2.2pt] at (0,\y) {};
+    \node[anchor=north east, align=right, font=\small\bfseries\color{navy}] at (-0.3,\y-0.2) {\date};
+    \node[anchor=north west, align=left, text width=6.4cm, font=\small] at (0.3,\y-0.2) {\en};
+    \node[anchor=north west, align=left, text width=6.4cm, font=\small\itshape, itgreen] at (7.0,\y-0.2) {\itl};
+  }
+\end{tikzpicture}
+\bicap{How the 360 degree circle was born. Dates are approximate.}%
+      {Come è nato il cerchio da 360 gradi. Le date sono approssimate.}
+\label{fig:timeline}
+\end{figure}
+
+\begin{tutor}[calculators and confidence]
+Her calculator has the modes DEG ($360$ per turn), RAD ($2\pi \approx 6.28$ per turn) and GRAD ($400$ per turn). If a sine ever comes out strange, the mode is the first suspect. On the history: the Babylonian base 60 and Ptolemy's minutes and seconds are well documented (references [4] to [6] in Appendix~\ref{app:glossary}); the link between 360 and the days of the year is a common hypothesis without direct evidence, and the booklet says so. The Latin names \emph{pars minuta prima} and \emph{pars minuta secunda} are where the words ``minute'' and ``second'' come from, and the Italian names \emph{primi} and \emph{secondi} keep the old form.
+\end{tutor}
+
+\begin{think}{a turn in percent}{il giro in percentuale}
+You already know a way to cut a whole into 100 parts: percentages. What percentage of a full turn is a right angle? And how many degrees is $1\%$ of a turn?
+\answer A right angle is a quarter of a turn, so it is $25\%$. One percent of $360^\circ$ is $360 : 100 = 3.6^\circ$. This is exactly what you do when you draw a pie chart.
+\tcblower
+Conosci già un modo per dividere un intero in 100 parti: le percentuali. Che percentuale di giro è un angolo retto? E quanti gradi è l'$1\%$ di un giro?
+\answer Un angolo retto è un quarto di giro, quindi è il $25\%$. L'$1\%$ di $360^\circ$ è $360 : 100 = 3{,}6^\circ$. È proprio quello che fai quando disegni un areogramma.
+\end{think}
+
+\begin{example}{a pie chart}{un areogramma}
+In a class of 30 students, 12 prefer pizza, 9 pasta, 6 ice cream and 3 something else. Draw the pie chart.
+
+The whole class is the whole circle, $360^\circ$. Each group gets the same fraction of the circle that it has of the class. We set up the proportion
+\[ x : 360^\circ = \text{part} : \text{total}. \]
+Pizza: $x = \dfrac{12 \times 360^\circ}{30} = 144^\circ$. \\
+Pasta: $\dfrac{9 \times 360^\circ}{30} = 108^\circ$. \\
+Ice cream: $\dfrac{6 \times 360^\circ}{30} = 72^\circ$. \\
+Other: $\dfrac{3 \times 360^\circ}{30} = 36^\circ$. \\
+Check: $144 + 108 + 72 + 36 = 360$. The slices close the circle exactly.
+% VERIFIED: python -> 144.0, 108.0, 72.0, 36.0 ; sum 360.0
+\tcblower
+In una classe di 30 studenti, 12 preferiscono la pizza, 9 la pasta, 6 il gelato e 3 altro. Disegna l'areogramma.
+
+Tutta la classe è tutto il cerchio, $360^\circ$. Ogni gruppo riceve la stessa frazione di cerchio che ha della classe. Impostiamo la proporzione
+\[ x : 360^\circ = \text{parte} : \text{totale}. \]
+Pizza: $x = \dfrac{12 \cdot 360^\circ}{30} = 144^\circ$. \\
+Pasta: $\dfrac{9 \cdot 360^\circ}{30} = 108^\circ$. \\
+Gelato: $\dfrac{6 \cdot 360^\circ}{30} = 72^\circ$. \\
+Altro: $\dfrac{3 \cdot 360^\circ}{30} = 36^\circ$. \\
+Verifica: $144 + 108 + 72 + 36 = 360$. Le fette chiudono il cerchio esattamente.
+\end{example}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === slices 144,108,72,36 starting at 90 deg, going clockwise
+% boundaries: 90, -54, -162, -234, -270 (= 90)
+% VERIFIED: python -> 90-144 = -54 ; -54-108 = -162 ; -162-72 = -234 ; -234-36 = -270
+\begin{tikzpicture}
+  \def\R{2.1}
+  \fill[angA!55] (0,0) -- (90:\R) arc (90:-54:\R) -- cycle;
+  \fill[angB!50] (0,0) -- (-54:\R) arc (-54:-162:\R) -- cycle;
+  \fill[angC!50] (0,0) -- (-162:\R) arc (-162:-234:\R) -- cycle;
+  \fill[angD!55] (0,0) -- (-234:\R) arc (-234:-270:\R) -- cycle;
+  \foreach \a in {90,-54,-162,-234} \draw[white, line width=1.2pt] (0,0) -- (\a:\R);
+  \node[font=\small\bfseries] at (18:1.3) {$144^\circ$};
+  \node[font=\small\bfseries] at (-108:1.3) {$108^\circ$};
+  \node[font=\small\bfseries] at (-198:1.3) {$72^\circ$};
+  \node[font=\small\bfseries] at (-252:1.45) {$36^\circ$};
+  \node[anchor=west, font=\small, align=left] at (2.6,1.2) {\textcolor{angA}{$\blacksquare$} pizza: 12 ($40\%$)};
+  \node[anchor=west, font=\small, align=left] at (2.6,0.5) {\textcolor{angB}{$\blacksquare$} pasta: 9 ($30\%$)};
+  \node[anchor=west, font=\small, align=left] at (2.6,-0.2) {\textcolor{angC}{$\blacksquare$} ice cream \textperiodcentered\ \textit{gelato}: 6 ($20\%$)};
+  \node[anchor=west, font=\small, align=left] at (2.6,-0.9) {\textcolor{angD}{$\blacksquare$} other \textperiodcentered\ \textit{altro}: 3 ($10\%$)};
+\end{tikzpicture}
+\bicap{The pie chart of the worked example. Each slice is its share of $360^\circ$.}%
+      {L'areogramma dell'esempio svolto. Ogni fetta è la sua parte di $360^\circ$.}
+\label{fig:pie}
+\end{figure}
+
+\begin{keyidea}{}{}
+360 is not written in the sky. It is a very good choice, because it can be shared in many fair ways, and it comes from people who counted in sixties.
+\tcblower
+Il 360 non è scritto nel cielo. È una scelta molto buona, perché si può dividere in parti uguali in tanti modi, e viene da un popolo che contava a sessanta.
+\end{keyidea}
+
+% ================================================================
+\bisection{Types of angles}{Tipi di angoli}\label{sec:types}
+% ================================================================
+\begin{bi}
+Once we can measure, we can give names. The right angle, a quarter turn, is the reference point: it is the corner of a book, of a sheet of paper, of a room. Everything else is compared with it.
+\IT
+Quando sappiamo misurare, possiamo dare dei nomi. L'angolo retto, un quarto di giro, è il punto di riferimento: è l'angolo di un libro, di un foglio, di una stanza. Tutti gli altri si confrontano con lui.
+\end{bi}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === measures used: 0, 40, 90, 130, 180, 250, 360
+\begin{tikzpicture}[every node/.style={font=\small}]
+  \def\L{1.35}
+  \foreach \m/\en/\itl/\x/\y/\col in {
+      0/zero/nullo/0/0/angB,
+      40/acute/acuto/3.3/0/angB,
+      90/right/retto/6.6/0/angB,
+      130/obtuse/ottuso/9.9/0/angB,
+      180/straight/piatto/1.4/-3.2/angD,
+      250/reflex/concavo/5.4/-3.2/angD,
+      360/full/giro/9.4/-3.2/angD} {
+    \begin{scope}[shift={(\x,\y)}]
+      \ifthenelse{\m=0}{}{\fill[\col!22] (0,0) -- (0:0.9) arc (0:\m:0.9) -- cycle;}
+      \draw[side] (0,0) -- (0:\L);
+      \draw[side] (0,0) -- (\m:\L);
+      \ifthenelse{\m=0}{\draw[side, black!60] (0,0.05) -- (\L,0.05);}{}
+      \ifthenelse{\m=90}{\draw[line width=0.5pt] (0.25,0) -- (0.25,0.25) -- (0,0.25);}{}
+      \node[pt] at (0,0) {};
+      \node[align=center] at (0.5,-0.75) {\textbf{\en} \textperiodcentered\ \textit{\itl}\\$\m^\circ$};
+    \end{scope}
+  }
+\end{tikzpicture}
+\bicap{The family of angles, from zero to a full turn.}%
+      {La famiglia degli angoli, dall'angolo nullo al giro.}
+\label{fig:types}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{English} & \textbf{\color{itgreen}Italiano} & \textbf{Measure \textperiodcentered\ \color{itgreen}Ampiezza} & \textbf{Example \textperiodcentered\ \color{itgreen}Esempio}\\
+\midrule
+zero angle     & angolo nullo    & $0^\circ$                       & closed scissors \textperiodcentered\ \textit{forbici chiuse}\\
+acute angle    & angolo acuto    & more than $0^\circ$, less than $90^\circ$ & tip of a pizza slice \textperiodcentered\ \textit{punta di una fetta}\\
+right angle    & angolo retto    & exactly $90^\circ$              & corner of a book \textperiodcentered\ \textit{angolo di un libro}\\
+obtuse angle   & angolo ottuso   & more than $90^\circ$, less than $180^\circ$ & a laptop opened wide \textperiodcentered\ \textit{un portatile molto aperto}\\
+straight angle & angolo piatto   & exactly $180^\circ$             & a door wide open against the wall\\
+reflex angle   & angolo concavo  & more than $180^\circ$, less than $360^\circ$ & the outside of a slice \textperiodcentered\ \textit{il resto della pizza}\\
+full angle     & angolo giro     & exactly $360^\circ$             & a full turn of a wheel \textperiodcentered\ \textit{un giro di ruota}\\
+\bottomrule
+\end{tabular}
+\bicap{Names of angles by measure.}{I nomi degli angoli secondo l'ampiezza.}
+\label{tab:types}
+\end{table}
+
+\begin{anchor}{the hands of a clock}{le lancette dell'orologio}
+A clock is a protractor that moves. The dial is a full turn divided into 12 hours, so each hour mark is $360^\circ : 12 = 30^\circ$ from the next. In one minute the minute hand moves $360^\circ : 60 = 6^\circ$. The hour hand is slower: it needs a whole hour to move $30^\circ$, so it moves $0.5^\circ$ per minute.
+\tcblower
+Un orologio è un goniometro che si muove. Il quadrante è un giro diviso in 12 ore, quindi tra un'ora e la successiva ci sono $360^\circ : 12 = 30^\circ$. In un minuto la lancetta dei minuti si sposta di $360^\circ : 60 = 6^\circ$. La lancetta delle ore è più lenta: le serve un'ora intera per spostarsi di $30^\circ$, quindi si sposta di $0{,}5^\circ$ al minuto.
+\end{anchor}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === angles measured clockwise from 12. hour hand = 30h + 0.5m, minute hand = 6m
+% 3:00 -> 90 and 0 -> 90 deg ; 4:00 -> 120 and 0 -> 120 deg ; 2:30 -> 75 and 180 -> 105 deg
+% TikZ angle = 90 - clock angle.  VERIFIED: python clock(3,0)=90, clock(4,0)=120, clock(2,30)=105
+\begin{tikzpicture}
+  \foreach \h/\m/\hh/\mm/\lab/\x in {3/00/90/0/90/0, 4/00/120/0/120/4.2, 2/30/75/180/105/8.4} {
+    \begin{scope}[shift={(\x,0)}]
+      \draw[line width=0.8pt] (0,0) circle (1.45);
+      \foreach \k in {0,...,11} \draw[line width=0.8pt] ({90-30*\k}:1.45) -- ({90-30*\k}:1.28);
+      \foreach \k in {0,...,59} \draw[black!40] ({90-6*\k}:1.45) -- ({90-6*\k}:1.39);
+      \node[font=\scriptsize] at (90:1.08) {12};
+      \node[font=\scriptsize] at (0:1.08) {3};
+      \node[font=\scriptsize] at (-90:1.08) {6};
+      \node[font=\scriptsize] at (180:1.08) {9};
+      \fill[angA!25] (0,0) -- ({90-\hh}:0.6) arc ({90-\hh}:{90-\mm}:0.6) -- cycle;
+      \draw[line width=2pt, line cap=round] (0,0) -- ({90-\hh}:0.8);
+      \draw[line width=1.2pt, line cap=round] (0,0) -- ({90-\mm}:1.2);
+      \node[pt] at (0,0) {};
+      \node[font=\small] at (0,-1.8) {\h:\m\ $\to$ \textbf{\color{angA}$\lab^\circ$}};
+    \end{scope}
+  }
+\end{tikzpicture}
+\bicap{Angles on a clock. At 2:30 the hour hand is halfway between 2 and 3, so the angle is $105^\circ$, not $90^\circ$.}%
+      {Gli angoli dell'orologio. Alle 2:30 la lancetta delle ore è a metà tra il 2 e il 3, quindi l'angolo è $105^\circ$, non $90^\circ$.}
+\label{fig:clocks}
+\end{figure}
+
+\begin{think}{half past two}{le due e mezza}
+At 2:30 the minute hand points at 6 and the hour hand points near 2 and 3. Most people answer $90^\circ$ or $120^\circ$. Before reading on, find the true angle.
+\answer The minute hand is at $30 \times 6^\circ = 180^\circ$ from the 12. The hour hand is at $2 \times 30^\circ + 30 \times 0.5^\circ = 60^\circ + 15^\circ = 75^\circ$. The angle between them is $180^\circ - 75^\circ = 105^\circ$: an obtuse angle.
+% VERIFIED: python -> clock(2,30) = 105
+\tcblower
+Alle 2:30 la lancetta dei minuti indica il 6 e quella delle ore sta tra il 2 e il 3. Molti rispondono $90^\circ$ o $120^\circ$. Prima di andare avanti, trova l'angolo vero.
+\answer La lancetta dei minuti è a $30 \cdot 6^\circ = 180^\circ$ dal 12. Quella delle ore è a $2 \cdot 30^\circ + 30 \cdot 0{,}5^\circ = 60^\circ + 15^\circ = 75^\circ$. L'angolo tra le due è $180^\circ - 75^\circ = 105^\circ$: un angolo ottuso.
+\end{think}
+
+\begin{example}{more clock angles}{altri angoli dell'orologio}
+\textbf{3:00.} The hands point at 12 and 3: three hour marks, $3 \times 30^\circ = 90^\circ$. A right angle.\\
+\textbf{4:00.} Four hour marks: $4 \times 30^\circ = 120^\circ$. Obtuse.\\
+\textbf{6:00.} Six hour marks: $180^\circ$. A straight angle.\\
+\textbf{9:00.} Three hour marks the short way ($90^\circ$) or nine the long way ($270^\circ$): the two hands make a convex and a concave angle, as in Figure~\ref{fig:convex}.\\
+\textbf{10:10.} Minute hand: $10 \times 6^\circ = 60^\circ$. Hour hand: $10 \times 30^\circ + 10 \times 0.5^\circ = 305^\circ$. Difference $245^\circ$, so the convex angle is $360^\circ - 245^\circ = 115^\circ$.
+% VERIFIED: python -> clock(10,10): hour 305, minute 60, angle 115
+\tcblower
+\textbf{3:00.} Le lancette indicano il 12 e il 3: tre segni delle ore, $3 \cdot 30^\circ = 90^\circ$. Un angolo retto.\\
+\textbf{4:00.} Quattro segni: $4 \cdot 30^\circ = 120^\circ$. Ottuso.\\
+\textbf{6:00.} Sei segni: $180^\circ$. Un angolo piatto.\\
+\textbf{9:00.} Tre segni dalla parte corta ($90^\circ$) o nove dalla parte lunga ($270^\circ$): le lancette formano un angolo convesso e uno concavo, come nella figura~\ref{fig:convex}.\\
+\textbf{10:10.} Minuti: $10 \cdot 6^\circ = 60^\circ$. Ore: $10 \cdot 30^\circ + 10 \cdot 0{,}5^\circ = 305^\circ$. Differenza $245^\circ$, quindi l'angolo convesso è $360^\circ - 245^\circ = 115^\circ$.
+\end{example}
+
+% ================================================================
+\bisection{Angles in pairs}{Coppie di angoli}\label{sec:pairs}
+% ================================================================
+\begin{bi}
+Angles become interesting when they meet. Two angles are \textbf{adjacent} (consecutive) when they share the vertex and one side and do not overlap. If they are adjacent and their other two sides form a straight line, they fill a straight angle: $180^\circ$ together. Three special partnerships have their own names, and all three are about \emph{completing} something.
+\IT
+Gli angoli diventano interessanti quando si incontrano. Due angoli sono \textbf{consecutivi} quando hanno lo stesso vertice e un lato in comune e non si sovrappongono. Se sono consecutivi e gli altri due lati stanno sulla stessa retta, si dicono \textbf{adiacenti}: insieme riempiono un angolo piatto, cioè $180^\circ$. Tre coppie speciali hanno un nome proprio, e tutte e tre parlano di \emph{completare} qualcosa.
+\end{bi}
+
+\begin{defn}{three partnerships}{tre coppie}
+Two angles are\\
+\textbf{complementary} if together they make a right angle: $\alpha + \beta = 90^\circ$;\\
+\textbf{supplementary} if together they make a straight angle: $\alpha + \beta = 180^\circ$;\\
+\textbf{explementary} (conjugate) if together they make a full turn: $\alpha + \beta = 360^\circ$.
+\tcblower
+Due angoli sono\\
+\textbf{complementari} se insieme formano un angolo retto: $\alpha + \beta = 90^\circ$;\\
+\textbf{supplementari} se insieme formano un angolo piatto: $\alpha + \beta = 180^\circ$;\\
+\textbf{esplementari} se insieme formano un angolo giro: $\alpha + \beta = 360^\circ$.
+\end{defn}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === (a) 35 + 55 = 90 ; (b) 128 + 52 = 180 ; (c) 250 + 110 = 360
+% ray directions: (a) 0, 35, 90 ; (b) 0, 128, 180 ; (c) 0, 110 (reflex part 110->360)
+% VERIFIED: python -> 90-35 = 55 ; 180-128 = 52 ; 360-250 = 110
+\begin{tikzpicture}
+  \begin{scope}
+    \fill[angA!25] (0,0) -- (0:1) arc (0:35:1) -- cycle;
+    \fill[angB!25] (0,0) -- (35:1) arc (35:90:1) -- cycle;
+    \draw[side] (1.8,0) -- (0,0) -- (0,1.8); \draw[side] (0,0) -- (35:1.8);
+    \draw[line width=0.5pt] (0.22,0) -- (0.22,0.22) -- (0,0.22);
+    \node[angA, font=\small] at (17:1.35) {$35^\circ$};
+    \node[angB, font=\small] at (63:1.35) {$55^\circ$};
+    \node[font=\small, align=center] at (0.9,-0.6) {complementary\\\textit{complementari}};
+  \end{scope}
+  \begin{scope}[shift={(5.2,0)}]
+    \fill[angA!25] (0,0) -- (0:0.9) arc (0:128:0.9) -- cycle;
+    \fill[angB!25] (0,0) -- (128:0.9) arc (128:180:0.9) -- cycle;
+    \draw[side] (-1.9,0) -- (1.9,0); \draw[side] (0,0) -- (128:1.8);
+    \node[angA, font=\small] at (64:1.25) {$128^\circ$};
+    \node[angB, font=\small] at (154:1.3) {$52^\circ$};
+    \node[font=\small, align=center] at (0,-0.6) {supplementary\\\textit{supplementari}};
+  \end{scope}
+  \begin{scope}[shift={(10,0.1)}]
+    \fill[angB!25] (0,0) -- (0:0.75) arc (0:110:0.75) -- cycle;
+    \fill[angA!25] (0,0) -- (110:0.75) arc (110:360:0.75) -- cycle;
+    \draw[side] (0,0) -- (0:1.6); \draw[side] (0,0) -- (110:1.6);
+    \node[angB, font=\small] at (55:1.05) {$110^\circ$};
+    \node[angA, font=\small] at (235:1.1) {$250^\circ$};
+    \node[font=\small, align=center] at (0,-1.55) {explementary\\\textit{esplementari}};
+  \end{scope}
+\end{tikzpicture}
+\bicap{Three ways to complete: to a right angle, to a straight angle, to a full turn.}%
+      {Tre modi di completare: fino all'angolo retto, fino all'angolo piatto, fino all'angolo giro.}
+\label{fig:pairs}
+\end{figure}
+
+\begin{example}{finding the partner}{trovare il compagno}
+The complement of $35^\circ$ is $90^\circ - 35^\circ = 55^\circ$. The supplement of $128^\circ$ is $180^\circ - 128^\circ = 52^\circ$. The explement of $250^\circ$ is $360^\circ - 250^\circ = 110^\circ$.
+
+\textbf{Does every angle have a complement?} No. An angle of $100^\circ$ is already bigger than $90^\circ$, so nothing positive can complete it to $90^\circ$. Only acute angles have a complement.
+\tcblower
+Il complementare di $35^\circ$ è $90^\circ - 35^\circ = 55^\circ$. Il supplementare di $128^\circ$ è $180^\circ - 128^\circ = 52^\circ$. L'esplementare di $250^\circ$ è $360^\circ - 250^\circ = 110^\circ$.
+
+\textbf{Ogni angolo ha un complementare?} No. Un angolo di $100^\circ$ è già più grande di $90^\circ$, quindi nessun angolo positivo può completarlo a $90^\circ$. Solo gli angoli acuti hanno un complementare.
+\end{example}
+
+\begin{example}{angle puzzles}{indovinelli con gli angoli}
+\textbf{(a)} Two complementary angles; one is twice the other. Call the smaller one $x$: then $x + 2x = 90^\circ$, so $3x = 90^\circ$ and $x = 30^\circ$. The angles are $30^\circ$ and $60^\circ$.
+
+\textbf{(b)} Two supplementary angles differ by $40^\circ$. Call them $x$ and $x + 40^\circ$: $2x + 40^\circ = 180^\circ$, $2x = 140^\circ$, $x = 70^\circ$. The angles are $70^\circ$ and $110^\circ$.
+
+\textbf{(c)} Find the angle whose complement is one quarter of its supplement. Write it as an equation: $90 - x = \frac{180 - x}{4}$. Multiply by 4: $360 - 4x = 180 - x$, so $180 = 3x$ and $x = 60^\circ$. Check: complement $30^\circ$, supplement $120^\circ$, and $120 : 4 = 30$.
+% VERIFIED: python -> (a) 30, 60 ; (b) 70, 110 ; (c) 60 with 30 = 120/4
+\tcblower
+\textbf{(a)} Due angoli complementari; uno è il doppio dell'altro. Chiamo $x$ il più piccolo: allora $x + 2x = 90^\circ$, cioè $3x = 90^\circ$ e $x = 30^\circ$. Gli angoli sono $30^\circ$ e $60^\circ$.
+
+\textbf{(b)} Due angoli supplementari differiscono di $40^\circ$. Li chiamo $x$ e $x + 40^\circ$: $2x + 40^\circ = 180^\circ$, $2x = 140^\circ$, $x = 70^\circ$. Gli angoli sono $70^\circ$ e $110^\circ$.
+
+\textbf{(c)} Trova l'angolo il cui complementare è un quarto del suo supplementare. Scrivo l'equazione: $90 - x = \frac{180 - x}{4}$. Moltiplico per 4: $360 - 4x = 180 - x$, quindi $180 = 3x$ e $x = 60^\circ$. Verifica: complementare $30^\circ$, supplementare $120^\circ$, e $120 : 4 = 30$.
+\end{example}
+
+\bisubsection{Vertical angles: your first proof}{Angoli opposti al vertice: la tua prima dimostrazione}\label{sec:vertical}
+\begin{anchor}{a pair of scissors}{un paio di forbici}
+Open a pair of scissors. The two blades cross at the screw and make an X. When you open the handles wider, the blades open wider by exactly the same amount. The angle between the handles and the angle between the blades are always equal. Those two angles are called \textbf{vertical angles}: they share the vertex and their sides are the continuations of each other.
+\tcblower
+Apri un paio di forbici. Le due lame si incrociano nella vite e formano una X. Quando apri di più i manici, le lame si aprono esattamente della stessa quantità. L'angolo tra i manici e l'angolo tra le lame sono sempre uguali. Questi due angoli si chiamano \textbf{opposti al vertice}: hanno lo stesso vertice e i lati dell'uno sono i prolungamenti dei lati dell'altro.
+\end{anchor}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === lines through O at 0 deg and 40 deg: angles 40, 140, 40, 140
+% VERIFIED: python -> 180 - 40 = 140
+\begin{tikzpicture}
+  \draw[side] (180:2.6) -- (0:2.6);
+  \draw[side] (220:2.6) -- (40:2.6);
+  \fill[angA!30] (0,0) -- (0:0.8) arc (0:40:0.8) -- cycle;
+  \fill[angA!30] (0,0) -- (180:0.8) arc (180:220:0.8) -- cycle;
+  \fill[angB!18] (0,0) -- (40:0.6) arc (40:180:0.6) -- cycle;
+  \node[angA, font=\small] at (20:1.15) {$1$};
+  \node[angB, font=\small] at (110:0.9) {$2$};
+  \node[angA, font=\small] at (200:1.15) {$3$};
+  \node[angB, font=\small] at (290:0.8) {$4$};
+  \node[pt] at (0,0) {};
+  \node[below right] at (0.05,-0.05) {$O$};
+  \node[font=\small, align=left, anchor=west] at (3.0,0.5) {$\av{1} + \av{2} = 180^\circ$ (on a line \textperiodcentered\ \textit{adiacenti})\\ $\av{2} + \av{3} = 180^\circ$ (on a line \textperiodcentered\ \textit{adiacenti})\\ so \textperiodcentered\ \textit{quindi} \ $\av{1} = \av{3}$};
+\end{tikzpicture}
+\bicap{Two crossing lines make two pairs of vertical angles: $\av{1}$ and $\av{3}$, $\av{2}$ and $\av{4}$.}%
+      {Due rette che si incontrano formano due coppie di angoli opposti al vertice: $\av{1}$ e $\av{3}$, $\av{2}$ e $\av{4}$.}
+\label{fig:vertical}
+\end{figure}
+
+\begin{bi}
+Measuring is not enough to be sure: a protractor always has small errors, and we want to know that the angles are equal \emph{always}, for every X. So we reason. This is what a proof is.
+\IT
+Misurare non basta per esserne sicuri: il goniometro ha sempre piccoli errori, e noi vogliamo sapere che gli angoli sono uguali \emph{sempre}, per ogni X. Allora ragioniamo. Questo è una dimostrazione.
+\end{bi}
+
+\begin{proofbox}{vertical angles are equal}{gli angoli opposti al vertice sono congruenti}
+\textbf{Given:} two lines crossing at $O$ (Figure~\ref{fig:vertical}).\\
+\textbf{To prove:} $\av{1} = \av{3}$.
+\begin{steps}
+\step{$\av{1} + \av{2} = 180^\circ$}{they lie on a straight line}
+\step{$\av{2} + \av{3} = 180^\circ$}{they lie on a straight line}
+\step{$\av{1} = 180^\circ - \av{2}$ and $\av{3} = 180^\circ - \av{2}$}{from 1 and 2}
+\step{$\av{1} = \av{3}$}{both equal the same thing}
+\end{steps}
+The same argument gives $\av{2} = \av{4}$. \hfill QED
+\tcblower
+\textbf{Ipotesi:} due rette che si incontrano in $O$ (figura~\ref{fig:vertical}).\\
+\textbf{Tesi:} $\av{1} \cong \av{3}$.
+\begin{steps}
+\step{$\av{1} + \av{2} = 180^\circ$}{sono adiacenti}
+\step{$\av{2} + \av{3} = 180^\circ$}{sono adiacenti}
+\step{$\av{1} = 180^\circ - \av{2}$ e $\av{3} = 180^\circ - \av{2}$}{da 1 e 2}
+\step{$\av{1} \cong \av{3}$}{supplementari dello stesso angolo}
+\end{steps}
+Allo stesso modo $\av{2} \cong \av{4}$. \hfill c.v.d.
+\end{proofbox}
+
+\begin{keyidea}{}{}
+Two angles that are supplementary to the same angle are equal to each other. With that one sentence you proved something true for every X that has ever been drawn.
+\tcblower
+Due angoli supplementari dello stesso angolo sono congruenti. Con questa sola frase hai dimostrato una cosa vera per ogni X che sia mai stata disegnata.
+\end{keyidea}
+
+% ================================================================
+\bisection{Parallel lines cut by a transversal}{Rette parallele tagliate da una trasversale}\label{sec:parallel}
+% ================================================================
+\begin{anchor}{railway tracks and a road}{i binari e la strada}
+Think of two railway tracks, perfectly parallel, and a straight road that crosses them at a slant. At the first rail the road makes an X, so four angles. At the second rail it makes another X with four more. Because the rails point in the same direction, the second X is an exact copy of the first, just moved along the road.
+\tcblower
+Pensa a due binari del treno, perfettamente paralleli, e a una strada dritta che li attraversa di sbieco. Sul primo binario la strada forma una X, cioè quattro angoli. Sul secondo binario forma un'altra X con altri quattro angoli. Poiché i binari hanno la stessa direzione, la seconda X è una copia esatta della prima, solo spostata lungo la strada.
+\end{anchor}
+
+\begin{bi}
+In geometry the rails are two parallel lines $r$ and $s$, and the road is a third line $t$ called the \textbf{transversal}. The eight angles are numbered in Figure~\ref{fig:eight}. The angles \emph{between} the two parallel lines are \textbf{interior}; the ones outside are \textbf{exterior}.
+\IT
+In geometria i binari sono due rette parallele $r$ e $s$, e la strada è una terza retta $t$ che si chiama \textbf{trasversale} (o secante). Gli otto angoli sono numerati nella figura~\ref{fig:eight}. Gli angoli \emph{tra} le due parallele sono \textbf{interni}; quelli fuori sono \textbf{esterni}.
+\end{bi}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === r: y = 2, s: y = 0, t through Q = (0,0) at 65 deg -> P = (2/tan65, 2) = (0.933, 2)
+% angle labels at bisector directions: 32.5, 122.5, 212.5, 302.5 deg, radius 0.45
+% VERIFIED: python -> P = (0.933, 2.000)
+\begin{tikzpicture}
+  \coordinate (Q) at (0,0); \coordinate (P) at (0.933,2);
+  \draw[side] (-3,2) -- (4,2) node[right] {$r$};
+  \draw[side] (-3,0) -- (4,0) node[right] {$s$};
+  \draw[side] ($(Q)!-0.55!(P)$) -- ($(Q)!1.55!(P)$) node[above right] {$t$};
+  \foreach \C/\a/\b/\c/\d in {P/1/2/3/4, Q/5/6/7/8} {
+    \node[font=\small\bfseries, angA] at ($(\C)+(32.5:0.5)$) {\a};
+    \node[font=\small\bfseries, angB] at ($(\C)+(122.5:0.5)$) {\b};
+    \node[font=\small\bfseries, angA] at ($(\C)+(212.5:0.5)$) {\c};
+    \node[font=\small\bfseries, angB] at ($(\C)+(302.5:0.5)$) {\d};
+  }
+  \node[pt] at (P) {}; \node[pt] at (Q) {};
+  \node[above left, font=\small] at ($(P)+(-0.05,0.02)$) {$P$};
+  \node[below right, font=\small] at ($(Q)+(0.05,-0.02)$) {$Q$};
+  \fill[black!6] (-3,0.03) rectangle (-1.6,1.97);
+  \node[font=\small, align=center] at (-2.3,1) {interior\\\textit{interni}};
+  \node[font=\small, align=center] at (-2.3,2.55) {exterior \textperiodcentered\ \textit{esterni}};
+  \node[font=\small, align=center] at (-2.3,-0.55) {exterior \textperiodcentered\ \textit{esterni}};
+\end{tikzpicture}
+\bicap{Two parallel lines $r \parallel s$ cut by the transversal $t$ make eight angles. Angles 3, 4, 5, 6 are interior; 1, 2, 7, 8 are exterior.}%
+      {Due rette parallele $r \parallel s$ tagliate dalla trasversale $t$ formano otto angoli. Gli angoli 3, 4, 5, 6 sono interni; 1, 2, 7, 8 sono esterni.}
+\label{fig:eight}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{English} & \textbf{\color{itgreen}Italiano} & \textbf{Pairs \textperiodcentered\ \color{itgreen}Coppie} & \textbf{Rule \textperiodcentered\ \color{itgreen}Regola}\\
+\midrule
+corresponding (F)          & corrispondenti           & 1\,\&\,5, 2\,\&\,6, 3\,\&\,7, 4\,\&\,8 & equal \textperiodcentered\ \textit{congruenti}\\
+alternate interior (Z)     & alterni interni          & 3\,\&\,5, 4\,\&\,6 & equal \textperiodcentered\ \textit{congruenti}\\
+alternate exterior         & alterni esterni          & 1\,\&\,7, 2\,\&\,8 & equal \textperiodcentered\ \textit{congruenti}\\
+same side interior (C)     & coniugati interni        & 3\,\&\,6, 4\,\&\,5 & sum $180^\circ$ \textperiodcentered\ \textit{supplementari}\\
+same side exterior         & coniugati esterni        & 1\,\&\,8, 2\,\&\,7 & sum $180^\circ$ \textperiodcentered\ \textit{supplementari}\\
+\bottomrule
+\end{tabular}
+\bicap{The five families of pairs (numbers as in Figure~\ref{fig:eight}). The rules hold only if $r \parallel s$.}%
+      {Le cinque famiglie di coppie (numeri come nella figura~\ref{fig:eight}). Le regole valgono solo se $r \parallel s$.}
+\label{tab:pairs}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+% Same geometry as Figure fig:eight (P = (0.933, 2), Q = (0,0), t at 65 deg), scaled by 0.8
+% Z: angles 3 (at P, 180..245) and 5 (at Q, 0..65), both 65 deg
+% F: angles 1 (at P, 0..65) and 5 (at Q, 0..65), both 65 deg
+% C: angles 4 (at P, 245..360) = 115 and 5 (at Q, 0..65) = 65, sum 180
+\begin{tikzpicture}[scale=0.82]
+  \foreach \x/\name/\en/\itl in {0/Z/alternate interior/alterni interni, 5.6/F/corresponding/corrispondenti, 11.2/C/same side interior/coniugati interni} {
+    \begin{scope}[shift={(\x,0)}]
+      \coordinate (Q) at (0,0); \coordinate (P) at (0.933,2);
+      \draw[black!35, line width=0.6pt] (-1.8,2) -- (2.6,2);
+      \draw[black!35, line width=0.6pt] (-1.8,0) -- (2.6,0);
+      \draw[black!35, line width=0.6pt] ($(Q)!-0.4!(P)$) -- ($(Q)!1.4!(P)$);
+      \node[font=\small, align=center] at (0.45,-0.95) {\textbf{\name}\quad \en\\\textit{\itl}};
+    \end{scope}
+  }
+  % Z
+  \draw[angA, line width=2pt, line join=round] (-1.5,2) -- (0.933,2) -- (0,0) -- (2.3,0);
+  \fill[angA!35] (0.933,2) -- ++(180:0.5) arc (180:245:0.5) -- cycle;
+  \fill[angA!35] (0,0) -- ++(0:0.5) arc (0:65:0.5) -- cycle;
+  % F
+  \begin{scope}[shift={(5.6,0)}]
+    \draw[angB, line width=2pt, line join=round] (2.3,2) -- (0.933,2) -- (0,0) -- (2.3,0);
+    \draw[angB, line width=2pt] (0,0) -- ($(0.933,2)!1.4!(0,0)$);
+    \fill[angB!35] (0.933,2) -- ++(0:0.5) arc (0:65:0.5) -- cycle;
+    \fill[angB!35] (0,0) -- ++(0:0.5) arc (0:65:0.5) -- cycle;
+  \end{scope}
+  % C
+  \begin{scope}[shift={(11.2,0)}]
+    \draw[angC, line width=2pt, line join=round] (2.3,2) -- (0.933,2) -- (0,0) -- (2.3,0);
+    \fill[angC!35] (0.933,2) -- ++(245:0.45) arc (245:360:0.45) -- cycle;
+    \fill[angC!35] (0,0) -- ++(0:0.5) arc (0:65:0.5) -- cycle;
+  \end{scope}
+\end{tikzpicture}
+\bicap{Three letters to remember the pairs. In a Z the two angles are equal; in an F they are equal; in a C they add up to $180^\circ$.}%
+      {Tre lettere per ricordare le coppie. In una Z i due angoli sono congruenti; in una F sono congruenti; in una C la somma è $180^\circ$.}
+\label{fig:ZFC}
+\end{figure}
+
+\begin{rebuild}{why the Z angles are equal}{perché gli angoli della Z sono uguali}
+\begin{enumerate}[label=\arabic*.]
+\item \textbf{Slide.} Move the crossing at $Q$ along the transversal until it sits on $P$ (Figure~\ref{fig:slide}). Line $s$ moves but stays parallel to itself, and it lands exactly on $r$, because through $P$ there is only one line parallel to $s$. So every angle at $Q$ lands on the angle in the same position at $P$: corresponding angles are equal, $\av{5} = \av{1}$.
+\item \textbf{Cross.} At $P$, angles 1 and 3 are vertical angles, so $\av{1} = \av{3}$ (section~\ref{sec:vertical}).
+\item \textbf{Join.} $\av{5} = \av{1}$ and $\av{1} = \av{3}$, so $\av{5} = \av{3}$. The alternate interior angles, the two ends of the Z, are equal.
+\item \textbf{C angles.} $\av{4} + \av{3} = 180^\circ$ because they lie on line $r$. Replacing $\av{3}$ with the equal $\av{5}$ gives $\av{4} + \av{5} = 180^\circ$.
+\end{enumerate}
+\tcblower
+\begin{enumerate}[label=\arabic*.]
+\item \textbf{Trasla.} Sposta l'incrocio in $Q$ lungo la trasversale finché arriva su $P$ (figura~\ref{fig:slide}). La retta $s$ si muove ma resta parallela a sé stessa, e finisce esattamente su $r$, perché per $P$ passa una sola parallela a $s$. Così ogni angolo in $Q$ finisce sull'angolo nella stessa posizione in $P$: gli angoli corrispondenti sono congruenti, $\av{5} \cong \av{1}$.
+\item \textbf{Incrocia.} In $P$ gli angoli 1 e 3 sono opposti al vertice, quindi $\av{1} \cong \av{3}$ (paragrafo~\ref{sec:vertical}).
+\item \textbf{Unisci.} $\av{5} \cong \av{1}$ e $\av{1} \cong \av{3}$, quindi $\av{5} \cong \av{3}$. Gli angoli alterni interni, le due punte della Z, sono congruenti.
+\item \textbf{Angoli della C.} $\av{4} + \av{3} = 180^\circ$ perché sono adiacenti sulla retta $r$. Mettendo al posto di $\av{3}$ l'angolo congruente $\av{5}$, si ottiene $\av{4} + \av{5} = 180^\circ$.
+\end{enumerate}
+\end{rebuild}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === Q = (0,0), P = (0.933,2); translation vector P - Q = (0.933, 2)
+% ghost copy of the crossing at Q drawn at P: identical 65 deg angle
+\begin{tikzpicture}
+  \coordinate (Q) at (0,0); \coordinate (P) at (0.933,2);
+  \draw[side] (-2.2,2) -- (3.2,2) node[right] {$r$};
+  \draw[side] (-2.2,0) -- (3.2,0) node[right] {$s$};
+  \draw[side] ($(Q)!-0.45!(P)$) -- ($(Q)!1.45!(P)$) node[above right] {$t$};
+  \fill[angA!35] (Q) -- ++(0:0.6) arc (0:65:0.6) -- cycle;
+  \fill[angA!35] (P) -- ++(0:0.6) arc (0:65:0.6) -- cycle;
+  \node[angA, font=\small\bfseries] at ($(Q)+(32.5:0.85)$) {5};
+  \node[angA, font=\small\bfseries] at ($(P)+(32.5:0.85)$) {1};
+  \fill[angB!35] (P) -- ++(180:0.6) arc (180:245:0.6) -- cycle;
+  \node[angB, font=\small\bfseries] at ($(P)+(212.5:0.85)$) {3};
+  \draw[-{Stealth[length=2.5mm]}, dashed, line width=0.8pt, crimson] ($(Q)+(1.6,0.25)$) to[bend right=25] node[right, font=\small, align=left] {slide along $t$\\\textit{trasla lungo $t$}} ($(P)+(1.6,0.25)$);
+  \node[pt] at (P) {}; \node[pt] at (Q) {};
+  \node[below left, font=\small] at (Q) {$Q$}; \node[above left, font=\small] at ($(P)+(-0.05,0.05)$) {$P$};
+\end{tikzpicture}
+\bicap{Sliding the crossing at $Q$ up to $P$: angle 5 lands on angle 1. Angle 1 and angle 3 are vertical angles. So $\av{5} = \av{3}$.}%
+      {Traslando l'incrocio da $Q$ a $P$, l'angolo 5 va a coincidere con l'angolo 1. L'angolo 1 e l'angolo 3 sono opposti al vertice. Quindi $\av{5} \cong \av{3}$.}
+\label{fig:slide}
+\end{figure}
+
+\begin{tutor}[the parallel postulate]
+Step 1 hides the one assumption that makes Euclidean geometry what it is: through a point outside a line there is exactly one parallel line (Euclid's fifth postulate, in Playfair's form). Italian textbooks usually prove first that \emph{congruent alternate angles imply parallel lines} and then use the postulate for the converse, which is the statement used here. For a first year student the sliding picture is honest and enough; if she asks ``why only one parallel?'', the true answer is ``we assume it, and on a sphere it is false''.
+\end{tutor}
+
+\begin{trap}{the rules work for any two lines}{le regole valgono per due rette qualsiasi}
+The Z, F and C rules are true \emph{only} when the two lines are parallel. In Figure~\ref{fig:notparallel} the lines are not parallel and the Z angles are $70^\circ$ and $55^\circ$. The rule is really a test: if the alternate interior angles are equal, the lines are parallel; if they are not equal, the lines will meet somewhere.
+\tcblower
+Le regole della Z, della F e della C valgono \emph{solo} quando le due rette sono parallele. Nella figura~\ref{fig:notparallel} le rette non sono parallele e gli angoli della Z misurano $70^\circ$ e $55^\circ$. La regola è anche un test: se gli angoli alterni interni sono congruenti, le rette sono parallele; se non lo sono, prima o poi le rette si incontrano.
+\end{trap}
+
+\begin{trap}{in the notebook: ``alternate exterior $180^\circ$''}{nel quaderno: «alterni esterni $180^\circ$»}
+Alternate \emph{exterior} angles (1 and 7, 2 and 8) are \emph{equal}, just like alternate interior angles. The pairs that add up to $180^\circ$ are the \emph{same side} pairs (coniugati), the C shapes. A quick check on Figure~\ref{fig:eight}: angle 1 is acute and angle 7 is acute, so they cannot add up to $180^\circ$.
+\tcblower
+Gli angoli alterni \emph{esterni} (1 e 7, 2 e 8) sono \emph{congruenti}, proprio come gli alterni interni. Le coppie che sommano $180^\circ$ sono i \emph{coniugati}, le forme a C. Controllo veloce sulla figura~\ref{fig:eight}: l'angolo 1 è acuto e anche l'angolo 7 è acuto, quindi non possono avere somma $180^\circ$.
+\end{trap}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === s: y = 0; t through Q = (0,0) at 70 deg, P = (2/tan70, 2) = (0.728, 2)
+% r through P with direction 15 deg (not parallel to s).
+%   angle 5 at Q, between ray Q->+x (0 deg) and ray Q->P (70 deg)          = 70 deg
+%   angle 3 at P, between ray P->left along r (195 deg) and ray P->Q (250 deg) = 55 deg
+% VERIFIED: python -> 250 - 195 = 55 ; 70 - 0 = 70
+\begin{tikzpicture}
+  \coordinate (Q) at (0,0);
+  \coordinate (P) at ({2/tan(70)},2);
+  \draw[side] (-2.4,0) -- (3.4,0) node[right] {$s$};
+  \draw[side] ($(P)+(195:2.9)$) -- ($(P)+(15:2.7)$) node[right] {$r$};
+  \draw[side] ($(Q)!-0.45!(P)$) -- ($(Q)!1.45!(P)$) node[above] {$t$};
+  \fill[angA!35] (Q) -- ++(0:0.6) arc (0:70:0.6) -- cycle;
+  \fill[angB!35] (P) -- ++(195:0.6) arc (195:250:0.6) -- cycle;
+  \node[angA, font=\small] at ($(Q)+(35:0.95)$) {$70^\circ$};
+  \node[angB, font=\small] at ($(P)+(222.5:1.0)$) {$55^\circ$};
+  \node[pt] at (P) {}; \node[pt] at (Q) {};
+  \node[font=\small, align=left, anchor=west] at (3.2,1.2) {$r \nparallel s$: $70^\circ \neq 55^\circ$};
+\end{tikzpicture}
+\bicap{When the lines are not parallel, the Z angles are different.}%
+      {Quando le rette non sono parallele, gli angoli della Z sono diversi.}
+\label{fig:notparallel}
+\end{figure}
+
+\begin{example}{one angle gives all eight}{un angolo li dà tutti e otto}
+In Figure~\ref{fig:eight}, $r \parallel s$ and $\av{1} = 65^\circ$. Find the other seven.
+
+$\av{2} = 180^\circ - 65^\circ = 115^\circ$ (on a line with 1).\\
+$\av{3} = 65^\circ$ (vertical with 1).\\
+$\av{4} = 115^\circ$ (vertical with 2).\\
+At $Q$ the crossing is a copy of the one at $P$ (corresponding angles): $\av{5} = 65^\circ$, $\av{6} = 115^\circ$, $\av{7} = 65^\circ$, $\av{8} = 115^\circ$.
+
+Only two values appear: every angle is either $65^\circ$ or its supplement $115^\circ$. This is always true: with parallel lines, one angle decides all eight.
+% VERIFIED: python -> 180 - 65 = 115
+\tcblower
+Nella figura~\ref{fig:eight}, $r \parallel s$ e $\av{1} = 65^\circ$. Trova gli altri sette.
+
+$\av{2} = 180^\circ - 65^\circ = 115^\circ$ (adiacente a 1).\\
+$\av{3} = 65^\circ$ (opposto al vertice di 1).\\
+$\av{4} = 115^\circ$ (opposto al vertice di 2).\\
+In $Q$ l'incrocio è una copia di quello in $P$ (angoli corrispondenti): $\av{5} = 65^\circ$, $\av{6} = 115^\circ$, $\av{7} = 65^\circ$, $\av{8} = 115^\circ$.
+
+Compaiono solo due valori: ogni angolo è $65^\circ$ oppure il suo supplementare $115^\circ$. Succede sempre: con le rette parallele, un angolo decide tutti e otto.
+\end{example}
+
+\begin{example}{angles with $x$}{angoli con la $x$}
+\textbf{(a)} Two alternate interior angles measure $3x + 10^\circ$ and $2x + 40^\circ$. They are equal, so $3x + 10 = 2x + 40$, which gives $x = 30$. Each angle is $3 \times 30 + 10 = 100^\circ$, and indeed $2 \times 30 + 40 = 100^\circ$.
+
+\textbf{(b)} Two same side interior angles measure $2x + 20^\circ$ and $x + 40^\circ$. They add up to $180^\circ$: $3x + 60 = 180$, so $x = 40$. The angles are $100^\circ$ and $80^\circ$.
+% VERIFIED: python -> (a) x = 30, 100 = 100 ; (b) x = 40, 100 + 80 = 180
+\tcblower
+\textbf{(a)} Due angoli alterni interni misurano $3x + 10^\circ$ e $2x + 40^\circ$. Sono congruenti, quindi $3x + 10 = 2x + 40$, da cui $x = 30$. Ogni angolo misura $3 \cdot 30 + 10 = 100^\circ$, e infatti $2 \cdot 30 + 40 = 100^\circ$.
+
+\textbf{(b)} Due angoli coniugati interni misurano $2x + 20^\circ$ e $x + 40^\circ$. La loro somma è $180^\circ$: $3x + 60 = 180$, quindi $x = 40$. Gli angoli misurano $100^\circ$ e $80^\circ$.
+\end{example}
+
+\begin{keyidea}{}{}
+Parallel lines copy their angles. Z and F pairs are equal, C pairs add up to $180^\circ$. In the next chapter this single fact tells us why every triangle has $180^\circ$ inside.
+\tcblower
+Le rette parallele copiano i loro angoli. Le coppie a Z e a F sono congruenti, le coppie a C hanno somma $180^\circ$. Nel prossimo capitolo questo solo fatto ci dirà perché ogni triangolo ha $180^\circ$ al suo interno.
+\end{keyidea}
+
+% ===== end ch1-angles.tex =====
+
+% ===== begin ch2-triangles.tex =====
+% STATUS: COMPLETE DRAFT
+% Chapter 2 : triangles, sum of the angles, altitudes, median and bisector
+% Every number below is checked in scripts/verify.py
+\bichapter{Triangles and their altitudes}{I triangoli e le loro altezze}\label{ch:triangles}
+
+% ================================================================
+\bisection{What a triangle is made of}{Com'è fatto un triangolo}\label{sec:anatomy}
+% ================================================================
+\begin{bi}
+\colheads
+Take three points that are not on the same line and join them. You get the simplest closed shape there is: a \textbf{triangle}. It has three \textbf{vertices} $A$, $B$, $C$, three \textbf{sides} and three \textbf{angles}. Each side faces one vertex: side $a = \seg{BC}$ is \emph{opposite} vertex $A$, side $b = \seg{CA}$ is opposite $B$, side $c = \seg{AB}$ is opposite $C$. The angles are usually called $\alpha$ at $A$, $\beta$ at $B$, $\gamma$ at $C$.
+\IT
+Prendi tre punti che non stanno sulla stessa retta e uniscili. Ottieni la figura chiusa più semplice che esista: il \textbf{triangolo}. Ha tre \textbf{vertici} $A$, $B$, $C$, tre \textbf{lati} e tre \textbf{angoli}. Ogni lato sta di fronte a un vertice: il lato $a = \seg{BC}$ è \emph{opposto} al vertice $A$, il lato $b = \seg{CA}$ è opposto a $B$, il lato $c = \seg{AB}$ è opposto a $C$. Gli angoli si chiamano di solito $\alpha$ in $A$, $\beta$ in $B$, $\gamma$ in $C$.
+\EN
+Triangles are sorted in two ways. By their \emph{sides}: \textbf{equilateral} (three equal sides), \textbf{isosceles} (two equal sides, called the legs; the third side is the \emph{base}, the angle between the legs is the \emph{vertex angle}, the other two are the \emph{base angles}) and \textbf{scalene} (three different sides). By their \emph{angles}: \textbf{acute} (three acute angles), \textbf{right} (one right angle; the two sides that form it are the \emph{legs}, the longest side is the \emph{hypotenuse}) and \textbf{obtuse} (one obtuse angle).
+\IT
+I triangoli si classificano in due modi. Rispetto ai \emph{lati}: \textbf{equilatero} (tre lati congruenti), \textbf{isoscele} (due lati congruenti, detti lati obliqui; il terzo lato è la \emph{base}, l'angolo tra i lati obliqui è l'\emph{angolo al vertice}, gli altri due sono gli \emph{angoli alla base}) e \textbf{scaleno} (tre lati diversi). Rispetto agli \emph{angoli}: \textbf{acutangolo} (tre angoli acuti), \textbf{rettangolo} (un angolo retto; i due lati che lo formano sono i \emph{cateti}, il lato più lungo è l'\emph{ipotenusa}) e \textbf{ottusangolo} (un angolo ottuso).
+\end{bi}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === (a) A=(0,0), B=(4.2,0), C=(1.5,2.6).
+% (b) six small triangles; right triangle legs 1.6 and 1.2; obtuse triangle angle at A = atan2(1.0,-0.5) = 116.6 deg
+\begin{tikzpicture}
+  \begin{scope}
+    \coordinate (A) at (0,0); \coordinate (B) at (4.2,0); \coordinate (C) at (1.5,2.6);
+    \fill[shade] (A) -- (B) -- (C) -- cycle;
+    \draw[side] (A) -- (B) -- (C) -- cycle;
+    \pic[draw, angA, angle radius=5mm, "$\alpha$", angle eccentricity=1.5] {angle=B--A--C};
+    \pic[draw, angB, angle radius=5mm, "$\beta$", angle eccentricity=1.5] {angle=C--B--A};
+    \pic[draw, angC, angle radius=5mm, "$\gamma$", angle eccentricity=1.5] {angle=A--C--B};
+    \node[below left] at (A) {$A$}; \node[below right] at (B) {$B$}; \node[above] at (C) {$C$};
+    \node[below] at ($(A)!0.5!(B)$) {$c$};
+    \node[above right] at ($(B)!0.5!(C)$) {$a$};
+    \node[above left] at ($(A)!0.5!(C)$) {$b$};
+    \node[font=\small\bfseries] at (2.1,-0.9) {(a)};
+  \end{scope}
+  \begin{scope}[shift={(5.6,1.55)}, scale=0.8]
+    \node[font=\scriptsize\bfseries, anchor=west] at (-0.2,1.75) {sides \textperiodcentered\ \textit{lati}};
+    \draw[side, fill=angB!12] (0,0) -- (1.6,0) -- (0.8,1.386) -- cycle;
+    \draw[tick1] (0,0) -- (1.6,0); \draw[tick1] (1.6,0) -- (0.8,1.386); \draw[tick1] (0.8,1.386) -- (0,0);
+    \node[font=\scriptsize, align=center] at (0.8,-0.45) {equilateral\\\textit{equilatero}};
+    \draw[side, fill=angB!12] (2.4,0) -- (3.8,0) -- (3.1,1.6) -- cycle;
+    \draw[tick1] (3.8,0) -- (3.1,1.6); \draw[tick1] (3.1,1.6) -- (2.4,0);
+    \node[font=\scriptsize, align=center] at (3.1,-0.45) {isosceles\\\textit{isoscele}};
+    \draw[side, fill=angB!12] (4.6,0) -- (6.4,0) -- (5.0,1.3) -- cycle;
+    \node[font=\scriptsize, align=center] at (5.5,-0.45) {scalene\\\textit{scaleno}};
+  \end{scope}
+  \begin{scope}[shift={(5.6,-1.0)}, scale=0.8]
+    \node[font=\scriptsize\bfseries, anchor=west] at (-0.2,1.75) {angles \textperiodcentered\ \textit{angoli}};
+    \draw[side, fill=angD!15] (0,0) -- (1.6,0) -- (0.6,1.4) -- cycle;
+    \node[font=\scriptsize, align=center] at (0.8,-0.45) {acute\\\textit{acutangolo}};
+    \draw[side, fill=angD!15] (2.4,0) -- (4.0,0) -- (2.4,1.2) -- cycle;
+    \draw[line width=0.5pt] (2.62,0) -- (2.62,0.22) -- (2.4,0.22);
+    \node[font=\scriptsize, align=center] at (3.2,-0.45) {right\\\textit{rettangolo}};
+    \draw[side, fill=angD!15] (5.0,0) -- (6.6,0) -- (4.5,1.0) -- cycle;
+    \node[font=\scriptsize, align=center] at (5.6,-0.45) {obtuse\\\textit{ottusangolo}};
+  \end{scope}
+  \node[font=\small\bfseries] at (8.2,-2.05) {(b)};
+\end{tikzpicture}
+\bicap{(a) The parts of a triangle: side $a$ is opposite vertex $A$, and so on. (b) The two classifications. Equal tick marks mean equal sides.}%
+      {(a) Gli elementi di un triangolo: il lato $a$ è opposto al vertice $A$, e così via. (b) Le due classificazioni. Trattini uguali indicano lati congruenti.}
+\label{fig:anatomy}
+\end{figure}
+
+\begin{think}{three sticks}{tre bastoncini}
+You have three sticks of 2\,cm, 3\,cm and 7\,cm. Can you build a triangle with them?
+\answer No. Put the 7\,cm stick down and try to close the triangle with the other two: even laid out flat, $2 + 3 = 5$ is less than 7, so they cannot reach each other. In every triangle, each side is shorter than the sum of the other two (\emph{triangle inequality}). With 3, 4 and 5\,cm it works, because $3 + 4 > 5$.
+\tcblower
+Hai tre bastoncini di 2\,cm, 3\,cm e 7\,cm. Riesci a costruire un triangolo?
+\answer No. Appoggia il bastoncino da 7\,cm e prova a chiudere il triangolo con gli altri due: anche stesi in linea, $2 + 3 = 5$ è meno di 7, quindi non si toccano. In ogni triangolo ciascun lato è minore della somma degli altri due (\emph{disuguaglianza triangolare}). Con 3, 4 e 5\,cm si può, perché $3 + 4 > 5$.
+\end{think}
+
+% ================================================================
+\bisection{The angles of a triangle add up to 180°}{La somma degli angoli di un triangolo è 180°}\label{sec:sum180}
+% ================================================================
+\begin{trap}{big triangles hold more degrees}{i triangoli grandi hanno più gradi}
+A triangle drawn across a whole football pitch looks as if it should contain ``more angle'' than one drawn on a stamp. It does not. Angles measure turns, not size (section~\ref{sec:turn}), and every triangle, big or small, thin or fat, has angles that add up to exactly $180^\circ$.
+\tcblower
+Un triangolo disegnato su tutto un campo di calcio sembra contenere «più angolo» di uno disegnato su un francobollo. Non è così. Gli angoli misurano rotazioni, non grandezze (paragrafo~\ref{sec:turn}), e ogni triangolo, grande o piccolo, magro o grasso, ha angoli la cui somma è esattamente $180^\circ$.
+\end{trap}
+
+\begin{think}{tear off the corners}{strappa gli angoli}
+Cut any triangle out of paper. Colour its three corners, tear them off, and put them next to each other with the three tips touching (Figure~\ref{fig:sum}a). What shape do they make? Do it again with a very different triangle.
+\answer The three corners always fill a straight angle: they line up along a straight line. So $\alpha + \beta + \gamma = 180^\circ$. Paper is a good experiment, but not a proof: the next box shows \emph{why} it must happen.
+\tcblower
+Ritaglia un triangolo qualsiasi da un foglio. Colora i tre angoli, strappali e mettili uno accanto all'altro con le tre punte che si toccano (figura~\ref{fig:sum}a). Che figura formano? Rifallo con un triangolo molto diverso.
+\answer I tre angoli riempiono sempre un angolo piatto: si allineano lungo una retta. Quindi $\alpha + \beta + \gamma = 180^\circ$. La carta è un buon esperimento, ma non una dimostrazione: il prossimo riquadro spiega \emph{perché} deve succedere.
+\end{think}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === triangle with alpha = 50, beta = 60, gamma = 70, AB = 4
+% AC = 4 sin60 / sin70 = 3.6864 ; C = (2.370, 2.824)
+% VERIFIED: python -> angles 50.0, 60.0, 70.0 ; exterior at B = 120 = 50 + 70
+% (a) torn corners around one point: alpha 0..50, gamma 50..120, beta 120..180
+% (b) parallel through C: left angle = alpha (Z with transversal CA), right angle = beta (Z with transversal CB)
+% (c) exterior angle at B between BC and the extension BD: 180 - 60 = 120
+\begin{tikzpicture}[scale=0.8]
+  % (a)
+  \begin{scope}
+    \fill[angA!40] (0,0) -- (0:1.2) arc (0:50:1.2) -- cycle;
+    \fill[angC!40] (0,0) -- (50:1.2) arc (50:120:1.2) -- cycle;
+    \fill[angB!40] (0,0) -- (120:1.2) arc (120:180:1.2) -- cycle;
+    \draw[side] (-2,0) -- (2,0);
+    \draw[thinline] (0,0) -- (50:1.6); \draw[thinline] (0,0) -- (120:1.6);
+    \node[font=\small] at (25:0.8) {$\alpha$};
+    \node[font=\small] at (85:0.8) {$\gamma$};
+    \node[font=\small] at (150:0.8) {$\beta$};
+    \node[font=\small, align=center] at (0,-0.65) {$\alpha+\beta+\gamma = 180^\circ$};
+    \node[font=\small\bfseries] at (0,-1.35) {(a)};
+  \end{scope}
+  % (b)
+  \begin{scope}[shift={(3.2,0)}]
+    \coordinate (A) at (0,0); \coordinate (B) at (4,0); \coordinate (C) at (2.370,2.824);
+    \draw[side] (A) -- (B) -- (C) -- cycle;
+    \draw[side, crimson] ($(C)+(-2.4,0)$) -- ($(C)+(2.2,0)$) node[right, font=\small] {$r \parallel AB$};
+    \fill[angA!40] (A) -- ++(0:0.6) arc (0:50:0.6) -- cycle;
+    \fill[angB!40] (B) -- ++(120:0.6) arc (120:180:0.6) -- cycle;
+    \fill[angA!40] (C) -- ++(180:0.6) arc (180:230:0.6) -- cycle;
+    \fill[angC!40] (C) -- ++(230:0.6) arc (230:300:0.6) -- cycle;
+    \fill[angB!40] (C) -- ++(300:0.6) arc (300:360:0.6) -- cycle;
+    \node[below left] at (A) {$A$}; \node[below right] at (B) {$B$}; \node[above] at ($(C)+(0,0.05)$) {$C$};
+    \node[font=\scriptsize] at ($(A)+(25:0.85)$) {$\alpha$};
+    \node[font=\scriptsize] at ($(B)+(150:0.85)$) {$\beta$};
+    \node[font=\scriptsize] at ($(C)+(205:0.85)$) {$\alpha$};
+    \node[font=\scriptsize] at ($(C)+(265:0.85)$) {$\gamma$};
+    \node[font=\scriptsize] at ($(C)+(330:0.85)$) {$\beta$};
+    \node[font=\small\bfseries] at (2,-1.35) {(b)};
+  \end{scope}
+  % (c)
+  \begin{scope}[shift={(10.6,0)}]
+    \coordinate (A) at (0,0); \coordinate (B) at (4,0); \coordinate (C) at (2.370,2.824); \coordinate (D) at (5.6,0);
+    \draw[side] (A) -- (B) -- (C) -- cycle;
+    \draw[side, dashed] (B) -- (D);
+    \fill[angA!40] (A) -- ++(0:0.6) arc (0:50:0.6) -- cycle;
+    \fill[angC!40] (C) -- ++(230:0.6) arc (230:300:0.6) -- cycle;
+    \fill[angD!45] (B) -- ++(0:0.6) arc (0:120:0.6) -- cycle;
+    \node[below left] at (A) {$A$}; \node[below] at (B) {$B$}; \node[above] at (C) {$C$}; \node[below] at (D) {$D$};
+    \node[font=\scriptsize] at ($(A)+(25:0.85)$) {$50^\circ$};
+    \node[font=\scriptsize] at ($(C)+(265:0.9)$) {$70^\circ$};
+    \node[font=\scriptsize] at ($(B)+(60:0.95)$) {$120^\circ$};
+    \node[font=\small\bfseries] at (2.4,-1.35) {(c)};
+  \end{scope}
+\end{tikzpicture}
+\bicap{(a) The torn corners line up. (b) Why: the line through $C$ parallel to $AB$ makes two Z shapes. (c) The exterior angle at $B$ equals the sum of the two far angles: $120^\circ = 50^\circ + 70^\circ$.}%
+      {(a) Gli angoli strappati si allineano. (b) Perché: la parallela ad $AB$ passante per $C$ forma due Z. (c) L'angolo esterno in $B$ è la somma dei due angoli interni non adiacenti: $120^\circ = 50^\circ + 70^\circ$.}
+\label{fig:sum}
+\end{figure}
+
+\begin{rebuild}{the proof with a parallel line}{la dimostrazione con una parallela}
+\begin{enumerate}[label=\arabic*.]
+\item Draw through $C$ the line $r$ parallel to $AB$ (Figure~\ref{fig:sum}b).
+\item Side $CA$ is a transversal of the parallels $r$ and $AB$. The angle at $C$ on the left and $\alpha$ make a Z, so they are equal (section~\ref{sec:parallel}).
+\item Side $CB$ is another transversal. The angle at $C$ on the right and $\beta$ make a Z, so they are equal.
+\item At $C$, along the line $r$, we now see $\alpha$, $\gamma$, $\beta$ side by side. Together they fill a straight angle, so $\alpha + \beta + \gamma = 180^\circ$.
+\end{enumerate}
+\tcblower
+\begin{enumerate}[label=\arabic*.]
+\item Traccia per $C$ la retta $r$ parallela ad $AB$ (figura~\ref{fig:sum}b).
+\item Il lato $CA$ è una trasversale delle parallele $r$ e $AB$. L'angolo in $C$ a sinistra e $\alpha$ formano una Z, quindi sono congruenti (alterni interni, paragrafo~\ref{sec:parallel}).
+\item Il lato $CB$ è un'altra trasversale. L'angolo in $C$ a destra e $\beta$ formano una Z, quindi sono congruenti.
+\item In $C$, lungo la retta $r$, vediamo ora $\alpha$, $\gamma$, $\beta$ uno accanto all'altro. Insieme riempiono un angolo piatto, quindi $\alpha + \beta + \gamma = 180^\circ$.
+\end{enumerate}
+\end{rebuild}
+
+\begin{bi}
+Three consequences follow at once. A triangle has \emph{at most one} right or obtuse angle, because two of them would already reach $180^\circ$ with nothing left for the third angle. In a right triangle the two acute angles are complementary. In an equilateral triangle the three angles are equal, so each is $180^\circ : 3 = 60^\circ$.
+\IT
+Ne seguono subito tre conseguenze. Un triangolo ha \emph{al massimo un} angolo retto o ottuso, perché due di questi arriverebbero già a $180^\circ$ senza lasciare niente al terzo angolo. In un triangolo rettangolo i due angoli acuti sono complementari. In un triangolo equilatero i tre angoli sono congruenti, quindi ognuno misura $180^\circ : 3 = 60^\circ$.
+\EN
+A fourth consequence is the \textbf{exterior angle}: extend side $AB$ beyond $B$ to a point $D$ (Figure~\ref{fig:sum}c). The angle $\ang{C}{B}{D}$ and $\beta$ are supplementary, so $\ang{C}{B}{D} = 180^\circ - \beta = \alpha + \gamma$. \emph{An exterior angle equals the sum of the two interior angles that are not next to it.}
+\IT
+Una quarta conseguenza riguarda l'\textbf{angolo esterno}: prolunga il lato $AB$ oltre $B$ fino a un punto $D$ (figura~\ref{fig:sum}c). L'angolo $\ang{C}{B}{D}$ e $\beta$ sono adiacenti, quindi $\ang{C}{B}{D} = 180^\circ - \beta = \alpha + \gamma$. \emph{Un angolo esterno è uguale alla somma dei due angoli interni non adiacenti.}
+\end{bi}
+
+\begin{example}{finding missing angles}{trovare gli angoli mancanti}
+\textbf{(a)} Two angles are $50^\circ$ and $60^\circ$. The third is $180^\circ - 50^\circ - 60^\circ = 70^\circ$.\\
+\textbf{(b)} An isosceles triangle has a vertex angle of $40^\circ$. The two base angles are equal (we prove this in chapter~\ref{ch:congruence}), so each is $(180^\circ - 40^\circ) : 2 = 70^\circ$.\\
+\textbf{(c)} An isosceles triangle has base angles of $35^\circ$. The vertex angle is $180^\circ - 2 \times 35^\circ = 110^\circ$: an obtuse isosceles triangle.\\
+\textbf{(d)} A right triangle has an acute angle of $28^\circ$. The other acute angle is $90^\circ - 28^\circ = 62^\circ$.\\
+\textbf{(e)} In the triangle with angles $50^\circ$, $60^\circ$, $70^\circ$, the exterior angle at the $60^\circ$ vertex is $180^\circ - 60^\circ = 120^\circ$, and indeed $50^\circ + 70^\circ = 120^\circ$.
+% VERIFIED: python -> 70 ; 70 ; 110 ; 62 ; 120 = 50 + 70
+\tcblower
+\textbf{(a)} Due angoli misurano $50^\circ$ e $60^\circ$. Il terzo è $180^\circ - 50^\circ - 60^\circ = 70^\circ$.\\
+\textbf{(b)} Un triangolo isoscele ha l'angolo al vertice di $40^\circ$. I due angoli alla base sono congruenti (lo dimostriamo nel capitolo~\ref{ch:congruence}), quindi ognuno misura $(180^\circ - 40^\circ) : 2 = 70^\circ$.\\
+\textbf{(c)} Un triangolo isoscele ha gli angoli alla base di $35^\circ$. L'angolo al vertice è $180^\circ - 2 \cdot 35^\circ = 110^\circ$: un triangolo isoscele ottusangolo.\\
+\textbf{(d)} Un triangolo rettangolo ha un angolo acuto di $28^\circ$. L'altro angolo acuto è $90^\circ - 28^\circ = 62^\circ$.\\
+\textbf{(e)} Nel triangolo con angoli $50^\circ$, $60^\circ$, $70^\circ$, l'angolo esterno nel vertice da $60^\circ$ misura $180^\circ - 60^\circ = 120^\circ$, e infatti $50^\circ + 70^\circ = 120^\circ$.
+\end{example}
+
+\begin{keyidea}{}{}
+Every triangle hides a pair of parallel lines. Draw one through a vertex and the three angles line up on it: $180^\circ$, always.
+\tcblower
+Ogni triangolo nasconde una coppia di rette parallele. Tracciane una per un vertice e i tre angoli si allineano su di essa: $180^\circ$, sempre.
+\end{keyidea}
+
+% ================================================================
+\bisection{Altitudes}{Le altezze}\label{sec:altitudes}
+% ================================================================
+\begin{anchor}{measuring how tall you are}{misurare quanto sei alto}
+When the doctor measures how tall you are, you stand against the wall and a bar comes down to the top of your head. Your height is measured \emph{straight down} to the floor, at a right angle. A tape held at a slant would give a bigger number, and it would be wrong. The altitude of a triangle is exactly this: the straight down distance from a vertex to the opposite side.
+\tcblower
+Quando il medico misura quanto sei alta, ti appoggi al muro e un'asticella scende fino alla testa. L'altezza si misura \emph{in verticale} fino al pavimento, ad angolo retto. Un metro tenuto storto darebbe un numero più grande, e sarebbe sbagliato. L'altezza di un triangolo è proprio questo: la distanza dritta, ad angolo retto, da un vertice al lato opposto.
+\end{anchor}
+
+\begin{defn}{altitude}{altezza}
+The \textbf{altitude} relative to a side is the \emph{segment} that starts at the opposite vertex and meets the line of that side at a right angle. The point where it lands is the \textbf{foot} of the altitude. A triangle has three sides, so it has \textbf{three altitudes}.
+\tcblower
+L'\textbf{altezza} relativa a un lato è il \emph{segmento} che parte dal vertice opposto e cade perpendicolarmente sulla retta di quel lato. Il punto in cui arriva è il \textbf{piede} dell'altezza. Un triangolo ha tre lati, quindi ha \textbf{tre altezze}.
+\end{defn}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION ===
+% (a) A=(0,0), B=(4,0), C=(1.4,2.4): foot H=(1.4,0); slanted segment C-X with X=(2.6,0) is NOT an altitude
+% (b) obtuse at A: A=(0,0), B=(3.4,0), C=(-0.7,2.4): foot from C on line AB is (-0.7,0), OUTSIDE segment AB
+\begin{tikzpicture}
+  \begin{scope}
+    \coordinate (A) at (0,0); \coordinate (B) at (4,0); \coordinate (C) at (1.4,2.4);
+    \coordinate (H) at (1.4,0); \coordinate (X) at (2.6,0);
+    \draw[side] (A) -- (B) -- (C) -- cycle;
+    \draw[line width=1.2pt, angB] (C) -- (H);
+    \draw[helper, angA] (C) -- (X);
+    \rang{C}{H}{B}
+    \node[angA, font=\small] at ($(C)!0.55!(X)+(0.35,0)$) {$\times$};
+    \node[below left] at (A) {$A$}; \node[below right] at (B) {$B$}; \node[above] at (C) {$C$};
+    \node[below] at (H) {$H$}; \node[below] at (X) {$X$};
+    \node[font=\small, align=left, anchor=west] at (4.2,1.6) {$CH$: altitude \textperiodcentered\ \textit{altezza}\\ \textcolor{angA}{$CX$: not an altitude}\\ \textcolor{angA}{\textit{non è un'altezza}}};
+    \node[font=\small\bfseries] at (2,-0.9) {(a)};
+  \end{scope}
+  \begin{scope}[shift={(9.4,0)}]
+    \coordinate (A) at (0,0); \coordinate (B) at (3.4,0); \coordinate (C) at (-0.7,2.4); \coordinate (H) at (-0.7,0);
+    \draw[helper] (-1.5,0) -- (A);
+    \draw[side] (A) -- (B) -- (C) -- cycle;
+    \draw[line width=1.2pt, angB] (C) -- (H);
+    \rang{C}{H}{A}
+    \node[below right] at (A) {$A$}; \node[below right] at (B) {$B$}; \node[above] at (C) {$C$};
+    \node[below] at (H) {$H$};
+    \node[font=\small, align=center] at (2.7,2.0) {foot outside $AB$\\\textit{piede fuori da $AB$}};
+    \node[font=\small\bfseries] at (1.2,-0.9) {(b)};
+  \end{scope}
+\end{tikzpicture}
+\bicap{(a) The altitude from $C$ meets side $AB$ at a right angle; a slanted segment is not an altitude. (b) In an obtuse triangle the side must be extended (dashed) and the foot falls outside.}%
+      {(a) L'altezza da $C$ cade perpendicolarmente sul lato $AB$; un segmento obliquo non è un'altezza. (b) In un triangolo ottusangolo bisogna prolungare il lato (tratteggio) e il piede cade fuori.}
+\label{fig:altitude}
+\end{figure}
+
+\begin{trap}{the altitude is the vertical line inside}{l'altezza è la linea verticale interna}
+Two mistakes hide in this sentence. First, the altitude depends on \emph{which side} you call the base, not on how the page is turned: every triangle has three altitudes, one per side, and two of them are usually slanted on the paper. Second, the altitude is not always inside. In an obtuse triangle two of the altitudes fall outside, and you must extend the side with a dashed line to meet them (Figure~\ref{fig:altitude}b). And one detail from the notebook: the altitude is a \emph{segment}, from the vertex to the foot, not a ray.
+\tcblower
+In questa frase ci sono due errori. Primo, l'altezza dipende da \emph{quale lato} chiami base, non da come giri il foglio: ogni triangolo ha tre altezze, una per lato, e di solito due sono oblique sul foglio. Secondo, l'altezza non è sempre interna. In un triangolo ottusangolo due altezze cadono fuori, e bisogna prolungare il lato con un tratteggio per incontrarle (figura~\ref{fig:altitude}b). E un dettaglio dal quaderno: l'altezza è un \emph{segmento}, dal vertice al piede, non una semiretta.
+\end{trap}
+
+\begin{bi}
+Draw the three altitudes of any triangle, extending them when needed. Something surprising happens: the three lines always pass through the \emph{same point}. This point is called the \textbf{orthocentre}. Figure~\ref{fig:ortho} shows where it goes: inside an acute triangle, exactly on the right angle vertex of a right triangle, and outside an obtuse triangle. Careful: in the obtuse case the altitude \emph{segments} do not touch each other; it is the lines they lie on that meet.
+\IT
+Disegna le tre altezze di un triangolo qualsiasi, prolungandole quando serve. Succede una cosa sorprendente: le tre rette passano sempre per lo \emph{stesso punto}. Questo punto si chiama \textbf{ortocentro}. La figura~\ref{fig:ortho} mostra dove si trova: dentro un triangolo acutangolo, proprio sul vertice dell'angolo retto in un triangolo rettangolo, fuori da un triangolo ottusangolo. Attenzione: nel caso ottusangolo i \emph{segmenti} delle altezze non si toccano; sono le rette su cui stanno che si incontrano.
+\end{bi}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === (python: foot() and orthocentre() in scripts/verify.py)
+% acute : A(0,0) B(4,0) C(1.6,3.0); feet (2.439,1.951) (0.886,1.661) (1.600,0.000); orthocentre (1.600,1.280)
+% right : A(0,0) B(4,0) C(0,3.0);   feet (1.440,1.920) (0,0) (0,0);             orthocentre (0,0) = A
+% obtuse: A(0,0) B(3.4,0) C(-0.7,2.4); feet (0.868,1.482) (0.267,-0.914) (-0.700,0); orthocentre (-0.700,-1.196)
+% VERIFIED: python -> third altitude passes through the orthocentre in all three cases
+\begin{tikzpicture}[scale=0.82]
+  % acute
+  \begin{scope}
+    \coordinate (A) at (0,0); \coordinate (B) at (4,0); \coordinate (C) at (1.6,3.0);
+    \coordinate (Ha) at ($(B)!(A)!(C)$); \coordinate (Hb) at ($(A)!(B)!(C)$); \coordinate (Hc) at ($(A)!(C)!(B)$);
+    \draw[side, fill=shade] (A) -- (B) -- (C) -- cycle;
+    \draw[angB, line width=0.8pt] (A) -- (Ha); \draw[angB, line width=0.8pt] (B) -- (Hb); \draw[angB, line width=0.8pt] (C) -- (Hc);
+    \node[circle, fill=crimson, inner sep=1.8pt] at (1.6,1.28) {};
+    \node[below left] at (A) {$A$}; \node[below right] at (B) {$B$}; \node[above] at (C) {$C$};
+    \node[crimson, font=\small, right] at (1.65,1.18) {$O$};
+    \node[font=\small, align=center] at (2,-0.85) {acute: inside\\\textit{acutangolo: dentro}};
+  \end{scope}
+  % right
+  \begin{scope}[shift={(6.3,0)}]
+    \coordinate (A) at (0,0); \coordinate (B) at (4,0); \coordinate (C) at (0,3.0);
+    \coordinate (Ha) at ($(B)!(A)!(C)$);
+    \draw[side, fill=shade] (A) -- (B) -- (C) -- cycle;
+    \draw[angB, line width=0.8pt] (A) -- (Ha);
+    \draw[angB, line width=2pt, opacity=0.45] (A) -- (B); \draw[angB, line width=2pt, opacity=0.45] (A) -- (C);
+    \rang{B}{A}{C}
+    \node[circle, fill=crimson, inner sep=1.8pt] at (A) {};
+    \node[left, xshift=-3pt] at (A) {$A = O$}; \node[below right] at (B) {$B$}; \node[above] at (C) {$C$};
+    \node[font=\small, align=center] at (2,-0.85) {right: at the right angle\\\textit{rettangolo: sul vertice retto}};
+  \end{scope}
+  % obtuse
+  \begin{scope}[shift={(13.2,1.0)}]
+    \coordinate (A) at (0,0); \coordinate (B) at (3.4,0); \coordinate (C) at (-0.7,2.4); \coordinate (O) at (-0.700,-1.196);
+    \coordinate (Ha) at ($(B)!(A)!(C)$); \coordinate (Hb) at ($(A)!(B)!(C)$); \coordinate (Hc) at ($(A)!(C)!(B)$);
+    \draw[helper] (Hc) -- (A); \draw[helper] (A) -- (Hb);
+    \draw[helper, angB!70] (Hc) -- (O); \draw[helper, angB!70] (Hb) -- (O); \draw[helper, angB!70] (A) -- (O);
+    \draw[side, fill=shade] (A) -- (B) -- (C) -- cycle;
+    \draw[angB, line width=0.8pt] (A) -- (Ha); \draw[angB, line width=0.8pt] (B) -- (Hb); \draw[angB, line width=0.8pt] (C) -- (Hc);
+    \node[circle, fill=crimson, inner sep=1.8pt] at (O) {};
+    \node[below right] at (A) {$A$}; \node[below right] at (B) {$B$}; \node[above] at (C) {$C$};
+    \node[crimson, font=\small, left] at (O) {$O$};
+    \node[font=\small, align=center] at (1.5,-1.75) {obtuse: outside\\\textit{ottusangolo: fuori}};
+  \end{scope}
+\end{tikzpicture}
+\bicap{The three altitudes (blue) and the orthocentre $O$ (red). In the right triangle two altitudes are the legs themselves. In the obtuse triangle the dashed extensions meet outside.}%
+      {Le tre altezze (blu) e l'ortocentro $O$ (rosso). Nel triangolo rettangolo due altezze sono i cateti stessi. Nel triangolo ottusangolo i prolungamenti tratteggiati si incontrano fuori.}
+\label{fig:ortho}
+\end{figure}
+
+\begin{tutor}[why the altitudes meet]
+The concurrency of the altitudes is usually stated, not proved, in the first year. If she asks: draw through each vertex the parallel to the opposite side. The three new lines form a triangle twice as big, and the altitudes of $ABC$ are the perpendicular bisectors of its sides, which meet at one point. Her teacher will probably not expect this.
+\end{tutor}
+
+\begin{example}{one triangle, three bases, one area}{un triangolo, tre basi, una sola area}
+The right triangle with sides 3, 4 and 5 (Figure~\ref{fig:345}). The area is $\dfrac{\text{base} \times \text{height}}{2}$, and every side can be the base \emph{if you use its own altitude}.\\
+Base 4, altitude 3 (a leg): $\dfrac{4 \times 3}{2} = 6$.\\
+Base 3, altitude 4 (the other leg): $\dfrac{3 \times 4}{2} = 6$.\\
+Base 5, altitude $h$: the area is still 6, so $\dfrac{5 \times h}{2} = 6$, $h = \dfrac{12}{5} = 2.4$.\\
+The same area three times: the altitude always travels with its own base.
+% VERIFIED: python -> area 6.0 ; altitude to hypotenuse 2.4 ; 5*2.4/2 = 6.0
+\tcblower
+Il triangolo rettangolo con lati 3, 4 e 5 (figura~\ref{fig:345}). L'area è $\dfrac{\text{base} \cdot \text{altezza}}{2}$, e ogni lato può fare da base \emph{se usi la sua altezza}.\\
+Base 4, altezza 3 (un cateto): $\dfrac{4 \cdot 3}{2} = 6$.\\
+Base 3, altezza 4 (l'altro cateto): $\dfrac{3 \cdot 4}{2} = 6$.\\
+Base 5, altezza $h$: l'area è sempre 6, quindi $\dfrac{5 \cdot h}{2} = 6$, $h = \dfrac{12}{5} = 2{,}4$.\\
+La stessa area tre volte: l'altezza viaggia sempre insieme alla sua base.
+\end{example}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === 3-4-5 right triangle in three positions (units: 1 = 0.55 cm)
+% (1) base 4 horizontal, altitude = leg 3 ; (2) base 3 horizontal, altitude = leg 4
+% (3) base 5 horizontal: B'=(0,0), C'=(5,0), A'=(3.2,2.4): |B'A'| = 4, |A'C'| = 3, altitude 2.4 with foot (3.2,0)
+% VERIFIED: python -> 4.0, 3.0, 2.4
+\begin{tikzpicture}[scale=0.62]
+  \begin{scope}
+    \coordinate (P1) at (0,0); \coordinate (P2) at (4,0); \coordinate (P3) at (0,3);
+    \draw[side, fill=shade] (P1) -- (P2) -- (P3) -- cycle;
+    \draw[line width=2.2pt, angD] (P1) -- (P2);
+    \draw[line width=1.4pt, angB] (P1) -- (P3);
+    \rang{P2}{P1}{P3}
+    \node[below] at (2,0) {$4$}; \node[left] at (0,1.5) {$3$}; \node[above right] at (2,1.5) {$5$};
+    \node[font=\small] at (2,-1.2) {$\frac{4 \cdot 3}{2} = 6$};
+  \end{scope}
+  \begin{scope}[shift={(6.5,0)}]
+    \coordinate (P1) at (0,0); \coordinate (P2) at (3,0); \coordinate (P3) at (0,4);
+    \draw[side, fill=shade] (P1) -- (P2) -- (P3) -- cycle;
+    \draw[line width=2.2pt, angD] (P1) -- (P2);
+    \draw[line width=1.4pt, angB] (P1) -- (P3);
+    \rang{P2}{P1}{P3}
+    \node[below] at (1.5,0) {$3$}; \node[left] at (0,2) {$4$}; \node[above right] at (1.5,2) {$5$};
+    \node[font=\small] at (1.5,-1.2) {$\frac{3 \cdot 4}{2} = 6$};
+  \end{scope}
+  \begin{scope}[shift={(12,0)}]
+    \coordinate (P1) at (0,0); \coordinate (P2) at (5,0); \coordinate (P3) at (3.2,2.4); \coordinate (F) at (3.2,0);
+    \draw[side, fill=shade] (P1) -- (P2) -- (P3) -- cycle;
+    \draw[line width=2.2pt, angD] (P1) -- (P2);
+    \draw[line width=1.4pt, angB] (P3) -- (F);
+    \rang{P3}{F}{P2}
+    \rang{P1}{P3}{P2}
+    \node[below] at (2.5,0) {$5$}; \node[above left] at (1.6,1.2) {$4$}; \node[above right] at (4.1,1.2) {$3$};
+    \node[right, font=\small, angB] at (3.2,1.0) {$2.4$};
+    \node[font=\small] at (2.5,-1.2) {$\frac{5 \cdot 2.4}{2} = 6$};
+  \end{scope}
+  \node[font=\small, anchor=west] at (18,2.2) {\textcolor{angD}{\rule{0.5cm}{2pt}} base};
+  \node[font=\small, anchor=west] at (18,1.4) {\textcolor{angB}{\rule{0.5cm}{1.4pt}} altitude};
+  \node[font=\small, anchor=west] at (18,0.6) {\textit{\textcolor{angB}{altezza}}};
+\end{tikzpicture}
+\bicap{The same 3, 4, 5 triangle turned three ways. Each base (orange) has its own altitude (blue), and every pair gives area 6.}%
+      {Lo stesso triangolo 3, 4, 5 girato in tre modi. Ogni base (arancione) ha la sua altezza (blu), e ogni coppia dà area 6.}
+\label{fig:345}
+\end{figure}
+
+\bisubsection{Altitude, median, bisector}{Altezza, mediana, bisettrice}
+\begin{bi}
+From each vertex start three famous segments, and it is easy to mix them up. The \textbf{altitude} arrives at a right angle. The \textbf{median} arrives at the \emph{midpoint} of the opposite side. The \textbf{bisector} cuts the angle at the vertex into two equal halves. In a scalene triangle they are three different segments (Figure~\ref{fig:amb}). The three medians of a triangle meet at the \textbf{centroid} $G$, the point where a cardboard triangle balances on a pencil tip; in the problem from the notebook (section~\ref{sec:notebook}) $G$ is exactly this point.
+\IT
+Da ogni vertice partono tre segmenti famosi, ed è facile confonderli. L'\textbf{altezza} arriva ad angolo retto. La \textbf{mediana} arriva nel \emph{punto medio} del lato opposto. La \textbf{bisettrice} divide l'angolo nel vertice in due metà congruenti. In un triangolo scaleno sono tre segmenti diversi (figura~\ref{fig:amb}). Le tre mediane di un triangolo si incontrano nel \textbf{baricentro} $G$, il punto in cui un triangolo di cartone sta in equilibrio sulla punta di una matita; nel problema del quaderno (paragrafo~\ref{sec:notebook}) $G$ è proprio questo punto.
+\end{bi}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === A(0,0), B(5.5,0), C(1.2,3.2); CA = 3.4176, CB = 5.3600
+% altitude foot H = (1.2,0); bisector foot D: AD = 5.5*CA/(CA+CB) = 2.1414 -> D = (2.141,0); median foot M = (2.75,0)
+% VERIFIED: python -> angle ACD = angle DCB = 36.950 deg
+\begin{tikzpicture}[scale=1.05]
+  \coordinate (A) at (0,0); \coordinate (B) at (5.5,0); \coordinate (C) at (1.2,3.2);
+  \coordinate (H) at (1.2,0); \coordinate (D) at (2.141,0); \coordinate (M) at (2.75,0);
+  \draw[side, fill=shade] (A) -- (B) -- (C) -- cycle;
+  \draw[angB, line width=1.1pt] (C) -- (H);
+  \draw[angC, line width=1.1pt] (C) -- (D);
+  \draw[angA, line width=1.1pt] (C) -- (M);
+  \rang{C}{H}{B}
+  \pic[draw, angC, angle radius=9mm] {angle=A--C--D};
+  \pic[draw, angC, angle radius=10mm] {angle=D--C--B};
+  \draw[angA, line width=0.7pt] ($(A)!0.5!(M)+(0,-0.12)$) -- ++(0,0.24);
+  \draw[angA, line width=0.7pt] ($(M)!0.5!(B)+(0,-0.12)$) -- ++(0,0.24);
+  \node[below left] at (A) {$A$}; \node[below right] at (B) {$B$}; \node[above] at (C) {$C$};
+  \node[below, angB] at (H) {$H$}; \node[below, angC] at (D) {$D$}; \node[below, angA] at (M) {$M$};
+  \node[font=\small, anchor=west, align=left] at (6.0,2.4) {\textcolor{angB}{$CH$ altitude \textperiodcentered\ \textit{altezza}}};
+  \node[font=\small, anchor=west, align=left] at (6.0,1.8) {\textcolor{angC}{$CD$ bisector \textperiodcentered\ \textit{bisettrice}}};
+  \node[font=\small, anchor=west, align=left] at (6.0,1.2) {\textcolor{angA}{$CM$ median \textperiodcentered\ \textit{mediana}}};
+\end{tikzpicture}
+\bicap{Three segments from the same vertex $C$ of a scalene triangle: altitude, bisector, median. In an isosceles triangle, from the vertex angle, they become one segment (chapter~\ref{ch:congruence}).}%
+      {Tre segmenti dallo stesso vertice $C$ di un triangolo scaleno: altezza, bisettrice, mediana. In un triangolo isoscele, dall'angolo al vertice, diventano un solo segmento (capitolo~\ref{ch:congruence}).}
+\label{fig:amb}
+\end{figure}
+
+\begin{keyidea}{}{}
+An altitude is a right angle looking for its base. Name the side first; the altitude is the straight line from the opposite vertex that lands on that side, or on its extension, at $90^\circ$.
+\tcblower
+Un'altezza è un angolo retto in cerca della sua base. Prima scegli il lato; l'altezza è il segmento che parte dal vertice opposto e cade su quel lato, o sul suo prolungamento, a $90^\circ$.
+\end{keyidea}
+
+% ===== end ch2-triangles.tex =====
+
+% ===== begin ch3-congruence.tex =====
+% STATUS: COMPLETE DRAFT
+% Chapter 3 : congruence, the three criteria, how to write a proof, seven solved proofs
+% Every coordinate and length below is checked in scripts/verify.py
+\bichapter{Congruent triangles}{Triangoli congruenti}\label{ch:congruence}
+
+% ================================================================
+\bisection{What ``congruent'' means}{Che cosa vuol dire «congruente»}\label{sec:congruent}
+% ================================================================
+\begin{bi}
+\colheads
+Two keys cut from the same original open the same door. One may be lying upside down on the table and the other hanging from a hook, but if you pick them up and place one on the other, they match edge for edge. In geometry such figures are called \textbf{congruent}.
+\IT
+Due chiavi copiate dallo stesso originale aprono la stessa porta. Una può stare capovolta sul tavolo e l'altra appesa a un gancio, ma se le prendi e le sovrapponi combaciano bordo per bordo. In geometria figure così si dicono \textbf{congruenti}.
+\end{bi}
+
+\begin{defn}{congruent figures}{figure congruenti}
+Two figures are \textbf{congruent}, written $\cong$, if one can be placed exactly on top of the other by a \emph{rigid motion}: sliding it, turning it, or flipping it over. A rigid motion never stretches or bends, so lengths and angles do not change.
+\tcblower
+Due figure sono \textbf{congruenti}, e si scrive $\cong$, se una si può sovrapporre esattamente all'altra con un \emph{movimento rigido}: traslandola, ruotandola o ribaltandola. Un movimento rigido non allunga e non piega, quindi lunghezze e angoli non cambiano.
+\end{defn}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === base triangle (0,0),(1.8,0),(0.5,1.3); copies: shift (3,0); rotate 70 deg about its first vertex then shift (7.2,0);
+% mirror in the vertical line x = 0 then shift (11.4,0). All copies keep side lengths 1.8, 1.393, 1.838 (rigid motions).
+\begin{tikzpicture}
+  \tikzset{tri/.pic={\draw[side, fill=#1] (0,0) -- (1.8,0) -- (0.5,1.3) -- cycle;
+                     \draw[tick1] (0,0) -- (1.8,0); \draw[tick2] (1.8,0) -- (0.5,1.3); \draw[tick3] (0.5,1.3) -- (0,0);}}
+  \pic at (0,0) {tri=angB!15};
+  \node[font=\small, align=center] at (0.9,-0.55) {original\\\textit{originale}};
+  \pic at (3,0) {tri=angC!15};
+  \node[font=\small, align=center] at (3.9,-0.55) {slide\\\textit{traslazione}};
+  \pic[rotate=70] at (7.6,0) {tri=angD!20};
+  \node[font=\small, align=center] at (7.1,-0.55) {turn\\\textit{rotazione}};
+  \pic[xscale=-1] at (11.8,0) {tri=angA!15};
+  \node[font=\small, align=center] at (11.0,-0.55) {flip\\\textit{ribaltamento}};
+  \draw[-{Stealth[length=2mm]}, black!50] (2.0,0.75) -- (2.9,0.75);
+  \draw[-{Stealth[length=2mm]}, black!50] (5.0,0.75) -- (6.0,0.75);
+  \draw[-{Stealth[length=2mm]}, black!50] (8.2,0.75) -- (9.3,0.75);
+\end{tikzpicture}
+\bicap{The same triangle moved in three ways. The marks (one, two, three ticks) travel with their sides: nothing is stretched.}%
+      {Lo stesso triangolo spostato in tre modi. I segni (uno, due, tre trattini) viaggiano con i loro lati: niente si allunga.}
+\label{fig:moves}
+\end{figure}
+
+\begin{anchor}{tracing paper}{la carta da lucido}
+Put tracing paper on one triangle and copy it. Now move the paper: slide it, turn it, even turn it over. If you can make the copy cover the second triangle exactly, the two triangles are congruent. Every question in this chapter is really the question: ``would the tracing fit?''
+\tcblower
+Metti un foglio di carta da lucido su un triangolo e ricalcalo. Ora muovi il foglio: fallo scorrere, ruotalo, giralo anche dall'altra parte. Se riesci a far coprire esattamente il secondo triangolo dalla copia, i due triangoli sono congruenti. Ogni domanda di questo capitolo è in fondo la domanda: «il ricalco combacia?»
+\end{anchor}
+
+\begin{bi}
+When two triangles are congruent, each vertex has a partner, each side has a partner and each angle has a partner. Partners are called \textbf{corresponding parts}. The order of the letters tells you who goes with whom: $\tri{ABC} \cong \tri{DEF}$ means $A \leftrightarrow D$, $B \leftrightarrow E$, $C \leftrightarrow F$, so $\seg{AB} \cong \seg{DE}$, $\seg{BC} \cong \seg{EF}$, $\seg{CA} \cong \seg{FD}$ and $\av{A} \cong \av{D}$, $\av{B} \cong \av{E}$, $\av{C} \cong \av{F}$. A useful rule: \emph{corresponding sides lie opposite corresponding angles}.
+\IT
+Quando due triangoli sono congruenti, ogni vertice ha un compagno, ogni lato ha un compagno e ogni angolo ha un compagno. I compagni si chiamano \textbf{elementi omologhi}. L'ordine delle lettere dice chi va con chi: $\tri{ABC} \cong \tri{DEF}$ significa $A \leftrightarrow D$, $B \leftrightarrow E$, $C \leftrightarrow F$, quindi $\seg{AB} \cong \seg{DE}$, $\seg{BC} \cong \seg{EF}$, $\seg{CA} \cong \seg{FD}$ e $\av{A} \cong \av{D}$, $\av{B} \cong \av{E}$, $\av{C} \cong \av{F}$. Una regola utile: \emph{lati omologhi stanno opposti ad angoli omologhi}.
+\end{bi}
+
+\begin{trap}{same area, or same angles, means congruent}{stessa area, o stessi angoli, vuol dire congruenti}
+Two right triangles with legs 4 and 3, and 6 and 2, both have area 6, but one has hypotenuse 5 and the other about 6.32: they are not congruent (Figure~\ref{fig:notcong}a). Two equilateral triangles both have three $60^\circ$ angles, but one can be much bigger (Figure~\ref{fig:notcong}b): same shape, different size. Congruent means same shape \emph{and} same size.
+% VERIFIED: python -> areas 6.0 and 6.0 ; hypotenuses 5.0 and 6.325
+\tcblower
+Due triangoli rettangoli con cateti 4 e 3, e 6 e 2, hanno entrambi area 6, ma uno ha ipotenusa 5 e l'altro circa $6{,}32$: non sono congruenti (figura~\ref{fig:notcong}a). Due triangoli equilateri hanno entrambi tre angoli di $60^\circ$, ma uno può essere molto più grande (figura~\ref{fig:notcong}b): stessa forma, grandezza diversa. Congruenti vuol dire stessa forma \emph{e} stessa grandezza.
+\end{trap}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === (a) legs 4,3 (area 6, hyp 5) and 6,2 (area 6, hyp 6.325), scale 0.5
+% (b) equilateral sides 3.2 and 1.6: heights 3.2 sin60 = 2.771 and 1.6 sin60 = 1.386
+\begin{tikzpicture}[scale=0.55]
+  \begin{scope}
+    \draw[side, fill=angB!15] (0,0) -- (4,0) -- (0,3) -- cycle;
+    \node[font=\small] at (1.3,0.9) {$A = 6$};
+    \node[below, font=\small] at (2,0) {4}; \node[left, font=\small] at (0,1.5) {3};
+    \draw[side, fill=angA!15] (5.5,0) -- (11.5,0) -- (5.5,2) -- cycle;
+    \node[font=\small] at (7.2,0.6) {$A = 6$};
+    \node[below, font=\small] at (8.5,0) {6}; \node[left, font=\small] at (5.5,1) {2};
+    \node[font=\small\bfseries] at (5.8,-1.6) {(a)};
+  \end{scope}
+  \begin{scope}[shift={(15,0)}]
+    \draw[side, fill=angC!15] (0,0) -- (3.2,0) -- (1.6,2.771) -- cycle;
+    \draw[side, fill=angC!15] (4.4,0) -- (6.0,0) -- (5.2,1.386) -- cycle;
+    \node[font=\scriptsize] at (1.6,-0.5) {$60^\circ,\ 60^\circ,\ 60^\circ$};
+    \node[font=\scriptsize] at (5.2,-0.5) {$60^\circ,\ 60^\circ,\ 60^\circ$};
+    \node[font=\small\bfseries] at (3,-1.6) {(b)};
+  \end{scope}
+\end{tikzpicture}
+\bicap{Not congruent. (a) Same area, different shape. (b) Same angles, different size.}%
+      {Non congruenti. (a) Stessa area, forma diversa. (b) Stessi angoli, grandezza diversa.}
+\label{fig:notcong}
+\end{figure}
+
+% ================================================================
+\bisection{The three criteria}{I tre criteri di congruenza}\label{sec:criteria}
+% ================================================================
+\begin{think}{a triangle over the phone}{un triangolo al telefono}
+A friend has a triangle; you have paper, a ruler and a protractor. She must describe it over the phone so that you draw an exact copy. A triangle has six measurements: three sides and three angles. What is the \emph{smallest} amount of information she needs to give?
+\answer Three measurements are enough, but only if they are the right three. Each good choice is one of the \emph{criteria} below; each criterion is a recipe that leaves you no freedom at all when you draw.
+\tcblower
+Un'amica ha un triangolo; tu hai carta, righello e goniometro. Lei deve descrivertelo al telefono in modo che tu ne disegni una copia esatta. Un triangolo ha sei misure: tre lati e tre angoli. Qual è il \emph{minimo} di informazioni che deve darti?
+\answer Bastano tre misure, ma solo se sono le tre giuste. Ogni scelta buona è uno dei \emph{criteri} che seguono; ogni criterio è una ricetta che, quando disegni, non ti lascia nessuna libertà.
+\end{think}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === all three panels build the same triangle: A(0,0), B(3.4,0), angle A = 55 deg, AC = 2.5
+% C = 2.5 (cos55, sin55) = (1.434, 2.048). Angle B = atan2(2.048, 3.4-1.434) = 46.2 deg ; BC = 2.839
+% (SSS arcs: radius 2.5 around A and 2.839 around B meet at C)
+% VERIFIED: python -> BC = 2.8389, angle B = 46.168 deg
+\begin{tikzpicture}[scale=1.0]
+  % SAS
+  \begin{scope}
+    \coordinate (A) at (0,0); \coordinate (B) at (3.4,0); \coordinate (C) at (1.434,2.048);
+    \draw[side, angB] (A) -- (B); \draw[side, angB] (A) -- (C);
+    \draw[helper, crimson] (B) -- (C);
+    \pic[draw, angB, angle radius=6mm, "$55^\circ$", angle eccentricity=1.5, font=\scriptsize] {angle=B--A--C};
+    \node[below left] at (A) {$A$}; \node[below right] at (B) {$B$}; \node[above] at (C) {$C$};
+    \node[below, font=\scriptsize] at (1.7,0) {3.4}; \node[above left, font=\scriptsize] at (0.72,1.02) {2.5};
+    \node[font=\small, align=center] at (1.7,-1.0) {\textbf{SAS} \textperiodcentered\ \textbf{\textit{LAL}}\\ the third side is forced\\\textit{il terzo lato è obbligato}};
+  \end{scope}
+  % ASA
+  \begin{scope}[shift={(5.2,0)}]
+    \coordinate (A) at (0,0); \coordinate (B) at (3.4,0); \coordinate (C) at (1.434,2.048);
+    \draw[side, angB] (A) -- (B);
+    \draw[thinline, angB] (A) -- ($(A)!1.25!(C)$); \draw[thinline, angB] (B) -- ($(B)!1.3!(C)$);
+    \pic[draw, angB, angle radius=6mm, "$55^\circ$", angle eccentricity=1.5, font=\scriptsize] {angle=B--A--C};
+    \pic[draw, angB, angle radius=6mm, "$46^\circ$", angle eccentricity=1.55, font=\scriptsize] {angle=C--B--A};
+    \node[circle, fill=crimson, inner sep=1.6pt] at (C) {};
+    \node[below left] at (A) {$A$}; \node[below right] at (B) {$B$}; \node[above right] at (C) {$C$};
+    \node[font=\small, align=center] at (1.7,-1.0) {\textbf{ASA} \textperiodcentered\ \textbf{\textit{ALA}}\\ two rays meet in one point\\\textit{due semirette, un solo punto}};
+  \end{scope}
+  % SSS
+  \begin{scope}[shift={(10.4,0)}]
+    \coordinate (A) at (0,0); \coordinate (B) at (3.4,0); \coordinate (C) at (1.434,2.048);
+    \draw[side, angB] (A) -- (B);
+    \draw[angB, line width=0.6pt] (A) ++(40:2.5) arc (40:95:2.5);
+    \draw[angB, line width=0.6pt] (B) ++(110:2.839) arc (110:160:2.839);
+    \draw[helper] (A) -- (C) -- (B);
+    \node[circle, fill=crimson, inner sep=1.6pt] at (C) {};
+    \node[below left] at (A) {$A$}; \node[below right] at (B) {$B$}; \node[above] at ($(C)+(0,0.1)$) {$C$};
+    \node[font=\small, align=center] at (1.7,-1.0) {\textbf{SSS} \textperiodcentered\ \textbf{\textit{LLL}}\\ two arcs cross in one point\\\textit{due archi, un solo punto}};
+  \end{scope}
+\end{tikzpicture}
+\bicap{Three recipes that leave no freedom. Blue: the data you are given. Red: what is then forced.}%
+      {Tre ricette che non lasciano libertà. In blu i dati; in rosso ciò che è obbligato.}
+\label{fig:criteria}
+\end{figure}
+
+\begin{defn}{first criterion, SAS}{primo criterio, LAL}
+Two triangles are congruent if they have two sides and \textbf{the angle between them} respectively congruent.
+
+\emph{Why.} Draw the angle, then measure the two sides along its arms. The two free ends are now fixed points, and only one segment joins them: the third side has no choice (Figure~\ref{fig:criteria}, left). Think of a laptop opened to a fixed angle: screen and keyboard have fixed lengths, so the gap between their far edges is fixed too.
+\tcblower
+Due triangoli sono congruenti se hanno rispettivamente congruenti due lati e \textbf{l'angolo tra essi compreso}.
+
+\emph{Perché.} Disegna l'angolo, poi misura i due lati sui suoi lati. I due estremi liberi sono ora punti fissi, e un solo segmento li unisce: il terzo lato non ha scelta (figura~\ref{fig:criteria}, a sinistra). Pensa a un portatile aperto con un angolo fisso: schermo e tastiera hanno lunghezze fisse, quindi è fissa anche la distanza tra i loro bordi lontani.
+\end{defn}
+
+\begin{defn}{second criterion, ASA}{secondo criterio, ALA}
+Two triangles are congruent if they have one side and \textbf{the two angles next to it} respectively congruent.
+
+\emph{Why.} Draw the side. At each end, draw a ray at the given angle. Two rays that are not parallel cross in exactly one point: the third vertex (Figure~\ref{fig:criteria}, centre). Surveyors use this to locate a boat from the beach: two observers a known distance apart each measure the angle towards it, and the boat can only be where their two lines cross.
+\tcblower
+Due triangoli sono congruenti se hanno rispettivamente congruenti un lato e \textbf{i due angoli ad esso adiacenti}.
+
+\emph{Perché.} Disegna il lato. In ciascun estremo traccia una semiretta con l'angolo dato. Due semirette non parallele si incontrano in un solo punto: il terzo vertice (figura~\ref{fig:criteria}, al centro). I topografi lo usano per trovare una barca dalla spiaggia: due osservatori a distanza nota misurano ciascuno l'angolo verso la barca, e la barca può stare solo dove le due linee si incrociano.
+\end{defn}
+
+\begin{defn}{third criterion, SSS}{terzo criterio, LLL}
+Two triangles are congruent if they have \textbf{all three sides} respectively congruent.
+
+\emph{Why.} Draw one side. The third vertex must be at the first distance from one end and at the second distance from the other end: two circles, and on each side of the base they cross in one point only (Figure~\ref{fig:criteria}, right). This is why a triangle made of three sticks cannot wobble.
+\tcblower
+Due triangoli sono congruenti se hanno rispettivamente congruenti \textbf{tutti e tre i lati}.
+
+\emph{Perché.} Disegna un lato. Il terzo vertice deve stare alla prima distanza da un estremo e alla seconda distanza dall'altro: due circonferenze, che da ciascuna parte della base si incontrano in un solo punto (figura~\ref{fig:criteria}, a destra). Per questo un triangolo fatto di tre bastoncini non può deformarsi.
+\end{defn}
+
+\begin{example}{why buildings are full of triangles}{perché gli edifici sono pieni di triangoli}
+Pin four sticks together into a square and push one corner: it folds into a rhombus, because four sides do not fix the angles. Pin three sticks into a triangle and push: nothing moves, because by the third criterion three sides fix the whole triangle, angles included (Figure~\ref{fig:rigid}). Roof trusses, cranes, bridges and the diagonal braces behind a bookcase all use this: engineers turn wobbly rectangles into rigid triangles by adding one diagonal.
+\tcblower
+Unisci quattro bastoncini con dei chiodini a formare un quadrato e spingi un angolo: si piega in un rombo, perché quattro lati non fissano gli angoli. Unisci tre bastoncini a triangolo e spingi: non si muove niente, perché per il terzo criterio tre lati fissano tutto il triangolo, angoli compresi (figura~\ref{fig:rigid}). Capriate dei tetti, gru, ponti e le diagonali dietro una libreria usano questa idea: gli ingegneri rendono rigidi i rettangoli aggiungendo una diagonale, cioè creando triangoli.
+\end{example}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === square side 1.8 deforming to a rhombus with 60 deg angle: top corners shift by 1.8 cos60 = 0.9, height 1.8 sin60 = 1.559
+% truss: base 4.8, apex height 1.6, one vertical and two diagonals
+\begin{tikzpicture}
+  \tikzset{pin/.style={circle, draw, fill=white, inner sep=1.4pt}}
+  \begin{scope}
+    \draw[line width=2pt, black!25] (0,0) rectangle (1.8,1.8);
+    \draw[line width=2pt, brown!70!black] (0,0) -- (1.8,0) -- (2.7,1.559) -- (0.9,1.559) -- cycle;
+    \foreach \p in {(0,0),(1.8,0),(2.7,1.559),(0.9,1.559)} \node[pin] at \p {};
+    \draw[-{Stealth[length=2mm]}, crimson, line width=0.8pt] (-0.3,1.8) -- (0.6,1.8);
+    \node[font=\small, align=center] at (1.3,-0.65) {square folds\\\textit{il quadrato si piega}};
+  \end{scope}
+  \begin{scope}[shift={(4.2,0)}]
+    \draw[line width=2pt, brown!70!black] (0,0) -- (1.8,0) -- (0.9,1.559) -- cycle;
+    \foreach \p in {(0,0),(1.8,0),(0.9,1.559)} \node[pin] at \p {};
+    \draw[-{Stealth[length=2mm]}, crimson, line width=0.8pt] (-0.2,1.559) -- (0.6,1.559);
+    \node[font=\small, align=center] at (0.9,-0.65) {triangle holds\\\textit{il triangolo resiste}};
+  \end{scope}
+  \begin{scope}[shift={(8.4,0)}]
+    \draw[line width=1.6pt, brown!70!black] (0,0) -- (4.8,0) -- (2.4,1.6) -- cycle;
+    \draw[line width=1.1pt, brown!70!black] (2.4,0) -- (2.4,1.6) (1.2,0.8) -- (2.4,0) -- (3.6,0.8);
+    \foreach \p in {(0,0),(4.8,0),(2.4,1.6),(2.4,0),(1.2,0.8),(3.6,0.8)} \node[pin] at \p {};
+    \node[font=\small, align=center] at (2.4,-0.65) {roof truss\\\textit{capriata}};
+  \end{scope}
+\end{tikzpicture}
+\bicap{Rigidity. Four sides do not fix a shape; three sides do. A roof truss is a set of triangles.}%
+      {Rigidità. Quattro lati non fissano la forma; tre lati sì. Una capriata è un insieme di triangoli.}
+\label{fig:rigid}
+\end{figure}
+
+\begin{trap}{any three pieces of information will do}{tre informazioni qualsiasi bastano}
+Two cases \emph{do not} work. \textbf{Three angles} (AAA) only fix the shape, not the size (Figure~\ref{fig:notcong}b). \textbf{Two sides and an angle that is not between them} (SSA) can give two different triangles. In Figure~\ref{fig:ssa} the angle at $A$ is $30^\circ$, $AB = 6$ and $BC = 4$: the circle of radius 4 around $B$ cuts the ray from $A$ twice, and $AC$ can be $7.84$ or $2.55$. Same data, two triangles: not a criterion.
+% VERIFIED: python -> AC = 7.842 or 2.550, both with |BC| = 4
+\tcblower
+Due casi \emph{non} funzionano. \textbf{Tre angoli} (AAA) fissano solo la forma, non la grandezza (figura~\ref{fig:notcong}b). \textbf{Due lati e un angolo non compreso tra loro} (LLA) possono dare due triangoli diversi. Nella figura~\ref{fig:ssa} l'angolo in $A$ è $30^\circ$, $AB = 6$ e $BC = 4$: la circonferenza di raggio 4 con centro $B$ taglia due volte la semiretta da $A$, e $AC$ può essere $7{,}84$ oppure $2{,}55$. Stessi dati, due triangoli: non è un criterio.
+\end{trap}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === A(0,0), B(6,0), ray at 30 deg, circle radius 4 about B.
+% t^2 - 12 cos30 t + 20 = 0 -> t = 7.842, 2.550 ; C1 = (6.791,3.921), C2 = (2.209,1.275)
+% VERIFIED: python -> |B C1| = |B C2| = 4
+\begin{tikzpicture}[scale=0.62]
+  \coordinate (A) at (0,0); \coordinate (B) at (6,0);
+  \coordinate (C1) at (6.791,3.921); \coordinate (C2) at (2.209,1.275);
+  \draw[black!25] (B) circle (4);
+  \draw[ray] (A) -- (30:9.2);
+  \fill[angB!15] (A) -- (B) -- (C1) -- cycle;
+  \fill[angA!20] (A) -- (B) -- (C2) -- cycle;
+  \draw[side] (A) -- (B);
+  \draw[side, angB] (B) -- (C1); \draw[side, angA] (B) -- (C2);
+  \pic[draw, angle radius=8mm, "$30^\circ$", angle eccentricity=1.55, font=\small] {angle=B--A--C1};
+  \node[below left] at (A) {$A$}; \node[below right] at (B) {$B$};
+  \node[above left, angB] at (C1) {$C_1$}; \node[above left, angA] at (C2) {$C_2$};
+  \node[below, font=\small] at (3,0) {6};
+  \node[right, font=\small, angB] at ($(B)!0.5!(C1)$) {4};
+  \node[above right, font=\small, angA] at ($(B)!0.5!(C2)+(0,0.05)$) {4};
+\end{tikzpicture}
+\bicap{SSA is not a criterion: the same data ($30^\circ$, 6, 4) give triangle $ABC_1$ and triangle $ABC_2$.}%
+      {LLA non è un criterio: gli stessi dati ($30^\circ$, 6, 4) danno il triangolo $ABC_1$ e il triangolo $ABC_2$.}
+\label{fig:ssa}
+\end{figure}
+
+\begin{tutor}[naming and order]
+Italian schools number the criteria exactly as here: \emph{primo} (LAL), \emph{secondo} (ALA), \emph{terzo} (LLL). The first is usually taken as a postulate (Hilbert did so, reference [3] in Appendix~\ref{app:glossary}) or justified by superposition, as Euclid did (\emph{Elements} I.4, reference [1]); the other two are proved from it. Later she will meet the ``generalised second criterion'' (one side and \emph{any} two angles, LAA), which follows from the angle sum, and a special criterion for right triangles (hypotenuse and one leg). Neither is needed in this booklet.
+\end{tutor}
+
+% ================================================================
+\bisection{How to write a proof}{Come si scrive una dimostrazione}\label{sec:howto}
+% ================================================================
+\begin{bi}
+Her notebook already has the right method, in three steps. \textbf{1.} Draw the figure carefully, following the words exactly, and mark on it everything you know (ticks for equal sides, arcs for equal angles). \textbf{2.} Write the \textbf{hypothesis}: what the problem gives you. \textbf{3.} Write the \textbf{thesis}: what you must prove. Then build the \textbf{proof}: a chain of statements, each with its reason, that goes from the hypothesis to the thesis.
+\IT
+Il tuo quaderno ha già il metodo giusto, in tre passi. \textbf{1.} Disegna la figura con cura, seguendo esattamente il testo, e segna su di essa tutto quello che sai (trattini per i lati congruenti, archetti per gli angoli congruenti). \textbf{2.} Scrivi l'\textbf{ipotesi}: i dati del problema. \textbf{3.} Scrivi la \textbf{tesi}: quello che devi dimostrare. Poi costruisci la \textbf{dimostrazione}: una catena di affermazioni, ognuna con il suo motivo, che va dall'ipotesi alla tesi.
+\EN
+The most common plan is always the same: \emph{find two triangles that contain the pieces you want, prove they are congruent with a criterion, then read off the corresponding parts.} If the thesis is ``$\seg{BH} \cong \seg{HC}$'', look for two triangles that have $\seg{BH}$ and $\seg{HC}$ as corresponding sides.
+\IT
+Il piano più comune è sempre lo stesso: \emph{trova due triangoli che contengono i pezzi che ti interessano, dimostra che sono congruenti con un criterio, poi leggi gli elementi omologhi.} Se la tesi è «$\seg{BH} \cong \seg{HC}$», cerca due triangoli che abbiano $\seg{BH}$ e $\seg{HC}$ come lati omologhi.
+\end{bi}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}X >{\raggedright\arraybackslash\itshape\leavevmode\color{itgreen}}X@{}}
+\toprule
+\textbf{Reason (English)} & \textbf{\upshape Motivo (italiano)}\\
+\midrule
+given; by hypothesis & per ipotesi\\
+common side & lato in comune\\
+by construction & per costruzione\\
+vertical angles & perché opposti al vertice\\
+alternate interior angles of parallel lines & perché alterni interni di rette parallele\\
+base angles of an isosceles triangle & perché angoli alla base di un triangolo isoscele\\
+halves of congruent segments & perché metà di segmenti congruenti\\
+sums (differences) of congruent segments or angles & perché somme (differenze) di segmenti o angoli congruenti\\
+by SAS, ASA, SSS & per il primo, secondo, terzo criterio di congruenza\\
+corresponding parts of congruent triangles & perché elementi omologhi di triangoli congruenti\\
+QED (which was to be proved) & c.v.d. (come volevasi dimostrare)\\
+\bottomrule
+\end{tabularx}
+\bicap{The reasons that appear in almost every proof.}{I motivi che compaiono in quasi ogni dimostrazione.}
+\label{tab:phrases}
+\end{table}
+
+% ================================================================
+\bisection{Seven solved proofs}{Sette dimostrazioni svolte}\label{sec:proofs}
+% ================================================================
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION ===
+% P1: A(0,0) B(4,2) O(2,1) C(0.6,2.2) D = 2O - C = (3.4,-0.2)       VERIFIED: AC = BD = 2.2804
+% P2: A(0,0) C(4,0) B(1.2,1.4) D(1.2,-1.4)                          VERIFIED: angle BAC = DAC = 49.40
+% P3: A(0,2) B(2.2,2) D(4,0) C(1.8,0) O(2,1)                        VERIFIED: BO = OC
+\begin{tikzpicture}[scale=0.9]
+  \begin{scope}
+    \coordinate (A) at (0,0); \coordinate (B) at (4,2); \coordinate (O) at (2,1);
+    \coordinate (C) at (0.6,2.2); \coordinate (D) at (3.4,-0.2);
+    \fill[angB!15] (A) -- (O) -- (C) -- cycle; \fill[angC!15] (B) -- (O) -- (D) -- cycle;
+    \draw[side, tick1] (A) -- (O); \draw[side, tick1] (O) -- (B);
+    \draw[side, tick2] (C) -- (O); \draw[side, tick2] (O) -- (D);
+    \draw[side] (A) -- (C); \draw[side] (B) -- (D);
+    \pic[draw, angA, angle radius=3.5mm] {angle=C--O--A}; \pic[draw, angA, angle radius=3.5mm] {angle=D--O--B};
+    \node[below left] at (A) {$A$}; \node[above right] at (B) {$B$}; \node[above] at (C) {$C$};
+    \node[below] at (D) {$D$}; \node[below right, font=\small] at ($(O)+(0.05,-0.05)$) {$O$};
+    \node[font=\small\bfseries] at (2,-1.0) {P1 (SAS \textperiodcentered\ LAL)};
+  \end{scope}
+  \begin{scope}[shift={(5.6,1)}]
+    \coordinate (A) at (0,0); \coordinate (C) at (4,0); \coordinate (B) at (1.2,1.4); \coordinate (D) at (1.2,-1.4);
+    \fill[angB!15] (A) -- (B) -- (C) -- cycle; \fill[angC!15] (A) -- (D) -- (C) -- cycle;
+    \draw[side, tick1] (A) -- (B); \draw[side, tick1] (A) -- (D);
+    \draw[side, tick2] (C) -- (B); \draw[side, tick2] (C) -- (D);
+    \draw[side] (A) -- (C);
+    \pic[draw, angA, angle radius=6mm] {angle=C--A--B}; \pic[draw, angA, angle radius=6.8mm] {angle=D--A--C};
+    \node[left] at (A) {$A$}; \node[above] at (B) {$B$}; \node[right] at (C) {$C$}; \node[below] at (D) {$D$};
+    \node[font=\small\bfseries] at (2,-2.0) {P2 (SSS \textperiodcentered\ LLL)};
+  \end{scope}
+  \begin{scope}[shift={(11.2,0)}]
+    \coordinate (A) at (0,2); \coordinate (B) at (2.2,2); \coordinate (D) at (4,0); \coordinate (C) at (1.8,0); \coordinate (O) at (2,1);
+    \draw[thinline, black!40] (-0.5,2) -- (3.2,2); \draw[thinline, black!40] (0.8,0) -- (4.6,0);
+    \fill[angB!15] (A) -- (O) -- (B) -- cycle; \fill[angC!15] (D) -- (O) -- (C) -- cycle;
+    \draw[side] (A) -- (B); \draw[side] (C) -- (D);
+    \draw[side, tick1] (A) -- (O); \draw[side, tick1] (O) -- (D);
+    \draw[side] (B) -- (C);
+    \pic[draw, angA, angle radius=5mm] {angle=O--A--B}; \pic[draw, angA, angle radius=5mm] {angle=O--D--C};
+    \node[above left] at (A) {$A$}; \node[above] at (B) {$B$}; \node[below] at (C) {$C$}; \node[below right] at (D) {$D$};
+    \node[right, font=\small] at ($(O)+(0.08,0.05)$) {$O$};
+    \node[font=\small\bfseries] at (2,-1.0) {P3 (ASA \textperiodcentered\ ALA)};
+  \end{scope}
+\end{tikzpicture}
+\bicap{Figures for proofs P1, P2, P3. Shaded: the two triangles to compare.}%
+      {Figure delle dimostrazioni P1, P2, P3. In colore: i due triangoli da confrontare.}
+\label{fig:p123}
+\end{figure}
+
+\begin{proofbox}{P1, two segments with the same midpoint}{P1, due segmenti con lo stesso punto medio}
+Segments $AB$ and $CD$ cross at $O$, the midpoint of both. Prove $\seg{AC} \cong \seg{BD}$.\\
+\textbf{Given:} $\seg{AO} \cong \seg{OB}$, $\seg{CO} \cong \seg{OD}$. \textbf{To prove:} $\seg{AC} \cong \seg{BD}$.\\
+Compare $\tri{AOC}$ and $\tri{BOD}$:
+\begin{steps}
+\step{$\seg{AO} \cong \seg{OB}$}{given}
+\step{$\seg{CO} \cong \seg{OD}$}{given}
+\step{$\ang{A}{O}{C} \cong \ang{B}{O}{D}$}{vertical angles}
+\end{steps}
+Two sides and the angle between them: $\tri{AOC} \cong \tri{BOD}$ by SAS. So $\seg{AC} \cong \seg{BD}$ (corresponding sides, both opposite the angle at $O$). \hfill QED
+\tcblower
+I segmenti $AB$ e $CD$ si incontrano in $O$, punto medio di entrambi. Dimostra che $\seg{AC} \cong \seg{BD}$.\\
+\textbf{Ipotesi:} $\seg{AO} \cong \seg{OB}$, $\seg{CO} \cong \seg{OD}$. \textbf{Tesi:} $\seg{AC} \cong \seg{BD}$.\\
+Considero $\tri{AOC}$ e $\tri{BOD}$:
+\begin{steps}
+\step{$\seg{AO} \cong \seg{OB}$}{per ipotesi}
+\step{$\seg{CO} \cong \seg{OD}$}{per ipotesi}
+\step{$\ang{A}{O}{C} \cong \ang{B}{O}{D}$}{opposti al vertice}
+\end{steps}
+Due lati e l'angolo compreso: $\tri{AOC} \cong \tri{BOD}$ per il primo criterio. Quindi $\seg{AC} \cong \seg{BD}$ (lati omologhi, opposti all'angolo in $O$). \hfill c.v.d.
+\end{proofbox}
+
+\begin{proofbox}{P2, the kite}{P2, l'aquilone}
+In the quadrilateral $ABCD$, $\seg{AB} \cong \seg{AD}$ and $\seg{CB} \cong \seg{CD}$. Prove that the diagonal $AC$ bisects the angle at $A$.\\
+\textbf{To prove:} $\ang{B}{A}{C} \cong \ang{D}{A}{C}$.\\
+Compare $\tri{ABC}$ and $\tri{ADC}$:
+\begin{steps}
+\step{$\seg{AB} \cong \seg{AD}$}{given}
+\step{$\seg{CB} \cong \seg{CD}$}{given}
+\step{$\seg{AC}$ in both}{common side}
+\end{steps}
+$\tri{ABC} \cong \tri{ADC}$ by SSS, so $\ang{B}{A}{C} \cong \ang{D}{A}{C}$ (corresponding angles, opposite the equal sides $CB$ and $CD$). \hfill QED
+\tcblower
+Nel quadrilatero $ABCD$ si ha $\seg{AB} \cong \seg{AD}$ e $\seg{CB} \cong \seg{CD}$. Dimostra che la diagonale $AC$ è bisettrice dell'angolo in $A$.\\
+\textbf{Tesi:} $\ang{B}{A}{C} \cong \ang{D}{A}{C}$.\\
+Considero $\tri{ABC}$ e $\tri{ADC}$:
+\begin{steps}
+\step{$\seg{AB} \cong \seg{AD}$}{per ipotesi}
+\step{$\seg{CB} \cong \seg{CD}$}{per ipotesi}
+\step{$\seg{AC}$ in comune}{lato in comune}
+\end{steps}
+$\tri{ABC} \cong \tri{ADC}$ per il terzo criterio, quindi $\ang{B}{A}{C} \cong \ang{D}{A}{C}$ (angoli omologhi, opposti ai lati congruenti $CB$ e $CD$). \hfill c.v.d.
+\end{proofbox}
+
+\begin{proofbox}{P3, parallels and a midpoint}{P3, parallele e punto medio}
+$AB \parallel CD$. The segments $AD$ and $BC$ cross at $O$, and $O$ is the midpoint of $AD$. Prove that $O$ is also the midpoint of $BC$.\\
+Compare $\tri{AOB}$ and $\tri{DOC}$:
+\begin{steps}
+\step{$\seg{AO} \cong \seg{OD}$}{given}
+\step{$\ang{O}{A}{B} \cong \ang{O}{D}{C}$}{alternate interior, $AB \parallel CD$}
+\step{$\ang{A}{O}{B} \cong \ang{D}{O}{C}$}{vertical angles}
+\end{steps}
+The side $AO$ lies between the angles of steps 2 and 3, and so does $DO$: $\tri{AOB} \cong \tri{DOC}$ by ASA. So $\seg{BO} \cong \seg{OC}$. \hfill QED
+\tcblower
+$AB \parallel CD$. I segmenti $AD$ e $BC$ si incontrano in $O$, e $O$ è il punto medio di $AD$. Dimostra che $O$ è anche il punto medio di $BC$.\\
+Considero $\tri{AOB}$ e $\tri{DOC}$:
+\begin{steps}
+\step{$\seg{AO} \cong \seg{OD}$}{per ipotesi}
+\step{$\ang{O}{A}{B} \cong \ang{O}{D}{C}$}{alterni interni, $AB \parallel CD$}
+\step{$\ang{A}{O}{B} \cong \ang{D}{O}{C}$}{opposti al vertice}
+\end{steps}
+Il lato $AO$ è compreso tra gli angoli dei passi 2 e 3, e così $DO$: $\tri{AOB} \cong \tri{DOC}$ per il secondo criterio. Quindi $\seg{BO} \cong \seg{OC}$. \hfill c.v.d.
+\end{proofbox}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === A(2,3.4) B(0,0) C(4,0); bisector foot = altitude foot = midpoint (2,0)
+% VERIFIED: python -> angle B = angle C = 59.53 ; angle BAH = CAH = 30.47
+\begin{tikzpicture}[scale=0.95]
+  \foreach \x/\lab/\foot/\name in {0/D/P4 (SAS \textperiodcentered\ LAL)/P4, 6.2/H/P5 (SAS \textperiodcentered\ LAL)/P5} {
+    \begin{scope}[shift={(\x,0)}]
+      \coordinate (A) at (2,3.4); \coordinate (B) at (0,0); \coordinate (C) at (4,0); \coordinate (F) at (2,0);
+      \fill[angB!15] (A) -- (B) -- (F) -- cycle; \fill[angC!15] (A) -- (C) -- (F) -- cycle;
+      \draw[side, tick1] (A) -- (B); \draw[side, tick1] (A) -- (C); \draw[side] (B) -- (C);
+      \draw[side, crimson] (A) -- (F);
+      \node[above] at (A) {$A$}; \node[below left] at (B) {$B$}; \node[below right] at (C) {$C$}; \node[below] at (F) {$\lab$};
+      \node[font=\small\bfseries] at (2,-0.9) {\foot};
+    \end{scope}
+  }
+  \begin{scope}
+    \coordinate (A) at (2,3.4); \coordinate (B) at (0,0); \coordinate (C) at (4,0); \coordinate (F) at (2,0);
+    \pic[draw, angA, angle radius=7mm] {angle=B--A--F}; \pic[draw, angA, angle radius=7.8mm] {angle=F--A--C};
+  \end{scope}
+  \begin{scope}[shift={(6.2,0)}]
+    \coordinate (A) at (2,3.4); \coordinate (B) at (0,0); \coordinate (C) at (4,0); \coordinate (F) at (2,0);
+    \rang{A}{F}{C}
+    \pic[draw, angB, angle radius=5mm] {angle=C--B--A}; \pic[draw, angB, angle radius=5mm] {angle=A--C--B};
+  \end{scope}
+\end{tikzpicture}
+\bicap{P4: the bisector $AD$ of the vertex angle. P5: the altitude $AH$ to the base.}%
+      {P4: la bisettrice $AD$ dell'angolo al vertice. P5: l'altezza $AH$ relativa alla base.}
+\label{fig:p45}
+\end{figure}
+
+\begin{proofbox}{P4, the base angles of an isosceles triangle are equal}{P4, gli angoli alla base di un triangolo isoscele sono congruenti}
+\textbf{Given:} $\tri{ABC}$ with $\seg{AB} \cong \seg{AC}$ (base $BC$). \textbf{To prove:} $\av{B} \cong \av{C}$.\\
+Draw the bisector $AD$ of the angle at $A$. Compare $\tri{ABD}$ and $\tri{ACD}$:
+\begin{steps}
+\step{$\seg{AB} \cong \seg{AC}$}{given}
+\step{$\ang{B}{A}{D} \cong \ang{C}{A}{D}$}{$AD$ is the bisector}
+\step{$\seg{AD}$ in both}{common side}
+\end{steps}
+$\tri{ABD} \cong \tri{ACD}$ by SAS, so $\av{B} \cong \av{C}$. \hfill QED\\
+\emph{Bonus:} also $\seg{BD} \cong \seg{DC}$, and the angles at $D$ are equal and fill a straight angle, so each is $90^\circ$. The bisector of the vertex angle is also median and altitude.
+\tcblower
+\textbf{Ipotesi:} $\tri{ABC}$ con $\seg{AB} \cong \seg{AC}$ (base $BC$). \textbf{Tesi:} $\av{B} \cong \av{C}$.\\
+Traccio la bisettrice $AD$ dell'angolo in $A$. Considero $\tri{ABD}$ e $\tri{ACD}$:
+\begin{steps}
+\step{$\seg{AB} \cong \seg{AC}$}{per ipotesi}
+\step{$\ang{B}{A}{D} \cong \ang{C}{A}{D}$}{$AD$ è bisettrice}
+\step{$\seg{AD}$ in comune}{lato in comune}
+\end{steps}
+$\tri{ABD} \cong \tri{ACD}$ per il primo criterio, quindi $\av{B} \cong \av{C}$. \hfill c.v.d.\\
+\emph{In più:} anche $\seg{BD} \cong \seg{DC}$, e gli angoli in $D$ sono congruenti e adiacenti, quindi ognuno è retto. La bisettrice dell'angolo al vertice è anche mediana e altezza.
+\end{proofbox}
+
+\begin{history}{the bridge of donkeys}{il ponte degli asini}
+P4 is Proposition 5 of Book I of Euclid's \emph{Elements}. In the Middle Ages it was nicknamed \emph{pons asinorum}, ``the bridge of donkeys'': the first real bridge a student had to cross, and the place where many stopped.
+\tcblower
+P4 è la Proposizione 5 del Libro I degli \emph{Elementi} di Euclide. Nel Medioevo fu soprannominata \emph{pons asinorum}, «il ponte degli asini»: il primo vero ponte che uno studente doveva attraversare, e il punto in cui molti si fermavano.
+\end{history}
+
+\begin{proofbox}{P5, the altitude of an isosceles triangle}{P5, l'altezza di un triangolo isoscele}
+\textbf{Given:} $\seg{AB} \cong \seg{AC}$; $AH$ is the altitude to the base $BC$, so $\ang{A}{H}{B} = \ang{A}{H}{C} = 90^\circ$.\\
+\textbf{To prove:} $\seg{BH} \cong \seg{HC}$, and $\tri{ABH} \cong \tri{ACH}$.
+\begin{steps}
+\step{$\av{B} \cong \av{C}$}{base angles, P4}
+\step{$\ang{B}{A}{H} = 180^\circ - 90^\circ - \av{B}$}{angle sum in $\tri{ABH}$}
+\step{$\ang{C}{A}{H} = 180^\circ - 90^\circ - \av{C}$}{angle sum in $\tri{ACH}$}
+\step{$\ang{B}{A}{H} \cong \ang{C}{A}{H}$}{from 1, 2, 3}
+\end{steps}
+Now compare $\tri{ABH}$ and $\tri{ACH}$: $\seg{AB} \cong \seg{AC}$ (given), $\seg{AH}$ common, and the angles between them are equal (step 4). By SAS, $\tri{ABH} \cong \tri{ACH}$. So $\seg{BH} \cong \seg{HC}$: $H$ is the midpoint of the base. \hfill QED\\
+\emph{Conclusion:} in an isosceles triangle the altitude to the base is also the median and the bisector.
+\tcblower
+\textbf{Ipotesi:} $\seg{AB} \cong \seg{AC}$; $AH$ è l'altezza relativa alla base $BC$, quindi $\ang{A}{H}{B} = \ang{A}{H}{C} = 90^\circ$.\\
+\textbf{Tesi:} $\seg{BH} \cong \seg{HC}$, e $\tri{ABH} \cong \tri{ACH}$.
+\begin{steps}
+\step{$\av{B} \cong \av{C}$}{angoli alla base, P4}
+\step{$\ang{B}{A}{H} = 180^\circ - 90^\circ - \av{B}$}{somma degli angoli di $\tri{ABH}$}
+\step{$\ang{C}{A}{H} = 180^\circ - 90^\circ - \av{C}$}{somma degli angoli di $\tri{ACH}$}
+\step{$\ang{B}{A}{H} \cong \ang{C}{A}{H}$}{da 1, 2, 3}
+\end{steps}
+Ora considero $\tri{ABH}$ e $\tri{ACH}$: $\seg{AB} \cong \seg{AC}$ (ipotesi), $\seg{AH}$ in comune, e gli angoli compresi sono congruenti (passo 4). Per il primo criterio $\tri{ABH} \cong \tri{ACH}$. Quindi $\seg{BH} \cong \seg{HC}$: $H$ è il punto medio della base. \hfill c.v.d.\\
+\emph{Conclusione:} in un triangolo isoscele l'altezza relativa alla base è anche mediana e bisettrice.
+\end{proofbox}
+
+\begin{tutor}[another route for P5]
+After step 4, ASA works too (side $AB$ with $\av{B}$ and $\ang{B}{A}{H}$). Some textbooks instead use the right triangle criterion (hypotenuse and one leg: $AB \cong AC$, $AH$ common), which is correct but usually comes later in the Italian syllabus. The route above uses only what she already has: the first criterion, P4 and the angle sum.
+\end{tutor}
+
+\bisubsection{The two problems from the notebook}{I due problemi del quaderno}\label{sec:notebook}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION ===
+% P6: A(0,3) B(-1.5,0) C(1.5,0); AD = AE = 0.45 AB on the extensions beyond A: D(0.675,4.35), E(-0.675,4.35)
+%     VERIFIED: BD = CE ; BE = CD ; angle BAE = CAD = 126.87
+% P7: A(0,0) B(4,0) C(2,4.5); M(3,2.25) N(1,2.25) G(2,1.5)
+%     VERIFIED: AN = BM ; GN = GM ; angle NAG = MBG ; angle ANG = BMG
+\begin{tikzpicture}[scale=0.95]
+  \begin{scope}
+    \coordinate (A) at (0,3); \coordinate (B) at (-1.5,0); \coordinate (C) at (1.5,0);
+    \coordinate (D) at (0.675,4.35); \coordinate (E) at (-0.675,4.35);
+    \fill[angB!15] (A) -- (B) -- (E) -- cycle; \fill[angC!15] (A) -- (C) -- (D) -- cycle;
+    \draw[side, tick1] (A) -- (B); \draw[side, tick1] (A) -- (C); \draw[side] (B) -- (C);
+    \draw[side, tick2] (A) -- (D); \draw[side, tick2] (A) -- (E);
+    \draw[helper, angB] (B) -- (E); \draw[helper, angC] (C) -- (D);
+    \node[right] at ($(A)+(0.05,-0.1)$) {$A$}; \node[below left] at (B) {$B$}; \node[below right] at (C) {$C$};
+    \node[above right] at (D) {$D$}; \node[above left] at (E) {$E$};
+    \node[font=\small\bfseries] at (0,-0.9) {P6};
+  \end{scope}
+  \begin{scope}[shift={(4.2,0)}]
+    \coordinate (A) at (0,0); \coordinate (B) at (4,0); \coordinate (C) at (2,4.5);
+    \coordinate (M) at (3,2.25); \coordinate (N) at (1,2.25); \coordinate (G) at (2,1.5);
+    \fill[angB!18] (A) -- (G) -- (N) -- cycle; \fill[angC!18] (B) -- (G) -- (M) -- cycle;
+    \draw[side] (A) -- (B);
+    \draw[side, tick1] (A) -- (N); \draw[side, tick1] (N) -- (C);
+    \draw[side, tick1] (C) -- (M); \draw[side, tick1] (M) -- (B);
+    \draw[side, crimson] (A) -- (M); \draw[side, crimson] (B) -- (N);
+    \node[below left] at (A) {$A$}; \node[below right] at (B) {$B$}; \node[above] at (C) {$C$};
+    \node[above left] at (N) {$N$}; \node[above right] at (M) {$M$}; \node[below] at ($(G)+(0,-0.08)$) {$G$};
+    \node[font=\small\bfseries] at (2,-0.9) {P7};
+  \end{scope}
+\end{tikzpicture}
+\bicap{P6: the legs $BA$ and $CA$ extended beyond $A$ by $AD \cong AE$. P7: isosceles triangle with base $AB$, medians $AM$ and $BN$ meeting at $G$.}%
+      {P6: i lati $BA$ e $CA$ prolungati oltre $A$ di $AD \cong AE$. P7: triangolo isoscele di base $AB$, mediane $AM$ e $BN$ che si incontrano in $G$.}
+\label{fig:p67}
+\end{figure}
+
+\begin{proofbox}{P6, notebook problem 1}{P6, problema 1 del quaderno}
+\emph{Given the isosceles triangle $ABC$ with base $BC$, extend the sides $BA$ and $CA$ beyond the vertex $A$ by two congruent segments $AD$ and $AE$. Prove that $BD$ and $CE$ are congruent.}\\
+\textbf{Given:} $\seg{AB} \cong \seg{AC}$; $\seg{AD} \cong \seg{AE}$; $D$ on the extension of $BA$, $E$ on the extension of $CA$.\\
+\textbf{(a) As written.} $\seg{BD} = \seg{BA} + \seg{AD}$ and $\seg{CE} = \seg{CA} + \seg{AE}$. Both are sums of congruent segments, so $\seg{BD} \cong \seg{CE}$. \hfill QED\\
+\textbf{(b) The usual textbook version: prove $\seg{BE} \cong \seg{CD}$.} Compare $\tri{ABE}$ and $\tri{ACD}$:
+\begin{steps}
+\step{$\seg{AB} \cong \seg{AC}$}{given}
+\step{$\seg{AE} \cong \seg{AD}$}{given}
+\step{$\ang{B}{A}{E} \cong \ang{C}{A}{D}$}{vertical angles}
+\end{steps}
+By SAS $\tri{ABE} \cong \tri{ACD}$, so $\seg{BE} \cong \seg{CD}$. \hfill QED
+\tcblower
+\emph{Dato il triangolo isoscele $ABC$ di base $BC$, si prolunghino, oltre il vertice $A$, i lati $BA$ e $CA$ di due segmenti congruenti $AD$ e $AE$. Dimostra che $BD$ e $CE$ sono congruenti.}\\
+\textbf{Ipotesi:} $\seg{AB} \cong \seg{AC}$; $\seg{AD} \cong \seg{AE}$; $D$ sul prolungamento di $BA$, $E$ sul prolungamento di $CA$.\\
+\textbf{(a) Come è scritto.} $\seg{BD} = \seg{BA} + \seg{AD}$ e $\seg{CE} = \seg{CA} + \seg{AE}$. Sono somme di segmenti congruenti, quindi $\seg{BD} \cong \seg{CE}$. \hfill c.v.d.\\
+\textbf{(b) La versione solita dei libri: dimostra che $\seg{BE} \cong \seg{CD}$.} Considero $\tri{ABE}$ e $\tri{ACD}$:
+\begin{steps}
+\step{$\seg{AB} \cong \seg{AC}$}{per ipotesi}
+\step{$\seg{AE} \cong \seg{AD}$}{per ipotesi}
+\step{$\ang{B}{A}{E} \cong \ang{C}{A}{D}$}{opposti al vertice}
+\end{steps}
+Per il primo criterio $\tri{ABE} \cong \tri{ACD}$, quindi $\seg{BE} \cong \seg{CD}$. \hfill c.v.d.
+\end{proofbox}
+
+\begin{tutor}[about P6]
+As copied in her notebook, the thesis is $BD \cong CE$, which needs no triangles at all (part a). Textbook versions of this exercise normally ask for $BE \cong CD$ (part b), which is where a congruence criterion is needed. Check with her which one the teacher meant; both are solved here.
+\end{tutor}
+
+\begin{proofbox}{P7, notebook problem 2}{P7, problema 2 del quaderno}
+\emph{In the isosceles triangle $ABC$ with base $AB$, let $G$ be the point where the medians $AM$ and $BN$ to the equal sides meet. Prove that $\tri{AGN} \cong \tri{BGM}$.}\\
+\textbf{Given:} $\seg{AC} \cong \seg{BC}$; $M$ midpoint of $BC$, $N$ midpoint of $AC$.
+\begin{steps}
+\step{$\seg{AN} \cong \seg{BM}$}{halves of congruent sides}
+\step{$\tri{ABN} \cong \tri{BAM}$: $AB$ common, $\seg{AN} \cong \seg{BM}$, $\av{A} \cong \av{B}$}{SAS; base angles, P4}
+\step{so $\ang{A}{N}{B} \cong \ang{B}{M}{A}$ and $\ang{A}{B}{N} \cong \ang{B}{A}{M}$}{corresponding parts}
+\step{$\ang{N}{A}{G} = \av{A} - \ang{B}{A}{M} \cong \av{B} - \ang{A}{B}{N} = \ang{M}{B}{G}$}{differences of congruent angles}
+\end{steps}
+Now $\tri{AGN}$ and $\tri{BGM}$ have $\seg{AN} \cong \seg{BM}$ (step 1) and the two angles next to it congruent: $\ang{N}{A}{G} \cong \ang{M}{B}{G}$ (step 4) and $\ang{A}{N}{G} \cong \ang{B}{M}{G}$ (step 3). By ASA, $\tri{AGN} \cong \tri{BGM}$. \hfill QED
+\tcblower
+\emph{Del triangolo isoscele $ABC$, di base $AB$, sia $G$ il punto d'incontro delle mediane $AM$ e $BN$ relative ai lati congruenti; dimostra che i triangoli $AGN$ e $BGM$ sono congruenti.}\\
+\textbf{Ipotesi:} $\seg{AC} \cong \seg{BC}$; $M$ punto medio di $BC$, $N$ punto medio di $AC$.
+\begin{steps}
+\step{$\seg{AN} \cong \seg{BM}$}{metà di lati congruenti}
+\step{$\tri{ABN} \cong \tri{BAM}$: $AB$ in comune, $\seg{AN} \cong \seg{BM}$, $\av{A} \cong \av{B}$}{primo criterio; angoli alla base, P4}
+\step{quindi $\ang{A}{N}{B} \cong \ang{B}{M}{A}$ e $\ang{A}{B}{N} \cong \ang{B}{A}{M}$}{elementi omologhi}
+\step{$\ang{N}{A}{G} = \av{A} - \ang{B}{A}{M} \cong \av{B} - \ang{A}{B}{N} = \ang{M}{B}{G}$}{differenze di angoli congruenti}
+\end{steps}
+Ora $\tri{AGN}$ e $\tri{BGM}$ hanno $\seg{AN} \cong \seg{BM}$ (passo 1) e i due angoli adiacenti congruenti: $\ang{N}{A}{G} \cong \ang{M}{B}{G}$ (passo 4) e $\ang{A}{N}{G} \cong \ang{B}{M}{G}$ (passo 3). Per il secondo criterio $\tri{AGN} \cong \tri{BGM}$. \hfill c.v.d.
+\end{proofbox}
+
+\begin{think}{find the mistake}{trova l'errore}
+A student writes: ``$\tri{ABC}$ and $\tri{DEF}$ have $\seg{AB} \cong \seg{DE}$, $\seg{BC} \cong \seg{EF}$ and $\av{A} \cong \av{D}$. By the first criterion they are congruent.'' What is wrong?
+\answer The angle $\av{A}$ is not \emph{between} the sides $AB$ and $BC$; the angle between them is $\av{B}$. This is the SSA case of Figure~\ref{fig:ssa}, which is not a criterion. Always check that the angle sits where the two sides meet.
+\tcblower
+Uno studente scrive: «$\tri{ABC}$ e $\tri{DEF}$ hanno $\seg{AB} \cong \seg{DE}$, $\seg{BC} \cong \seg{EF}$ e $\av{A} \cong \av{D}$. Per il primo criterio sono congruenti.» Che cosa c'è di sbagliato?
+\answer L'angolo $\av{A}$ non è \emph{compreso} tra i lati $AB$ e $BC$; l'angolo compreso è $\av{B}$. È il caso LLA della figura~\ref{fig:ssa}, che non è un criterio. Controlla sempre che l'angolo stia dove i due lati si incontrano.
+\end{think}
+
+\begin{keyidea}{}{}
+Congruence is a promise that the tracing fits. Three well chosen facts (SAS, ASA, SSS) are enough to make that promise, and once it is made, every other corresponding part comes for free.
+\tcblower
+La congruenza è la promessa che il ricalco combacia. Tre fatti scelti bene (LAL, ALA, LLL) bastano per fare questa promessa, e una volta fatta, tutti gli altri elementi omologhi arrivano gratis.
+\end{keyidea}
+
+% ===== end ch3-congruence.tex =====
+
+% ===== begin ch4-exercises.tex =====
+% STATUS: COMPLETE DRAFT
+% Chapter 4 : exercises (solutions in Appendix A). Every number is checked in scripts/verify.py
+\bichapter{Exercises}{Esercizi}\label{ch:exercises}
+
+\begin{bi}
+\colheads
+Try each exercise before looking at the solutions in Appendix~\ref{app:solutions}. For the proofs, follow the three steps of section~\ref{sec:howto}: figure, hypothesis and thesis, then the chain of reasons.
+\IT
+Prova ogni esercizio prima di guardare le soluzioni nell'appendice~\ref{app:solutions}. Per le dimostrazioni segui i tre passi del paragrafo~\ref{sec:howto}: figura, ipotesi e tesi, poi la catena dei motivi.
+\end{bi}
+
+\begin{exercise}{A, angles}{A, angoli}
+\begin{enumerate}[label=\textbf{A\arabic*.}, leftmargin=2.2em]
+\item Find the complement, the supplement and the explement of $72^\circ$.
+\item What angle do the hands of a clock make at 7:20?
+\item Of 40 students, 14 come to school by bus, 10 by bike, 8 by car and 8 on foot. Find the angles of the pie chart.
+\item (a) Which angle is equal to its complement? (b) Which angle is three times its supplement?
+\item Two vertical angles measure $4x + 10^\circ$ and $2x + 50^\circ$. Find $x$ and all four angles of the X.
+\end{enumerate}
+\tcblower
+\begin{enumerate}[label=\textbf{A\arabic*.}, leftmargin=2.2em]
+\item Trova il complementare, il supplementare e l'esplementare di $72^\circ$.
+\item Che angolo formano le lancette dell'orologio alle 7:20?
+\item Su 40 studenti, 14 vengono a scuola in autobus, 10 in bici, 8 in auto e 8 a piedi. Trova gli angoli dell'areogramma.
+\item (a) Quale angolo è congruente al suo complementare? (b) Quale angolo è il triplo del suo supplementare?
+\item Due angoli opposti al vertice misurano $4x + 10^\circ$ e $2x + 50^\circ$. Trova $x$ e tutti e quattro gli angoli della X.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{B, parallel lines}{B, rette parallele}
+\begin{enumerate}[label=\textbf{B\arabic*.}, leftmargin=2.2em]
+\item In Figure~\ref{fig:exfig}a, $r \parallel s$ and one angle is $118^\circ$. Find the other seven and, where the pair has a name, say what pair each forms with the $118^\circ$ angle.
+\item Two corresponding angles measure $5x - 20^\circ$ and $3x + 30^\circ$ ($r \parallel s$). Find $x$ and the angles.
+\item True or false? (a) Alternate exterior angles add up to $180^\circ$. (b) If $r \parallel s$, same side interior angles add up to $180^\circ$. (c) If the alternate interior angles are equal, the lines are parallel.
+\end{enumerate}
+\tcblower
+\begin{enumerate}[label=\textbf{B\arabic*.}, leftmargin=2.2em]
+\item Nella figura~\ref{fig:exfig}a, $r \parallel s$ e un angolo misura $118^\circ$. Trova gli altri sette e, quando la coppia ha un nome, di' che coppia forma ciascuno con l'angolo di $118^\circ$.
+\item Due angoli corrispondenti misurano $5x - 20^\circ$ e $3x + 30^\circ$ ($r \parallel s$). Trova $x$ e gli angoli.
+\item Vero o falso? (a) Gli angoli alterni esterni hanno somma $180^\circ$. (b) Se $r \parallel s$, gli angoli coniugati interni hanno somma $180^\circ$. (c) Se gli angoli alterni interni sono congruenti, le rette sono parallele.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{C, triangles and altitudes}{C, triangoli e altezze}
+\begin{enumerate}[label=\textbf{C\arabic*.}, leftmargin=2.2em]
+\item The angles of a triangle are in the ratio $2 : 3 : 4$. Find them.
+\item In an isosceles triangle the vertex angle is twice each base angle. Find the three angles. What kind of triangle is it?
+\item Can a triangle have two obtuse angles? Two right angles? Explain.
+\item A triangle has a side of 10\,cm with altitude 6\,cm. Another side is 12\,cm. How long is the altitude to that side?
+\item Draw an obtuse triangle and its three altitudes. Where is the orthocentre?
+\end{enumerate}
+\tcblower
+\begin{enumerate}[label=\textbf{C\arabic*.}, leftmargin=2.2em]
+\item Gli angoli di un triangolo stanno nel rapporto $2 : 3 : 4$. Trovali.
+\item In un triangolo isoscele l'angolo al vertice è il doppio di ciascun angolo alla base. Trova i tre angoli. Che triangolo è?
+\item Un triangolo può avere due angoli ottusi? Due angoli retti? Spiega.
+\item Un triangolo ha un lato di 10\,cm con altezza 6\,cm. Un altro lato misura 12\,cm. Quanto è lunga l'altezza relativa a quel lato?
+\item Disegna un triangolo ottusangolo e le sue tre altezze. Dove si trova l'ortocentro?
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{D, congruence proofs}{D, dimostrazioni di congruenza}
+\begin{enumerate}[label=\textbf{D\arabic*.}, leftmargin=2.2em]
+\item $ABC$ is isosceles with base $BC$. Take $D$ on $AB$ and $E$ on $AC$ with $\seg{AD} \cong \seg{AE}$. Prove $\seg{BE} \cong \seg{CD}$.
+\item $ABC$ is equilateral. Take $D$ on $AB$, $E$ on $BC$, $F$ on $CA$ with $\seg{AD} \cong \seg{BE} \cong \seg{CF}$ (Figure~\ref{fig:exfig}b). Prove that $DEF$ is equilateral.
+\item $ABC$ is isosceles with base $BC$ and $M$ is the midpoint of $BC$. Prove that $AM \perp BC$, using the third criterion.
+\item $M$ is the midpoint of $AB$ and $r$ is a line through $M$. $H$ and $K$ are the feet of the perpendiculars from $A$ and $B$ to $r$ (Figure~\ref{fig:exfig}c). Prove $\seg{AH} \cong \seg{BK}$.
+\item Find the mistake: ``$\av{A} \cong \av{D}$, $\av{B} \cong \av{E}$, $\av{C} \cong \av{F}$, so $\tri{ABC} \cong \tri{DEF}$.''
+\end{enumerate}
+\tcblower
+\begin{enumerate}[label=\textbf{D\arabic*.}, leftmargin=2.2em]
+\item $ABC$ è isoscele di base $BC$. Prendi $D$ su $AB$ ed $E$ su $AC$ con $\seg{AD} \cong \seg{AE}$. Dimostra che $\seg{BE} \cong \seg{CD}$.
+\item $ABC$ è equilatero. Prendi $D$ su $AB$, $E$ su $BC$, $F$ su $CA$ con $\seg{AD} \cong \seg{BE} \cong \seg{CF}$ (figura~\ref{fig:exfig}b). Dimostra che $DEF$ è equilatero.
+\item $ABC$ è isoscele di base $BC$ e $M$ è il punto medio di $BC$. Dimostra che $AM \perp BC$, usando il terzo criterio.
+\item $M$ è il punto medio di $AB$ e $r$ è una retta per $M$. $H$ e $K$ sono i piedi delle perpendicolari da $A$ e da $B$ a $r$ (figura~\ref{fig:exfig}c). Dimostra che $\seg{AH} \cong \seg{BK}$.
+\item Trova l'errore: «$\av{A} \cong \av{D}$, $\av{B} \cong \av{E}$, $\av{C} \cong \av{F}$, quindi $\tri{ABC} \cong \tri{DEF}$.»
+\end{enumerate}
+\end{exercise}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION ===
+% (a) r: y = 1.8, s: y = 0, transversal through Q = (0,0) at 118 deg (so the angle above s on the right is 118):
+%     P = (1.8/tan118, 1.8) = (-0.957, 1.8).  VERIFIED: 180 - 118 = 62
+% (b) equilateral A(0,0) B(3.2,0) C(1.6,2.771); t = 0.3: D(0.96,0) E(2.72,0.831) F(1.12,1.940)
+%     VERIFIED (scaled model in verify.py, side 4): DE = EF = FD
+% (c) A(0,0) B(4,0) M(2,0); r through M at 35 deg; H(0.658,-0.940) K(3.342,0.940). VERIFIED: AH = BK = 1.1472
+\begin{tikzpicture}[scale=0.95]
+  \begin{scope}
+    \coordinate (Q) at (0,0); \coordinate (P) at (-0.957,1.8);
+    \draw[side] (-2.2,1.8) -- (1.6,1.8) node[right] {$r$};
+    \draw[side] (-2.2,0) -- (1.6,0) node[right] {$s$};
+    \draw[side] ($(Q)!-0.45!(P)$) -- ($(Q)!1.45!(P)$) node[above] {$t$};
+    \fill[angA!35] (Q) -- ++(0:0.45) arc (0:118:0.45) -- cycle;
+    \node[font=\small, angA] at ($(Q)+(59:0.75)$) {$118^\circ$};
+    \node[font=\small\bfseries] at (-0.3,-1.25) {(a)};
+  \end{scope}
+  \begin{scope}[shift={(4.3,-0.2)}]
+    \coordinate (A) at (0,0); \coordinate (B) at (3.2,0); \coordinate (C) at (1.6,2.771);
+    \coordinate (D) at (0.96,0); \coordinate (E) at (2.72,0.831); \coordinate (F) at (1.12,1.940);
+    \draw[side] (A) -- (B) -- (C) -- cycle;
+    \fill[angB!15] (D) -- (E) -- (F) -- cycle; \draw[side, angB] (D) -- (E) -- (F) -- cycle;
+    \draw[tick1] (A) -- (D); \draw[tick1] (B) -- (E); \draw[tick1] (C) -- (F);
+    \node[below left] at (A) {$A$}; \node[below right] at (B) {$B$}; \node[above] at (C) {$C$};
+    \node[below] at (D) {$D$}; \node[right] at (E) {$E$}; \node[left] at (F) {$F$};
+    \node[font=\small\bfseries] at (1.6,-1.05) {(b)};
+  \end{scope}
+  \begin{scope}[shift={(9.2,0.4)}]
+    \coordinate (A) at (0,0); \coordinate (B) at (4,0); \coordinate (M) at (2,0);
+    \coordinate (H) at (0.658,-0.940); \coordinate (K) at (3.342,0.940);
+    \draw[side] ($(M)+(215:2.6)$) -- ($(M)+(35:2.6)$) node[above right] {$r$};
+    \draw[side] (A) -- (B);
+    \draw[side, angB] (A) -- (H); \draw[side, angB] (B) -- (K);
+    \rang{A}{H}{M} \rang{B}{K}{M}
+    \node[left] at (A) {$A$}; \node[right] at (B) {$B$}; \node[below] at ($(M)+(0.1,-0.05)$) {$M$};
+    \node[below] at (H) {$H$}; \node[above] at (K) {$K$};
+    \node[font=\small\bfseries] at (2,-1.65) {(c)};
+  \end{scope}
+\end{tikzpicture}
+\bicap{Figures for exercises B1, D2 and D4.}{Figure per gli esercizi B1, D2 e D4.}
+\label{fig:exfig}
+\end{figure}
+
+% ===== end ch4-exercises.tex =====
+
+\appendix
+\titleformat{\chapter}[display]
+  {\normalfont\bfseries\color{navy}}
+  {\LARGE\sffamily Appendix\,/\,Appendice \thechapter}
+  {6pt}
+  {\Huge}
+% ===== begin appA-solutions.tex =====
+% STATUS: COMPLETE DRAFT
+% Appendix A : solutions. Every number is checked in scripts/verify.py
+\bichapter{Solutions}{Soluzioni}\label{app:solutions}
+
+\begin{solution}{A, angles}{A, angoli}
+\begin{enumerate}[label=\textbf{A\arabic*.}, leftmargin=2.2em]
+\item Complement $90 - 72 = 18^\circ$; supplement $180 - 72 = 108^\circ$; explement $360 - 72 = 288^\circ$.
+\item Minute hand: $20 \times 6^\circ = 120^\circ$. Hour hand: $7 \times 30^\circ + 20 \times 0.5^\circ = 220^\circ$. Angle: $220^\circ - 120^\circ = 100^\circ$.
+\item $\frac{14}{40} \cdot 360^\circ = 126^\circ$, $\frac{10}{40} \cdot 360^\circ = 90^\circ$, $\frac{8}{40} \cdot 360^\circ = 72^\circ$ twice. Check: $126 + 90 + 72 + 72 = 360$.
+\item (a) $x = 90 - x$, so $x = 45^\circ$. (b) $x = 3(180 - x)$, so $4x = 540$ and $x = 135^\circ$; its supplement is $45^\circ$ and $3 \times 45 = 135$.
+\item Vertical angles are equal: $4x + 10 = 2x + 50$, $x = 20$. Each is $90^\circ$, so the two neighbours are $90^\circ$ too: the lines are perpendicular.
+\end{enumerate}
+% VERIFIED: python -> 18, 108, 288 ; clock(7,20) = 100 ; 126, 90, 72, 72 ; 45 ; 135 ; x = 20 -> 90
+\tcblower
+\begin{enumerate}[label=\textbf{A\arabic*.}, leftmargin=2.2em]
+\item Complementare $90 - 72 = 18^\circ$; supplementare $180 - 72 = 108^\circ$; esplementare $360 - 72 = 288^\circ$.
+\item Minuti: $20 \cdot 6^\circ = 120^\circ$. Ore: $7 \cdot 30^\circ + 20 \cdot 0{,}5^\circ = 220^\circ$. Angolo: $220^\circ - 120^\circ = 100^\circ$.
+\item $\frac{14}{40} \cdot 360^\circ = 126^\circ$, $\frac{10}{40} \cdot 360^\circ = 90^\circ$, $\frac{8}{40} \cdot 360^\circ = 72^\circ$ due volte. Verifica: $126 + 90 + 72 + 72 = 360$.
+\item (a) $x = 90 - x$, quindi $x = 45^\circ$. (b) $x = 3(180 - x)$, quindi $4x = 540$ e $x = 135^\circ$; il suo supplementare è $45^\circ$ e $3 \cdot 45 = 135$.
+\item Gli angoli opposti al vertice sono congruenti: $4x + 10 = 2x + 50$, $x = 20$. Ognuno misura $90^\circ$, quindi anche gli altri due: le rette sono perpendicolari.
+\end{enumerate}
+\end{solution}
+
+\begin{solution}{B, parallel lines}{B, rette parallele}
+\begin{enumerate}[label=\textbf{B\arabic*.}, leftmargin=2.2em]
+\item Only two values appear, $118^\circ$ and $180 - 118 = 62^\circ$. At the same crossing: the vertical angle is $118^\circ$, the two adjacent ones are $62^\circ$. At the other crossing: the corresponding angle and the alternate interior angle are $118^\circ$; the same side interior angle is $62^\circ$, and the angle vertical to it is $62^\circ$.
+\item $5x - 20 = 3x + 30$, so $x = 25$ and each angle is $105^\circ$.
+\item (a) False: they are equal. (b) True. (c) True: this is the test for parallel lines.
+\end{enumerate}
+% VERIFIED: python -> 62 ; x = 25 -> 105
+\tcblower
+\begin{enumerate}[label=\textbf{B\arabic*.}, leftmargin=2.2em]
+\item Compaiono solo due valori, $118^\circ$ e $180 - 118 = 62^\circ$. Nello stesso incrocio: l'opposto al vertice misura $118^\circ$, i due adiacenti $62^\circ$. Nell'altro incrocio: il corrispondente e l'alterno interno misurano $118^\circ$; il coniugato interno misura $62^\circ$, e anche il suo opposto al vertice.
+\item $5x - 20 = 3x + 30$, quindi $x = 25$ e ogni angolo misura $105^\circ$.
+\item (a) Falso: sono congruenti. (b) Vero. (c) Vero: è il criterio di parallelismo.
+\end{enumerate}
+\end{solution}
+
+\begin{solution}{C, triangles and altitudes}{C, triangoli e altezze}
+\begin{enumerate}[label=\textbf{C\arabic*.}, leftmargin=2.2em]
+\item $2k + 3k + 4k = 180^\circ$, $k = 20^\circ$: the angles are $40^\circ$, $60^\circ$, $80^\circ$ (acute triangle).
+\item $x + x + 2x = 180^\circ$, $x = 45^\circ$: angles $45^\circ$, $45^\circ$, $90^\circ$. A right isosceles triangle, half of a square.
+\item No to both. Two obtuse angles already exceed $180^\circ$. Two right angles already make $180^\circ$ and leave $0^\circ$ for the third, so the two sides would be parallel and never meet.
+\item Area $= \frac{10 \times 6}{2} = 30\,\text{cm}^2$. With base 12: $\frac{12 \times h}{2} = 30$, so $h = 5$\,cm.
+\item Outside the triangle, beyond the vertex of the obtuse angle (Figure~\ref{fig:ortho}, right).
+\end{enumerate}
+% VERIFIED: python -> k = 20 ; 45 ; area 30 ; altitude 5
+\tcblower
+\begin{enumerate}[label=\textbf{C\arabic*.}, leftmargin=2.2em]
+\item $2k + 3k + 4k = 180^\circ$, $k = 20^\circ$: gli angoli sono $40^\circ$, $60^\circ$, $80^\circ$ (triangolo acutangolo).
+\item $x + x + 2x = 180^\circ$, $x = 45^\circ$: angoli $45^\circ$, $45^\circ$, $90^\circ$. Un triangolo rettangolo isoscele, metà di un quadrato.
+\item No in entrambi i casi. Due angoli ottusi superano già $180^\circ$. Due angoli retti fanno già $180^\circ$ e lasciano $0^\circ$ al terzo, quindi i due lati sarebbero paralleli e non si incontrerebbero.
+\item Area $= \frac{10 \cdot 6}{2} = 30\,\text{cm}^2$. Con base 12: $\frac{12 \cdot h}{2} = 30$, quindi $h = 5$\,cm.
+\item Fuori dal triangolo, oltre il vertice dell'angolo ottuso (figura~\ref{fig:ortho}, a destra).
+\end{enumerate}
+\end{solution}
+
+\begin{solution}{D, congruence proofs}{D, dimostrazioni di congruenza}
+\begin{enumerate}[label=\textbf{D\arabic*.}, leftmargin=2.2em]
+\item In $\tri{ABE}$ and $\tri{ACD}$: $\seg{AB} \cong \seg{AC}$ (given), $\seg{AE} \cong \seg{AD}$ (given), $\av{A}$ common. By SAS they are congruent, so $\seg{BE} \cong \seg{CD}$.
+\item $\seg{AF} = \seg{AC} - \seg{CF}$, $\seg{BD} = \seg{BA} - \seg{AD}$, $\seg{CE} = \seg{CB} - \seg{BE}$: differences of congruent segments, so $\seg{AF} \cong \seg{BD} \cong \seg{CE}$. Triangles $ADF$, $BED$, $CFE$ have two sides congruent ($AD \cong BE \cong CF$ and $AF \cong BD \cong CE$) and the angle between them equal to $60^\circ$. By SAS they are congruent, so $\seg{DF} \cong \seg{ED} \cong \seg{FE}$.
+\item In $\tri{ABM}$ and $\tri{ACM}$: $\seg{AB} \cong \seg{AC}$, $\seg{BM} \cong \seg{MC}$, $\seg{AM}$ common. By SSS $\ang{A}{M}{B} \cong \ang{A}{M}{C}$. They are adjacent, so they add up to $180^\circ$ and each is $90^\circ$.
+\item In $\tri{AMH}$ and $\tri{BMK}$: $\seg{AM} \cong \seg{MB}$; $\ang{A}{M}{H} \cong \ang{B}{M}{K}$ (vertical); the angles at $H$ and $K$ are right, so $\ang{M}{A}{H} \cong \ang{M}{B}{K}$ (angle sum). By ASA, $\seg{AH} \cong \seg{BK}$.
+\item Three equal angles (AAA) are not a criterion: the triangles have the same shape but may have different sizes (Figure~\ref{fig:notcong}b).
+\end{enumerate}
+\tcblower
+\begin{enumerate}[label=\textbf{D\arabic*.}, leftmargin=2.2em]
+\item In $\tri{ABE}$ e $\tri{ACD}$: $\seg{AB} \cong \seg{AC}$ (ipotesi), $\seg{AE} \cong \seg{AD}$ (ipotesi), $\av{A}$ in comune. Per il primo criterio sono congruenti, quindi $\seg{BE} \cong \seg{CD}$.
+\item $\seg{AF} = \seg{AC} - \seg{CF}$, $\seg{BD} = \seg{BA} - \seg{AD}$, $\seg{CE} = \seg{CB} - \seg{BE}$: differenze di segmenti congruenti, quindi $\seg{AF} \cong \seg{BD} \cong \seg{CE}$. I triangoli $ADF$, $BED$, $CFE$ hanno due lati congruenti ($AD \cong BE \cong CF$ e $AF \cong BD \cong CE$) e l'angolo compreso di $60^\circ$. Per il primo criterio sono congruenti, quindi $\seg{DF} \cong \seg{ED} \cong \seg{FE}$.
+\item In $\tri{ABM}$ e $\tri{ACM}$: $\seg{AB} \cong \seg{AC}$, $\seg{BM} \cong \seg{MC}$, $\seg{AM}$ in comune. Per il terzo criterio $\ang{A}{M}{B} \cong \ang{A}{M}{C}$. Sono adiacenti, quindi la somma è $180^\circ$ e ognuno è retto.
+\item In $\tri{AMH}$ e $\tri{BMK}$: $\seg{AM} \cong \seg{MB}$; $\ang{A}{M}{H} \cong \ang{B}{M}{K}$ (opposti al vertice); gli angoli in $H$ e $K$ sono retti, quindi $\ang{M}{A}{H} \cong \ang{M}{B}{K}$ (somma degli angoli). Per il secondo criterio $\seg{AH} \cong \seg{BK}$.
+\item Tre angoli congruenti (AAA) non sono un criterio: i triangoli hanno la stessa forma ma possono avere grandezze diverse (figura~\ref{fig:notcong}b).
+\end{enumerate}
+\end{solution}
+
+% ===== end appA-solutions.tex =====
+
+% ===== begin appB-summary.tex =====
+% STATUS: COMPLETE DRAFT
+% Appendix B : one page summary sheet (formulario)
+\bichapter{Summary sheet}{Formulario}\label{app:summary}
+
+{\small
+\renewcommand{\arraystretch}{1.28}
+\rowcolors{2}{lightblue!55}{white}
+\begin{tabularx}{\textwidth}{@{}>{\bfseries\color{navy}\raggedright\arraybackslash}p{2.1cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash\itshape\leavevmode\color{itgreen}}X@{}}
+\toprule
+\rowcolor{white}
+& \textbf{English} & \textbf{\upshape Italiano}\\
+\midrule
+Angle \newline \textit{Angolo} &
+The turn between two rays with the same vertex. Full turn $360^\circ$; $1^\circ = 60'$, $1' = 60''$. Side length does not matter. &
+La rotazione tra due semirette con la stessa origine. Giro $360^\circ$; $1^\circ = 60'$, $1' = 60''$. La lunghezza dei lati non conta.\\
+Types \newline \textit{Tipi} &
+acute $<90^\circ$; right $=90^\circ$; obtuse between $90^\circ$ and $180^\circ$; straight $=180^\circ$; reflex between $180^\circ$ and $360^\circ$; full $=360^\circ$. &
+acuto $<90^\circ$; retto $=90^\circ$; ottuso tra $90^\circ$ e $180^\circ$; piatto $=180^\circ$; concavo tra $180^\circ$ e $360^\circ$; giro $=360^\circ$.\\
+Pairs \newline \textit{Coppie} &
+complementary: sum $90^\circ$; supplementary: sum $180^\circ$; explementary: sum $360^\circ$. Vertical angles are equal. &
+complementari: somma $90^\circ$; supplementari: somma $180^\circ$; esplementari: somma $360^\circ$. Gli angoli opposti al vertice sono congruenti.\\
+Parallels \newline \textit{Parallele} &
+If $r \parallel s$: corresponding (F) and alternate (Z) angles are equal; same side angles (C) add up to $180^\circ$. Equal Z angles $\Rightarrow$ parallel lines. &
+Se $r \parallel s$: angoli corrispondenti (F) e alterni (Z) congruenti; coniugati (C) con somma $180^\circ$. Alterni congruenti $\Rightarrow$ rette parallele.\\
+Triangle \newline \textit{Triangolo} &
+$\alpha + \beta + \gamma = 180^\circ$. Exterior angle $=$ sum of the two far interior angles. Each side $<$ sum of the other two. At most one right or obtuse angle. &
+$\alpha + \beta + \gamma = 180^\circ$. Angolo esterno $=$ somma dei due interni non adiacenti. Ogni lato $<$ somma degli altri due. Al massimo un angolo retto o ottuso.\\
+Isosceles \newline \textit{Isoscele} &
+Base angles are equal (P4). The altitude to the base is also median and bisector (P5). &
+Gli angoli alla base sono congruenti (P4). L'altezza relativa alla base è anche mediana e bisettrice (P5).\\
+Altitude \newline \textit{Altezza} &
+Segment from a vertex, perpendicular to the line of the opposite side. Three altitudes; their lines meet at the orthocentre (inside, at the right angle, or outside). Area $= \frac{\text{base} \times \text{altitude}}{2}$ with \emph{its own} base. &
+Segmento da un vertice, perpendicolare alla retta del lato opposto. Tre altezze; le loro rette si incontrano nell'ortocentro (dentro, sul vertice retto o fuori). Area $= \frac{\text{base} \cdot \text{altezza}}{2}$ con la \emph{sua} base.\\
+Median, bisector \newline \textit{Mediana, bisettrice} &
+Median: vertex to midpoint of the opposite side (medians meet at the centroid $G$). Bisector: splits the angle into two equal halves. &
+Mediana: dal vertice al punto medio del lato opposto (le mediane si incontrano nel baricentro $G$). Bisettrice: divide l'angolo in due parti congruenti.\\
+Congruent \newline \textit{Congruenti} &
+Same shape and same size: one covers the other after a slide, turn or flip. Corresponding parts are equal. &
+Stessa forma e stessa grandezza: uno copre l'altro dopo una traslazione, rotazione o ribaltamento. Gli elementi omologhi sono congruenti.\\
+Criteria \newline \textit{Criteri} &
+SAS: two sides and the angle between them. ASA: one side and the two angles next to it. SSS: three sides. \textbf{Not} criteria: AAA, SSA. &
+LAL: due lati e l'angolo compreso. ALA: un lato e i due angoli adiacenti. LLL: tre lati. \textbf{\upshape Non} sono criteri: AAA, LLA.\\
+Proof \newline \textit{Dimostrazione} &
+Figure $\to$ hypothesis $\to$ thesis $\to$ two triangles $\to$ criterion $\to$ corresponding parts $\to$ QED. &
+Figura $\to$ ipotesi $\to$ tesi $\to$ due triangoli $\to$ criterio $\to$ elementi omologhi $\to$ c.v.d.\\
+\bottomrule
+\end{tabularx}
+}
+
+\vspace{10pt}
+\begin{center}
+% === PRE-COMPUTATION === reuse of Figure fig:ZFC geometry (P = (0.933,2), Q = (0,0), t at 65 deg) and the criteria recipes
+\begin{tikzpicture}[scale=0.62]
+  \begin{scope}
+    \draw[black!35] (-1.2,2) -- (2.4,2); \draw[black!35] (-1.2,0) -- (2.4,0); \draw[black!35] (-0.3,-0.65) -- (1.25,2.7);
+    \draw[angA, line width=1.8pt, line join=round] (-1.0,2) -- (0.933,2) -- (0,0) -- (2.1,0);
+    \node[font=\small] at (0.5,-0.7) {Z: $=$};
+  \end{scope}
+  \begin{scope}[shift={(4,0)}]
+    \draw[black!35] (-1.2,2) -- (2.4,2); \draw[black!35] (-1.2,0) -- (2.4,0); \draw[black!35] (-0.3,-0.65) -- (1.25,2.7);
+    \draw[angB, line width=1.8pt, line join=round] (2.1,2) -- (0.933,2) -- (0,0) -- (2.1,0);
+    \draw[angB, line width=1.8pt] (0,0) -- (-0.3,-0.65);
+    \node[font=\small] at (0.5,-0.7) {F: $=$};
+  \end{scope}
+  \begin{scope}[shift={(8,0)}]
+    \draw[black!35] (-1.2,2) -- (2.4,2); \draw[black!35] (-1.2,0) -- (2.4,0); \draw[black!35] (-0.3,-0.65) -- (1.25,2.7);
+    \draw[angC, line width=1.8pt, line join=round] (2.1,2) -- (0.933,2) -- (0,0) -- (2.1,0);
+    \node[font=\small] at (0.5,-0.7) {C: $180^\circ$};
+  \end{scope}
+  \begin{scope}[shift={(12.5,0)}]
+    \draw[side, fill=angB!12] (0,0) -- (2.4,0) -- (0.9,2.1) -- cycle;
+    \coordinate (X0) at (0,0); \coordinate (X1) at (2.4,0); \coordinate (X2) at (0.9,2.1);
+    \draw[line width=2pt, angB] (X1) -- (X0) -- (X2);
+    \pic[draw, angB, angle radius=4mm] {angle=X1--X0--X2};
+    \node[font=\small] at (1.2,-0.7) {SAS \textperiodcentered\ LAL};
+  \end{scope}
+  \begin{scope}[shift={(16,0)}]
+    \coordinate (Y0) at (0,0); \coordinate (Y1) at (2.4,0); \coordinate (Y2) at (0.9,2.1);
+    \draw[side, fill=angB!12] (Y0) -- (Y1) -- (Y2) -- cycle;
+    \draw[line width=2pt, angB] (Y0) -- (Y1);
+    \pic[draw, angB, angle radius=4mm] {angle=Y1--Y0--Y2};
+    \pic[draw, angB, angle radius=4mm] {angle=Y2--Y1--Y0};
+    \node[font=\small] at (1.2,-0.7) {ASA \textperiodcentered\ ALA};
+  \end{scope}
+  \begin{scope}[shift={(19.5,0)}]
+    \draw[line width=2pt, angB, fill=angB!12] (0,0) -- (2.4,0) -- (0.9,2.1) -- cycle;
+    \node[font=\small] at (1.2,-0.7) {SSS \textperiodcentered\ LLL};
+  \end{scope}
+\end{tikzpicture}
+\end{center}
+
+% ===== end appB-summary.tex =====
+
+% ===== begin appC-glossary.tex =====
+% STATUS: COMPLETE DRAFT
+% Appendix C : English / Italian glossary and references (only real, verifiable sources)
+\bichapter{Glossary and references}{Glossario e bibliografia}\label{app:glossary}
+
+\section*{Glossary \textperiodcentered\ {\color{itgreen}\itshape Glossario}}
+{\small
+\renewcommand{\arraystretch}{1.12}
+\rowcolors{2}{lightblue!45}{white}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}X >{\raggedright\arraybackslash\itshape\leavevmode\color{itgreen}}X | >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash\itshape\leavevmode\color{itgreen}}X@{}}
+\toprule
+\rowcolor{white}
+\textbf{English} & \textbf{\upshape Italiano} & \textbf{English} & \textbf{\upshape Italiano}\\
+\midrule
+ray                     & semiretta                  & triangle                  & triangolo\\
+vertex                  & vertice                    & equilateral, isosceles, scalene & equilatero, isoscele, scaleno\\
+side (of an angle)      & lato                       & acute, right, obtuse triangle & acutangolo, rettangolo, ottusangolo\\
+measure of an angle     & ampiezza                   & legs and hypotenuse       & cateti e ipotenusa\\
+degree, minute, second  & grado, primo, secondo      & legs and base (isosceles) & lati obliqui e base\\
+protractor              & goniometro                 & vertex angle, base angles & angolo al vertice, angoli alla base\\
+convex, reflex angle    & angolo convesso, concavo   & altitude, foot            & altezza, piede\\
+zero, full angle        & angolo nullo, angolo giro  & orthocentre               & ortocentro\\
+straight angle          & angolo piatto              & median, centroid          & mediana, baricentro\\
+adjacent angles         & angoli consecutivi, adiacenti & bisector               & bisettrice\\
+vertical angles         & angoli opposti al vertice  & midpoint                  & punto medio\\
+complementary           & complementari              & exterior angle            & angolo esterno\\
+supplementary           & supplementari              & congruent                 & congruente\\
+explementary            & esplementari               & rigid motion              & movimento rigido\\
+parallel, perpendicular & parallele, perpendicolari  & slide, turn, flip         & traslazione, rotazione, ribaltamento\\
+transversal             & trasversale, secante       & corresponding parts       & elementi omologhi\\
+corresponding angles    & angoli corrispondenti      & criterion (criteria)      & criterio (criteri)\\
+alternate interior      & alterni interni            & given, to prove           & ipotesi, tesi\\
+alternate exterior      & alterni esterni            & proof, QED                & dimostrazione, c.v.d.\\
+same side interior      & coniugati interni          & common side               & lato in comune\\
+pie chart               & areogramma                 & extension of a side       & prolungamento di un lato\\
+\bottomrule
+\end{tabularx}
+}
+
+\section*{References \textperiodcentered\ {\color{itgreen}\itshape Bibliografia}}
+\begin{bi}
+The history in this booklet is kept to facts that these works document. Where a claim is only a common hypothesis (the link between 360 and the days of the year), the text says so.
+\IT
+La storia in questo quaderno si limita ai fatti documentati da queste opere. Dove un'affermazione è solo un'ipotesi diffusa (il legame tra 360 e i giorni dell'anno), il testo lo dice.
+\end{bi}
+{\small
+\begin{enumerate}[label={[\arabic*]}, leftmargin=2.2em, itemsep=2pt]
+\item Euclid. \emph{The Thirteen Books of Euclid's Elements}. Translated with commentary by T.\,L.~Heath, 2nd ed., 3 vols. Cambridge University Press, 1926; reprinted by Dover, New York, 1956. (Book I: Prop.~4, SAS; Prop.~5, isosceles triangle; Prop.~8, SSS; Prop.~26, ASA; Prop.~29 and 32, parallels and the angle sum.)
+\item Proclus. \emph{A Commentary on the First Book of Euclid's Elements}. Translated by G.\,R.~Morrow. Princeton University Press, 1970. (Source of the ``royal road'' anecdote.)
+\item D.~Hilbert. \emph{Grundlagen der Geometrie}. Teubner, Leipzig, 1899. (Takes a form of SAS as an axiom of congruence.)
+\item O.~Neugebauer. \emph{The Exact Sciences in Antiquity}. 2nd ed., Brown University Press, Providence, 1957; reprinted by Dover, New York, 1969. (Babylonian sexagesimal arithmetic and its passage into Greek astronomy.)
+\item E.~Robson. ``Words and pictures: new light on Plimpton 322''. \emph{The American Mathematical Monthly} 109(2), 2002, pp.~105 to 120. (Dating and context of an Old Babylonian base 60 tablet.)
+\item G.\,J.~Toomer (translator). \emph{Ptolemy's Almagest}. Duckworth, London, 1984. (Degrees divided into sexagesimal minutes and seconds.)
+\end{enumerate}
+}
+
+% ===== end appC-glossary.tex =====
+
+\end{document}

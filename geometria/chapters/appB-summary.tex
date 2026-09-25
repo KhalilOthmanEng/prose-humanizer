@@ -1,0 +1,90 @@
+% STATUS: COMPLETE DRAFT
+% Appendix B : one page summary sheet (formulario)
+\bichapter{Summary sheet}{Formulario}\label{app:summary}
+
+{\small
+\renewcommand{\arraystretch}{1.28}
+\rowcolors{2}{lightblue!55}{white}
+\begin{tabularx}{\textwidth}{@{}>{\bfseries\color{navy}\raggedright\arraybackslash}p{2.1cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash\itshape\leavevmode\color{itgreen}}X@{}}
+\toprule
+\rowcolor{white}
+& \textbf{English} & \textbf{\upshape Italiano}\\
+\midrule
+Angle \newline \textit{Angolo} &
+The turn between two rays with the same vertex. Full turn $360^\circ$; $1^\circ = 60'$, $1' = 60''$. Side length does not matter. &
+La rotazione tra due semirette con la stessa origine. Giro $360^\circ$; $1^\circ = 60'$, $1' = 60''$. La lunghezza dei lati non conta.\\
+Types \newline \textit{Tipi} &
+acute $<90^\circ$; right $=90^\circ$; obtuse between $90^\circ$ and $180^\circ$; straight $=180^\circ$; reflex between $180^\circ$ and $360^\circ$; full $=360^\circ$. &
+acuto $<90^\circ$; retto $=90^\circ$; ottuso tra $90^\circ$ e $180^\circ$; piatto $=180^\circ$; concavo tra $180^\circ$ e $360^\circ$; giro $=360^\circ$.\\
+Pairs \newline \textit{Coppie} &
+complementary: sum $90^\circ$; supplementary: sum $180^\circ$; explementary: sum $360^\circ$. Vertical angles are equal. &
+complementari: somma $90^\circ$; supplementari: somma $180^\circ$; esplementari: somma $360^\circ$. Gli angoli opposti al vertice sono congruenti.\\
+Parallels \newline \textit{Parallele} &
+If $r \parallel s$: corresponding (F) and alternate (Z) angles are equal; same side angles (C) add up to $180^\circ$. Equal Z angles $\Rightarrow$ parallel lines. &
+Se $r \parallel s$: angoli corrispondenti (F) e alterni (Z) congruenti; coniugati (C) con somma $180^\circ$. Alterni congruenti $\Rightarrow$ rette parallele.\\
+Triangle \newline \textit{Triangolo} &
+$\alpha + \beta + \gamma = 180^\circ$. Exterior angle $=$ sum of the two far interior angles. Each side $<$ sum of the other two. At most one right or obtuse angle. &
+$\alpha + \beta + \gamma = 180^\circ$. Angolo esterno $=$ somma dei due interni non adiacenti. Ogni lato $<$ somma degli altri due. Al massimo un angolo retto o ottuso.\\
+Isosceles \newline \textit{Isoscele} &
+Base angles are equal (P4). The altitude to the base is also median and bisector (P5). &
+Gli angoli alla base sono congruenti (P4). L'altezza relativa alla base è anche mediana e bisettrice (P5).\\
+Altitude \newline \textit{Altezza} &
+Segment from a vertex, perpendicular to the line of the opposite side. Three altitudes; their lines meet at the orthocentre (inside, at the right angle, or outside). Area $= \frac{\text{base} \times \text{altitude}}{2}$ with \emph{its own} base. &
+Segmento da un vertice, perpendicolare alla retta del lato opposto. Tre altezze; le loro rette si incontrano nell'ortocentro (dentro, sul vertice retto o fuori). Area $= \frac{\text{base} \cdot \text{altezza}}{2}$ con la \emph{sua} base.\\
+Median, bisector \newline \textit{Mediana, bisettrice} &
+Median: vertex to midpoint of the opposite side (medians meet at the centroid $G$). Bisector: splits the angle into two equal halves. &
+Mediana: dal vertice al punto medio del lato opposto (le mediane si incontrano nel baricentro $G$). Bisettrice: divide l'angolo in due parti congruenti.\\
+Congruent \newline \textit{Congruenti} &
+Same shape and same size: one covers the other after a slide, turn or flip. Corresponding parts are equal. &
+Stessa forma e stessa grandezza: uno copre l'altro dopo una traslazione, rotazione o ribaltamento. Gli elementi omologhi sono congruenti.\\
+Criteria \newline \textit{Criteri} &
+SAS: two sides and the angle between them. ASA: one side and the two angles next to it. SSS: three sides. \textbf{Not} criteria: AAA, SSA. &
+LAL: due lati e l'angolo compreso. ALA: un lato e i due angoli adiacenti. LLL: tre lati. \textbf{\upshape Non} sono criteri: AAA, LLA.\\
+Proof \newline \textit{Dimostrazione} &
+Figure $\to$ hypothesis $\to$ thesis $\to$ two triangles $\to$ criterion $\to$ corresponding parts $\to$ QED. &
+Figura $\to$ ipotesi $\to$ tesi $\to$ due triangoli $\to$ criterio $\to$ elementi omologhi $\to$ c.v.d.\\
+\bottomrule
+\end{tabularx}
+}
+
+\vspace{10pt}
+\begin{center}
+% === PRE-COMPUTATION === reuse of Figure fig:ZFC geometry (P = (0.933,2), Q = (0,0), t at 65 deg) and the criteria recipes
+\begin{tikzpicture}[scale=0.62]
+  \begin{scope}
+    \draw[black!35] (-1.2,2) -- (2.4,2); \draw[black!35] (-1.2,0) -- (2.4,0); \draw[black!35] (-0.3,-0.65) -- (1.25,2.7);
+    \draw[angA, line width=1.8pt, line join=round] (-1.0,2) -- (0.933,2) -- (0,0) -- (2.1,0);
+    \node[font=\small] at (0.5,-0.7) {Z: $=$};
+  \end{scope}
+  \begin{scope}[shift={(4,0)}]
+    \draw[black!35] (-1.2,2) -- (2.4,2); \draw[black!35] (-1.2,0) -- (2.4,0); \draw[black!35] (-0.3,-0.65) -- (1.25,2.7);
+    \draw[angB, line width=1.8pt, line join=round] (2.1,2) -- (0.933,2) -- (0,0) -- (2.1,0);
+    \draw[angB, line width=1.8pt] (0,0) -- (-0.3,-0.65);
+    \node[font=\small] at (0.5,-0.7) {F: $=$};
+  \end{scope}
+  \begin{scope}[shift={(8,0)}]
+    \draw[black!35] (-1.2,2) -- (2.4,2); \draw[black!35] (-1.2,0) -- (2.4,0); \draw[black!35] (-0.3,-0.65) -- (1.25,2.7);
+    \draw[angC, line width=1.8pt, line join=round] (2.1,2) -- (0.933,2) -- (0,0) -- (2.1,0);
+    \node[font=\small] at (0.5,-0.7) {C: $180^\circ$};
+  \end{scope}
+  \begin{scope}[shift={(12.5,0)}]
+    \draw[side, fill=angB!12] (0,0) -- (2.4,0) -- (0.9,2.1) -- cycle;
+    \coordinate (X0) at (0,0); \coordinate (X1) at (2.4,0); \coordinate (X2) at (0.9,2.1);
+    \draw[line width=2pt, angB] (X1) -- (X0) -- (X2);
+    \pic[draw, angB, angle radius=4mm] {angle=X1--X0--X2};
+    \node[font=\small] at (1.2,-0.7) {SAS \textperiodcentered\ LAL};
+  \end{scope}
+  \begin{scope}[shift={(16,0)}]
+    \coordinate (Y0) at (0,0); \coordinate (Y1) at (2.4,0); \coordinate (Y2) at (0.9,2.1);
+    \draw[side, fill=angB!12] (Y0) -- (Y1) -- (Y2) -- cycle;
+    \draw[line width=2pt, angB] (Y0) -- (Y1);
+    \pic[draw, angB, angle radius=4mm] {angle=Y1--Y0--Y2};
+    \pic[draw, angB, angle radius=4mm] {angle=Y2--Y1--Y0};
+    \node[font=\small] at (1.2,-0.7) {ASA \textperiodcentered\ ALA};
+  \end{scope}
+  \begin{scope}[shift={(19.5,0)}]
+    \draw[line width=2pt, angB, fill=angB!12] (0,0) -- (2.4,0) -- (0.9,2.1) -- cycle;
+    \node[font=\small] at (1.2,-0.7) {SSS \textperiodcentered\ LLL};
+  \end{scope}
+\end{tikzpicture}
+\end{center}

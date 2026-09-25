@@ -1,0 +1,236 @@
+% ==================================================================
+%  preamble.tex : bilingual (English | Italiano) geometry booklet
+%  Register (agreed with the author): simplified Feynman style,
+%  English column for the tutor, Italian column for the student.
+% ==================================================================
+\documentclass[10pt,a4paper,oneside]{book}
+
+% ---------------------------------------------------------- fonts
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{libertinus}          % text
+\usepackage{libertinust1math}    % matching math
+\usepackage[italian,english]{babel}
+
+% ---------------------------------------------------------- layout
+\usepackage{geometry}
+\geometry{a4paper, left=1.7cm, right=1.7cm, top=2.1cm, bottom=2.0cm,
+          headheight=15pt, headsep=10pt, footskip=24pt}
+\usepackage{setspace}
+\setstretch{1.06}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt plus 1pt}
+\usepackage{microtype}
+
+% ---------------------------------------------------------- colours
+\usepackage[table]{xcolor}
+\definecolor{navy}{HTML}{1B2A4A}
+\definecolor{crimson}{HTML}{A51C30}
+\definecolor{slate}{HTML}{4A4A4A}
+\definecolor{forest}{HTML}{23703F}
+\definecolor{deeporange}{HTML}{C45A12}
+\definecolor{deeppurple}{HTML}{5B2A86}
+\definecolor{itgreen}{HTML}{1D6B45}   % accent of the Italian column
+\definecolor{enblue}{HTML}{1B2A4A}    % accent of the English column
+\definecolor{lightblue}{HTML}{EAF0FA}
+\definecolor{lightgray}{HTML}{F2F2F2}
+\definecolor{lightgreen}{HTML}{E9F5EC}
+\definecolor{lightyellow}{HTML}{FFF8E1}
+\definecolor{lightorange}{HTML}{FFF1E3}
+\definecolor{lightpurple}{HTML}{F3ECF8}
+\definecolor{tutorbg}{HTML}{F4F6F8}
+% figure palette (used only inside TikZ)
+\definecolor{angA}{HTML}{C0392B}   % red
+\definecolor{angB}{HTML}{1F6FB2}   % blue
+\definecolor{angC}{HTML}{2E8B57}   % green
+\definecolor{angD}{HTML}{D68910}   % amber
+\definecolor{shade}{HTML}{DCE6F2}
+
+% ---------------------------------------------------------- packages
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, calc, angles, quotes, positioning,
+                decorations.pathreplacing, decorations.markings,
+                patterns, intersections, shapes.geometric}
+\usepackage[most]{tcolorbox}
+\usepackage{paracol}
+\usepackage{booktabs, tabularx, array, multirow}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{ifthen}
+\usepackage{needspace}
+\usepackage[hidelinks]{hyperref}
+
+\setlist{nosep, leftmargin=1.4em, topsep=2pt}
+
+% ---------------------------------------------------------- paracol
+\setlength{\columnsep}{0.75cm}
+\setlength{\columnseprule}{0.4pt}
+\colseprulecolor{black!20}
+\globalcounter*             % figure/equation counters shared by both columns
+
+% language state (global so tcolorbox titles know which column they sit in)
+\newif\ifIT
+% \begin{bi} English ... \IT Italiano ... \EN English ... \IT ... \end{bi}
+\newenvironment{bi}%
+  {\begin{paracol}{2}\global\ITfalse\selectlanguage{english}}%
+  {\end{paracol}}
+\newcommand{\IT}{\switchcolumn\global\ITtrue\selectlanguage{italian}}
+\newcommand{\EN}{\switchcolumn*\global\ITfalse\selectlanguage{english}}
+
+% column heads, placed once at the top of each chapter
+\newcommand{\colheads}{%
+  {\small\sffamily\bfseries\color{enblue}ENGLISH \textperiodcentered\ for the tutor}\par\vspace{-2pt}
+  {\color{enblue}\rule{\linewidth}{0.8pt}}%
+  \IT
+  {\small\sffamily\bfseries\color{itgreen}ITALIANO \textperiodcentered\ per la studentessa}\par\vspace{-2pt}
+  {\color{itgreen}\rule{\linewidth}{0.8pt}}%
+  \EN}
+
+% ---------------------------------------------------------- headings
+\titleformat{\chapter}[display]
+  {\normalfont\bfseries\color{navy}}
+  {\LARGE\sffamily Chapter\,/\,Capitolo \thechapter}
+  {6pt}
+  {\Huge}
+\titlespacing*{\chapter}{0pt}{-10pt}{14pt}
+\titleformat{\section}
+  {\normalfont\Large\bfseries\color{navy}}{\thesection}{0.7em}{}
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\color{slate}}{\thesubsection}{0.7em}{}
+\titlespacing*{\section}{0pt}{14pt}{6pt}
+\titlespacing*{\subsection}{0pt}{10pt}{4pt}
+
+% bilingual headings:  \bichapter{English}{Italiano}
+\newcommand{\bichapter}[2]{%
+  \chapter[#1 \textperiodcentered\ #2]{#1\\[2pt]{\color{itgreen}\itshape #2}}}
+\newcommand{\bisection}[2]{%
+  \Needspace{7\baselineskip}%
+  \section[#1 \textperiodcentered\ #2]{#1 {\color{itgreen}\itshape\,\textperiodcentered\ #2}}}
+\newcommand{\bisubsection}[2]{%
+  \Needspace{6\baselineskip}%
+  \subsection[#1 \textperiodcentered\ #2]{#1 {\color{itgreen}\itshape\,\textperiodcentered\ #2}}}
+
+% ---------------------------------------------------------- header/footer
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{slate}\nouppercase{\leftmark}}
+\fancyhead[R]{\small\color{slate}Angles \& Congruence \textperiodcentered\ \textit{Angoli e congruenza}}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\chaptermark}[1]{\markboth{\thechapter.\ #1}{}}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\thepage}\renewcommand{\headrulewidth}{0pt}}
+
+% ---------------------------------------------------------- captions
+\captionsetup{font=small, labelfont={bf,color=navy}, labelsep=period,
+              justification=centering, skip=4pt}
+\captionsetup[figure]{name={Figure\,/\,Figura}}
+\captionsetup[table]{name={Table\,/\,Tabella}}
+% \bicap{English caption}{Didascalia italiana}
+\newcommand{\bicap}[2]{\caption{#1\\{\color{itgreen}\itshape #2}}}
+
+% ---------------------------------------------------------- math shorthands
+\newcommand{\ang}[3]{#1\widehat{#2}#3}      % angle ABC  ->  A \hat B C
+\newcommand{\av}[1]{\widehat{#1}}           % angle named by its vertex
+\newcommand{\seg}[1]{\overline{#1}}         % segment
+\newcommand{\tri}[1]{\triangle #1}          % triangle
+\newcommand{\gradi}{^\circ}
+
+% ---------------------------------------------------------- boxes
+% Every box is FULL WIDTH and split in two like the page:
+%   \begin{trap}{English subtitle}{Sottotitolo italiano}
+%     English text
+%   \tcblower
+%     Testo italiano
+%   \end{trap}
+% Either subtitle may be empty.
+\newlength{\halfcol}
+\newcommand{\bxhalf}[3]{\if\relax\detokenize{#2}\relax#1\else#1: #2\fi}
+% title bar split at the same place as the box body
+\newcommand{\bxt}[4]{%
+  \setlength{\halfcol}{\dimexpr(\linewidth-\columnsep)/2\relax}%
+  \parbox[t]{\halfcol}{\raggedright\bxhalf{#1}{#3}{}}\hfill
+  \parbox[t]{\halfcol}{\raggedright\bxhalf{#2}{#4}{}}}
+\tcbset{bookbase/.style={enhanced, sharp corners=south, arc=2.5pt,
+        boxrule=0.8pt, left=5pt, right=5pt, top=3pt, bottom=4pt,
+        fonttitle=\sffamily\bfseries\small, coltitle=white,
+        before skip=7pt plus 2pt, after skip=7pt plus 2pt, toptitle=1pt, bottomtitle=1pt,
+        sidebyside, sidebyside align=top seam, sidebyside gap=\columnsep,
+        lefthand ratio=0.5,
+        before upper={\global\ITfalse\selectlanguage{english}},
+        before lower={\global\ITtrue\selectlanguage{italian}},
+        after={\global\ITfalse\selectlanguage{english}}}}
+
+\newtcolorbox{trap}[2]{bookbase, colback=lightgray, colframe=slate,
+  segmentation style={slate!40, solid},
+  title={\bxt{The trap}{La trappola}{#1}{#2}}}
+\newtcolorbox{rebuild}[2]{bookbase, colback=lightblue, colframe=navy,
+  segmentation style={navy!30, solid},
+  title={\bxt{Step by step}{Passo dopo passo}{#1}{#2}}}
+\newtcolorbox{anchor}[2]{bookbase, colback=lightgreen, colframe=forest,
+  segmentation style={forest!30, solid},
+  title={\bxt{Picture it}{Immagina}{#1}{#2}}}
+\newtcolorbox{think}[2]{bookbase, colback=lightorange, colframe=deeporange,
+  segmentation style={deeporange!30, solid},
+  title={\bxt{Think first}{Pensaci prima}{#1}{#2}}}
+\newtcolorbox{example}[2]{bookbase, colback=lightpurple, colframe=deeppurple,
+  segmentation style={deeppurple!30, solid},
+  title={\bxt{Worked example}{Esempio svolto}{#1}{#2}}}
+\newtcolorbox{keyidea}[2]{bookbase, colback=white, colframe=crimson, boxrule=1.3pt,
+  segmentation style={crimson!30, solid}, fontupper=\itshape, fontlower=\itshape,
+  title={\bxt{The click}{Il clic}{#1}{#2}}}
+\newtcolorbox{defn}[2]{bookbase, colback=white, colframe=navy, boxrule=0.8pt,
+  segmentation style={navy!30, solid},
+  title={\bxt{Definition}{Definizione}{#1}{#2}}}
+\newtcolorbox{history}[2]{bookbase, colback=lightyellow, colframe=crimson!80!black,
+  segmentation style={crimson!30, solid},
+  title={\bxt{A bit of history}{Un po' di storia}{#1}{#2}}}
+\newtcolorbox{proofbox}[2]{bookbase, colback=white, colframe=navy!70,
+  segmentation style={navy!30, solid},
+  title={\bxt{Proof}{Dimostrazione}{#1}{#2}}}
+\newtcolorbox{exercise}[2]{bookbase, colback=white, colframe=forest!80!black,
+  segmentation style={forest!30, solid},
+  title={\bxt{Exercise}{Esercizio}{#1}{#2}}}
+\newtcolorbox{solution}[2]{bookbase, colback=white, colframe=slate!80,
+  segmentation style={slate!30, solid},
+  title={\bxt{Solution}{Soluzione}{#1}{#2}}}
+
+% full width note for the tutor only (outside the parallel columns)
+\newtcolorbox{tutor}[1][]{enhanced, colback=tutorbg, colframe=navy!40, boxrule=0.5pt,
+  borderline west={2.5pt}{0pt}{navy}, sharp corners, left=7pt, right=6pt, top=3pt, bottom=3pt,
+  fontupper=\small, before skip=8pt, after skip=8pt,
+  title={For the tutor\if\relax\detokenize{#1}\relax\else: #1\fi},
+  fonttitle=\sffamily\bfseries\small, coltitle=navy, colbacktitle=tutorbg,
+  attach title to upper, after title={.\ }}
+
+% "answer" line inside think boxes
+\newcommand{\answer}{\par\vspace{2pt}{\color{deeporange}\rule[0.5ex]{\linewidth}{0.4pt}}\par
+  {\sffamily\bfseries\small\color{deeporange}\ifIT Risposta\else Answer\fi.}\ }
+
+% statement / reason proof lines
+\newcommand{\step}[2]{\item #1\hfill{\small\color{slate}\itshape(#2)}}
+\newenvironment{steps}{\begin{enumerate}[label=\arabic*., leftmargin=1.5em, itemsep=1pt]}{\end{enumerate}}
+
+% ---------------------------------------------------------- TikZ styles
+\tikzset{
+  pt/.style={circle, fill=black, inner sep=1.1pt},
+  lbl/.style={font=\small},
+  side/.style={line width=0.9pt, line cap=round, line join=round},
+  thinline/.style={line width=0.5pt},
+  helper/.style={line width=0.5pt, dashed, black!55},
+  ray/.style={line width=0.9pt, -{Stealth[length=2.2mm]}},
+  rightangle/.style={draw, line width=0.5pt},
+  % tick marks for congruent segments
+  tick1/.style={postaction={decorate, decoration={markings,
+      mark=at position 0.5 with {\draw[line width=0.7pt] (0,-3pt)--(0,3pt);}}}},
+  tick2/.style={postaction={decorate, decoration={markings,
+      mark=at position 0.5 with {\draw[line width=0.7pt] (-1.2pt,-3pt)--(-1.2pt,3pt) (1.2pt,-3pt)--(1.2pt,3pt);}}}},
+  tick3/.style={postaction={decorate, decoration={markings,
+      mark=at position 0.5 with {\draw[line width=0.7pt] (-2.2pt,-3pt)--(-2.2pt,3pt) (0,-3pt)--(0,3pt) (2.2pt,-3pt)--(2.2pt,3pt);}}}},
+}
+% right angle mark at vertex #2 between points #1 and #3:  \rang{A}{H}{B}
+\newcommand{\rang}[3]{%
+  \pic[draw, line width=0.5pt, angle radius=2.2mm] {right angle=#1--#2--#3};}

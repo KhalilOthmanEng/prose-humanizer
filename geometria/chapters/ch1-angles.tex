@@ -1,0 +1,851 @@
+% STATUS: COMPLETE DRAFT
+% Chapter 1 : angles, measure on a circle, why 360, types, pairs, parallels
+% Every number below is checked in scripts/verify.py
+\bichapter{Angles}{Gli angoli}\label{ch:angles}
+
+% ================================================================
+\bisection{An angle is a turn}{Un angolo è una rotazione}\label{sec:turn}
+% ================================================================
+\begin{bi}
+\colheads
+Open a door a little. Now open it wide. Something grew, but it was not the door: the door is exactly as long as before. What grew is the \emph{turn} the door made around its hinge. That turn is an angle.
+\IT
+Apri una porta di poco. Ora aprila tutta. Qualcosa è cresciuto, ma non è la porta: la porta è lunga esattamente come prima. È cresciuta la \emph{rotazione} che la porta ha fatto intorno al cardine. Quella rotazione è un angolo.
+\EN
+Geometry keeps only the essentials of the door. The hinge becomes a point, the \textbf{vertex}. The wall and the door become two \textbf{rays}, half lines that start at the vertex and go on forever in one direction. The opening between them is the angle.
+\IT
+La geometria tiene solo l'essenziale della porta. Il cardine diventa un punto, il \textbf{vertice}. Il muro e la porta diventano due \textbf{semirette}, cioè mezze rette che partono dal vertice e proseguono all'infinito in una direzione. L'apertura tra le due semirette è l'angolo.
+\end{bi}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION ===  door opened by 70 deg; door length 2.6; arc radius 1.1
+% ray directions 0 and 70 deg; label of alpha at 35 deg, radius 1.45
+\begin{tikzpicture}
+  % (a) the door seen from above
+  \begin{scope}
+    \fill[black!12] (-0.4,-0.25) rectangle (0,0.1);
+    \fill[black!12] (2.9,-0.25) rectangle (3.3,0.1);
+    \draw[black!40, dashed] (0,0) -- (2.6,0);
+    \draw[line width=3pt, brown!70!black] (0,0) -- (70:2.6);
+    \draw[angA, line width=0.9pt, -{Stealth[length=2mm]}] (0:1.1) arc (0:70:1.1);
+    \node[angA] at (35:1.45) {$70^\circ$};
+    \node[pt] at (0,0) {};
+    \node[lbl, below left] at (0,-0.2) {hinge \textperiodcentered\ \textit{cardine}};
+    \node[lbl, rotate=70, above] at (70:1.6) {door \textperiodcentered\ \textit{porta}};
+    \node[lbl, below] at (1.5,-0.3) {closed \textperiodcentered\ \textit{chiusa}};
+    \node[font=\small\bfseries] at (1.3,-1.25) {(a)};
+  \end{scope}
+  % (b) the geometric angle
+  \begin{scope}[shift={(6.2,0)}]
+    \coordinate (O) at (0,0); \coordinate (A) at (3,0); \coordinate (B) at (70:3);
+    \fill[shade] (O) -- (1.6,0) arc (0:70:1.6) -- cycle;
+    \draw[ray] (O) -- (A); \draw[ray] (O) -- (B);
+    \pic[draw, angA, line width=0.9pt, angle radius=9mm, "$\alpha$", angle eccentricity=1.35] {angle=A--O--B};
+    \node[pt] at (O) {};
+    \node[below left] at (O) {$O$};
+    \node[below] at (A) {$a$};
+    \node[left] at (B) {$b$};
+    \node[lbl, align=left, anchor=west] at (1.3,1.95) {vertex $O$ \textperiodcentered\ \textit{vertice}\\ sides $a$, $b$ \textperiodcentered\ \textit{lati}};
+    \node[font=\small\bfseries] at (1.3,-1.25) {(b)};
+  \end{scope}
+\end{tikzpicture}
+\bicap{(a) A door seen from above: the angle is the turn around the hinge. (b) The same idea in geometry: vertex $O$, sides $a$ and $b$.}%
+      {(a) Una porta vista dall'alto: l'angolo è la rotazione intorno al cardine. (b) La stessa idea in geometria: vertice $O$, lati $a$ e $b$.}
+\label{fig:door}
+\end{figure}
+
+\begin{defn}{angle}{angolo}
+An \textbf{angle} is each of the two parts into which the plane is divided by two rays with the same starting point. The common point is the \textbf{vertex}; the two rays are the \textbf{sides}.
+\tcblower
+Si chiama \textbf{angolo} ciascuna delle due parti in cui il piano è diviso da due semirette che hanno la stessa origine. L'origine comune è il \textbf{vertice}; le due semirette sono i \textbf{lati}.
+\end{defn}
+
+\begin{bi}
+We name an angle in three ways: with three letters and the vertex in the middle, $\ang{A}{O}{B}$; with the vertex alone, $\av{O}$, when nothing can be confused; or with a Greek letter, $\alpha$ (alpha), $\beta$ (beta), $\gamma$ (gamma).
+\IT
+Un angolo si indica in tre modi: con tre lettere e il vertice al centro, $\ang{A}{O}{B}$; con il solo vertice, $\av{O}$, quando non ci sono confusioni; oppure con una lettera greca, $\alpha$ (alfa), $\beta$ (beta), $\gamma$ (gamma).
+\end{bi}
+
+\begin{trap}{longer sides, bigger angle?}{lati più lunghi, angolo più grande?}
+Many students think that if you draw the sides of an angle longer, the angle becomes bigger. Look at Figure~\ref{fig:sides}: the two angles have very different sides, yet they are the same angle. The sides are rays, so they are infinitely long anyway. The drawing only shows a piece of them.
+\tcblower
+Molti pensano che, se si disegnano i lati più lunghi, l'angolo diventi più grande. Guarda la figura~\ref{fig:sides}: i due angoli hanno lati molto diversi, eppure sono lo stesso angolo. I lati sono semirette, quindi sono comunque infinitamente lunghi. Il disegno ne mostra solo un pezzo.
+\end{trap}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === both angles 40 deg; short sides 1.2, long sides 4.0
+\begin{tikzpicture}
+  \begin{scope}
+    \coordinate (O1) at (0,0); \coordinate (A1) at (1.2,0); \coordinate (B1) at (40:1.2);
+    \draw[side] (A1) -- (O1) -- (B1);
+    \pic[draw, angA, line width=0.9pt, angle radius=5mm, "$40^\circ$", angle eccentricity=1.9] {angle=A1--O1--B1};
+  \end{scope}
+  \begin{scope}[shift={(3.2,0)}]
+    \coordinate (O2) at (0,0); \coordinate (A2) at (4,0); \coordinate (B2) at (40:4);
+    \draw[side] (A2) -- (O2) -- (B2);
+    \pic[draw, angA, line width=0.9pt, angle radius=5mm, "$40^\circ$", angle eccentricity=1.9] {angle=A2--O2--B2};
+  \end{scope}
+  \node[lbl, align=center] at (0.6,-0.55) {short sides\\\textit{lati corti}};
+  \node[lbl, align=center] at (5.2,-0.55) {long sides\\\textit{lati lunghi}};
+  \node[font=\Large] at (2.35,0.55) {$=$};
+\end{tikzpicture}
+\bicap{Same angle, different drawings. The size of an angle does not depend on how long you draw its sides.}%
+      {Stesso angolo, disegni diversi. L'ampiezza di un angolo non dipende da quanto sono lunghi i lati disegnati.}
+\label{fig:sides}
+\end{figure}
+
+\begin{bi}
+There is a second surprise. Two rays from the same point always make \emph{two} angles, not one: the small opening and the big one that goes the long way round (Figure~\ref{fig:convex}). The small one is called \textbf{convex}; the big one, which contains the extensions of its sides, is called \textbf{concave} (or reflex). Unless we say otherwise, ``the angle'' means the convex one.
+\IT
+C'è una seconda sorpresa. Due semirette con la stessa origine formano sempre \emph{due} angoli, non uno: l'apertura piccola e quella grande che fa il giro lungo (figura~\ref{fig:convex}). Quello piccolo si chiama \textbf{convesso}; quello grande, che contiene i prolungamenti dei suoi lati, si chiama \textbf{concavo}. Se non diciamo altro, «l'angolo» è quello convesso.
+\end{bi}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === rays at 20 and 110 deg: convex part 90 deg, concave part 270 deg
+\begin{tikzpicture}
+  \begin{scope}
+    \fill[angB!18] (0,0) -- (20:1.9) arc (20:110:1.9) -- cycle;
+    \draw[ray] (0,0) -- (20:2.3); \draw[ray] (0,0) -- (110:2.3);
+    \draw[helper] (0,0) -- (200:1.3); \draw[helper] (0,0) -- (290:1.3);
+    \node[pt] at (0,0) {};
+    \node[angB, font=\small, align=center] at (65:1.2) {convex\\\textit{convesso}};
+    \node[font=\small\bfseries] at (0,-1.7) {(a)};
+  \end{scope}
+  \begin{scope}[shift={(6,0)}]
+    \fill[angD!22] (0,0) -- (110:1.9) arc (110:380:1.9) -- cycle;
+    \draw[ray] (0,0) -- (20:2.3); \draw[ray] (0,0) -- (110:2.3);
+    \node[pt] at (0,0) {};
+    \node[angD!80!black, font=\small, align=center] at (245:1.05) {concave\\\textit{concavo}};
+    \node[font=\small\bfseries] at (0,-2.3) {(b)};
+  \end{scope}
+\end{tikzpicture}
+\bicap{Two rays, two angles. (a) The convex angle does not contain the extensions of its sides (dashed). (b) The concave angle does.}%
+      {Due semirette, due angoli. (a) L'angolo convesso non contiene i prolungamenti dei lati (tratteggiati). (b) L'angolo concavo li contiene.}
+\label{fig:convex}
+\end{figure}
+
+\begin{keyidea}{}{}
+An angle measures a \emph{turn}, not a length. Long sides or short sides, the opening is the same if the turn is the same.
+\tcblower
+Un angolo misura una \emph{rotazione}, non una lunghezza. Con lati lunghi o corti, l'apertura è la stessa se la rotazione è la stessa.
+\end{keyidea}
+
+% ================================================================
+\bisection{Measuring an angle on a circle}{Misurare un angolo su una circonferenza}\label{sec:circle}
+% ================================================================
+\begin{bi}
+If an angle is a turn, the natural thing to measure is \emph{how much of a full turn} it is. The circle is the tool that shows this. Put the vertex at the centre of a circle. The two sides cut out an arc, a piece of the circle. The angle is the fraction of the circle that the arc covers.
+\IT
+Se un angolo è una rotazione, la cosa più naturale da misurare è \emph{quanta parte di un giro completo} rappresenta. La circonferenza è lo strumento che lo mostra. Metti il vertice nel centro di una circonferenza. I due lati tagliano un arco, cioè un pezzo di circonferenza. L'angolo è la frazione di circonferenza coperta dall'arco.
+\end{bi}
+
+\begin{anchor}{a slice of pizza}{una fetta di pizza}
+Cut a pizza into 6 equal slices. Each slice has a pointed tip at the centre. Now cut a much bigger pizza into 6 slices: the slices are bigger, but the \emph{tip} of each slice is exactly as sharp as before, because it is still one sixth of a full turn. The size of the pizza plays the role of the length of the sides: it does not matter.
+\tcblower
+Taglia una pizza in 6 fette uguali. Ogni fetta ha una punta al centro. Ora taglia in 6 fette una pizza molto più grande: le fette sono più grandi, ma la \emph{punta} di ogni fetta è appuntita esattamente come prima, perché è sempre un sesto di giro. La grandezza della pizza fa la parte della lunghezza dei lati: non conta.
+\end{anchor}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === rays at 0 and 60 deg (1/6 of a turn); circles r = 0.9, 1.8, 2.7
+% arc lengths 2*pi*r/6 = 0.942, 1.885, 2.827 ; ratio arc/circumference = 1/6 for all
+% VERIFIED: python -> (2*pi*r/6)/(2*pi*r) = 0.16667 for r in (0.9, 1.8, 2.7)
+\begin{tikzpicture}
+  \foreach \r/\c in {0.9/angA, 1.8/angB, 2.7/angC} {
+    \draw[black!25] (0,0) circle (\r);
+    \draw[\c, line width=2.2pt] (0:\r) arc (0:60:\r);
+  }
+  \draw[ray] (0,0) -- (0:3.3); \draw[ray] (0,0) -- (60:3.3);
+  \node[pt] at (0,0) {};
+  \node[below left] at (0,0) {$O$};
+  \node[lbl, anchor=west, align=left] at (3.4,1.4) {each coloured arc is $\tfrac{1}{6}$ of its circle\\\textit{ogni arco colorato è $\tfrac{1}{6}$ della sua circonferenza}\\[3pt] so the angle is $\tfrac{1}{6}$ of a turn $=60^\circ$\\\textit{quindi l'angolo è $\tfrac{1}{6}$ di giro $=60^\circ$}};
+\end{tikzpicture}
+\bicap{Three circles with the same centre. The arcs have different lengths, but each is one sixth of its own circle. The fraction does not depend on the radius, and that is why we can measure angles with it.}%
+      {Tre circonferenze con lo stesso centro. Gli archi hanno lunghezze diverse, ma ognuno è un sesto della sua circonferenza. La frazione non dipende dal raggio: per questo possiamo usarla per misurare gli angoli.}
+\label{fig:concentric}
+\end{figure}
+
+\begin{rebuild}{from a turn to degrees}{dal giro ai gradi}
+\begin{enumerate}[label=\arabic*.]
+\item A full turn is the biggest natural unit: the door goes all the way round and comes back.
+\item We cut the full turn into \textbf{360 equal parts}. Each part is called a \textbf{degree} and is written $1^\circ$.
+\item So a full turn is $360^\circ$, half a turn is $180^\circ$, a quarter turn is $90^\circ$.
+\item Measuring an angle means counting how many of these small parts fit inside it.
+\end{enumerate}
+\tcblower
+\begin{enumerate}[label=\arabic*.]
+\item Il giro completo è l'unità più naturale: la porta fa tutto il giro e torna al punto di partenza.
+\item Dividiamo il giro in \textbf{360 parti uguali}. Ogni parte si chiama \textbf{grado} e si scrive $1^\circ$.
+\item Quindi un giro misura $360^\circ$, mezzo giro $180^\circ$, un quarto di giro $90^\circ$.
+\item Misurare un angolo vuol dire contare quante di queste piccole parti ci stanno dentro.
+\end{enumerate}
+\end{rebuild}
+
+\begin{bi}
+The number of degrees is called the \textbf{measure} of the angle. The tool that counts them is the \textbf{protractor}: a half circle already divided into $180$ degrees.
+\IT
+Il numero di gradi si chiama \textbf{ampiezza} dell'angolo. Lo strumento che li conta è il \textbf{goniometro}: un semicerchio già diviso in $180$ gradi.
+\end{bi}
+
+\begin{trap}{the two scales of the protractor}{le due scale del goniometro}
+A protractor has two rows of numbers, one running from left to right and one from right to left. The side of the angle that lies on the base line must sit on the $0$ of the scale you read. In Figure~\ref{fig:protractor} the angle is $50^\circ$; reading the wrong row gives $130^\circ$. Quick check: is the angle smaller or bigger than a right angle? Here it is clearly smaller, so $130^\circ$ cannot be right.
+\tcblower
+Il goniometro ha due file di numeri, una che va da sinistra a destra e una da destra a sinistra. Il lato dell'angolo che sta sulla linea di base deve stare sullo $0$ della scala che leggi. Nella figura~\ref{fig:protractor} l'angolo misura $50^\circ$; leggendo la fila sbagliata si ottiene $130^\circ$. Controllo veloce: l'angolo è più piccolo o più grande di un angolo retto? Qui è chiaramente più piccolo, quindi $130^\circ$ non può essere giusto.
+\end{trap}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === protractor radius 4.0; inner scale value = position angle theta (0 at the right);
+% outer scale value = 180 - theta.  Measured ray at theta = 50 -> inner 50, outer 130.
+% VERIFIED: python -> 180 - 50 = 130
+\begin{tikzpicture}[scale=0.95]
+  \def\R{4.0}
+  \fill[navy!6] (\R,0) arc (0:180:\R) -- cycle;
+  \draw[navy!70, line width=0.7pt] (\R,0) arc (0:180:\R) -- cycle;
+  \draw[navy!30] (2.55,0) arc (0:180:2.55);
+  \foreach \t in {0,1,...,180} \draw[navy!60, line width=0.3pt] (\t:\R) -- (\t:\R-0.12);
+  \foreach \t in {0,5,...,180} \draw[navy!70] (\t:\R) -- (\t:\R-0.22);
+  \foreach \t in {0,10,...,180} {
+    \draw[navy!80, line width=0.6pt] (\t:\R) -- (\t:\R-0.32);
+    \pgfmathtruncatemacro{\o}{180-\t}
+    \node[font=\scriptsize, navy!55, rotate=\t-90] at (\t:\R-0.55) {\o};
+    \node[font=\scriptsize\bfseries, black, rotate=\t-90] at (\t:\R-0.95) {\t};
+  }
+  \draw[ray, angA] (0,0) -- (0:\R+0.9);
+  \draw[ray, angA] (0,0) -- (50:\R+0.9);
+  \draw[angA, line width=0.9pt] (0:1.0) arc (0:50:1.0);
+  \node[angA] at (25:1.4) {$50^\circ$};
+  \node[pt] at (0,0) {};
+  \draw[-{Stealth[length=2mm]}, black] (5.1,3.9) node[right, font=\small, align=left] {inner scale: $50$ (right)\\\textit{scala interna: $50$ (giusto)}} -- (50:\R-0.75);
+  \draw[-{Stealth[length=2mm]}, navy!60] (-4.3,4.3) node[left, font=\small, align=right] {outer scale: $130$ (wrong)\\\textit{scala esterna: $130$ (sbagliato)}} -- ($(52:\R-0.45)$);
+\end{tikzpicture}
+\bicap{Reading a protractor. The lower side of the angle lies on the $0$ of the inner scale, so the inner scale gives the measure: $50^\circ$.}%
+      {Come si legge il goniometro. Il lato di base dell'angolo sta sullo $0$ della scala interna, quindi è la scala interna a dare l'ampiezza: $50^\circ$.}
+\label{fig:protractor}
+\end{figure}
+
+% ================================================================
+\bisection{Why 360?}{Perché proprio 360?}\label{sec:why360}
+% ================================================================
+\begin{trap}{360 is a law of nature}{360 è una legge della natura}
+It is tempting to think that circles ``contain'' 360 degrees the way a week contains 7 days. They do not. Nature gives us the full turn; the number 360 is a human choice. Surveyors sometimes divide the turn into 400 parts, and scientists often use another unit, the radian. The angle is the same; only the ruler changes.
+\tcblower
+Viene da pensare che le circonferenze «contengano» 360 gradi come una settimana contiene 7 giorni. Non è così. La natura ci dà il giro completo; il numero 360 è una scelta degli esseri umani. I topografi a volte dividono il giro in 400 parti, e gli scienziati usano spesso un'altra unità, il radiante. L'angolo è lo stesso; cambia solo il righello.
+\end{trap}
+
+\begin{bi}
+So why did people choose 360 and not 100, which would seem easier? There are three reasons. The first one is certain, the second is historical fact, the third is a likely guess.
+\IT
+Allora perché si è scelto 360 e non 100, che sembrerebbe più comodo? Ci sono tre motivi. Il primo è sicuro, il secondo è un fatto storico, il terzo è un'ipotesi probabile.
+\EN
+\textbf{Reason 1: 360 can be shared fairly in many ways.} 360 can be divided exactly by 24 different whole numbers: 1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 18, 20, 24, 30, 36, 40, 45, 60, 72, 90, 120, 180, 360. This means you can cut a full turn into 2, 3, 4, 5, 6, 8, 9, 10 or 12 equal slices and every slice is a whole number of degrees. Try the same with 100: a third is $33.33\ldots$ and a sixth is $16.66\ldots$, which never end.
+\IT
+\textbf{Motivo 1: 360 si divide bene in tanti modi.} 360 è divisibile esattamente per 24 numeri interi diversi: 1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 18, 20, 24, 30, 36, 40, 45, 60, 72, 90, 120, 180, 360. Vuol dire che puoi tagliare il giro in 2, 3, 4, 5, 6, 8, 9, 10 o 12 fette uguali e ogni fetta è un numero intero di gradi. Prova con 100: un terzo è $33{,}33\ldots$ e un sesto è $16{,}66\ldots$, numeri che non finiscono mai.
+\end{bi}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === 360/n for n = 2,3,4,5,6,8 -> 180,120,90,72,60,45 (all integers)
+% VERIFIED: python -> [180.0, 120.0, 90.0, 72.0, 60.0, 45.0]
+\begin{tikzpicture}
+  \foreach \n/\d [count=\i from 0] in {2/180,3/120,4/90,5/72,6/60,8/45} {
+    \begin{scope}[shift={(\i*2.45,0)}]
+      \fill[angD!15] (0,0) circle (0.95);
+      \fill[angD!55] (0,0) -- (90:0.95) arc (90:90+\d:0.95) -- cycle;
+      \draw[angD!80!black, line width=0.6pt] (0,0) circle (0.95);
+      \foreach \k in {1,...,\n} \draw[angD!80!black, line width=0.6pt] (0,0) -- ({90+(\k-1)*\d}:0.95);
+      \node[font=\small\bfseries] at (0,-1.25) {$360 : \n = \d$};
+    \end{scope}
+  }
+\end{tikzpicture}
+\bicap{A full turn shared into 2, 3, 4, 5, 6 and 8 equal slices. Every slice is a whole number of degrees.}%
+      {Il giro diviso in 2, 3, 4, 5, 6 e 8 fette uguali. Ogni fetta è un numero intero di gradi.}
+\label{fig:pizzas}
+\end{figure}
+
+\begin{bi}
+\textbf{Reason 2: the Babylonians counted in sixties.} About 4000 years ago the scribes of Babylon (in today's Iraq) did their calculations in base 60, while we count in base 10. We still use their system every day: an hour has 60 minutes and a minute has 60 seconds. Degrees use it too: $1^\circ$ is split into 60 \emph{minutes} ($60'$) and one minute into 60 \emph{seconds} ($60''$). A full turn is six sixties: $6 \times 60 = 360$.
+\IT
+\textbf{Motivo 2: i Babilonesi contavano a sessanta.} Circa 4000 anni fa gli scribi di Babilonia (nell'attuale Iraq) facevano i calcoli in base 60, mentre noi contiamo in base 10. Usiamo ancora il loro sistema ogni giorno: un'ora ha 60 minuti e un minuto ha 60 secondi. Anche i gradi lo usano: $1^\circ$ si divide in 60 \emph{primi} ($60'$) e un primo in 60 \emph{secondi} ($60''$). Per questo si parla di gradi \emph{sessagesimali}. Un giro sono sei volte sessanta: $6 \times 60 = 360$.
+\EN
+\textbf{Reason 3 (probable): the year has about 360 days.} The Sun seems to go once round the sky in a year, a bit more than 360 days. Moving about one degree per day is a neat coincidence, and many historians think it helped. Nobody has a document that proves it, so treat it as a good story, not as a fact.
+\IT
+\textbf{Motivo 3 (probabile): l'anno ha circa 360 giorni.} Il Sole sembra fare un giro del cielo in un anno, cioè in poco più di 360 giorni. Spostarsi di circa un grado al giorno è una bella coincidenza, e molti storici pensano che abbia contato. Nessun documento lo dimostra, quindi consideralo una bella storia, non un fatto.
+\end{bi}
+
+\begin{figure}[htbp]
+\centering
+% Vertical timeline (5 milestones). Dates are approximate and written with "c." (circa).
+% Layout: dates left of the spine, English text column, Italian text column (same as the page).
+\begin{tikzpicture}[yscale=-1]
+  \draw[navy, line width=1.2pt] (0,-0.2) -- (0,6.3);
+  \foreach \y/\date/\en/\itl in {
+    0.2/{c. 1800 BC\\\textit{c. 1800 a.C.}}/{Babylonian scribes calculate in base 60.}/{Gli scribi babilonesi calcolano in base 60.},
+    1.6/{c. 300 BC\\\textit{c. 300 a.C.}}/{Euclid's \emph{Elements}: angles are compared with the right angle, no degrees yet. The congruence criteria are already there.}/{Gli \emph{Elementi} di Euclide: gli angoli si confrontano con l'angolo retto, i gradi non ci sono ancora. I criteri di congruenza ci sono già.},
+    3.0/{2nd cent. BC\\\textit{II sec. a.C.}}/{Greek astronomers (Hypsicles, Hipparchus) divide the circle into 360 parts.}/{Gli astronomi greci (Ipsicle, Ipparco) dividono la circonferenza in 360 parti.},
+    4.4/{c. AD 150\\\textit{c. 150 d.C.}}/{Ptolemy's \emph{Almagest} splits each degree into 60 minutes and each minute into 60 seconds.}/{L'\emph{Almagesto} di Tolomeo divide ogni grado in 60 primi e ogni primo in 60 secondi.},
+    5.8/{1873}/{The word \emph{radian} appears in print (James Thomson): a unit that does not use 360.}/{Compare in stampa la parola \emph{radiante} (James Thomson): un'unità che non usa 360.}} {
+    \node[circle, fill=crimson, inner sep=2.2pt] at (0,\y) {};
+    \node[anchor=north east, align=right, font=\small\bfseries\color{navy}] at (-0.3,\y-0.2) {\date};
+    \node[anchor=north west, align=left, text width=6.4cm, font=\small] at (0.3,\y-0.2) {\en};
+    \node[anchor=north west, align=left, text width=6.4cm, font=\small\itshape, itgreen] at (7.0,\y-0.2) {\itl};
+  }
+\end{tikzpicture}
+\bicap{How the 360 degree circle was born. Dates are approximate.}%
+      {Come è nato il cerchio da 360 gradi. Le date sono approssimate.}
+\label{fig:timeline}
+\end{figure}
+
+\begin{tutor}[calculators and confidence]
+Her calculator has the modes DEG ($360$ per turn), RAD ($2\pi \approx 6.28$ per turn) and GRAD ($400$ per turn). If a sine ever comes out strange, the mode is the first suspect. On the history: the Babylonian base 60 and Ptolemy's minutes and seconds are well documented (references [4] to [6] in Appendix~\ref{app:glossary}); the link between 360 and the days of the year is a common hypothesis without direct evidence, and the booklet says so. The Latin names \emph{pars minuta prima} and \emph{pars minuta secunda} are where the words ``minute'' and ``second'' come from, and the Italian names \emph{primi} and \emph{secondi} keep the old form.
+\end{tutor}
+
+\begin{think}{a turn in percent}{il giro in percentuale}
+You already know a way to cut a whole into 100 parts: percentages. What percentage of a full turn is a right angle? And how many degrees is $1\%$ of a turn?
+\answer A right angle is a quarter of a turn, so it is $25\%$. One percent of $360^\circ$ is $360 : 100 = 3.6^\circ$. This is exactly what you do when you draw a pie chart.
+\tcblower
+Conosci già un modo per dividere un intero in 100 parti: le percentuali. Che percentuale di giro è un angolo retto? E quanti gradi è l'$1\%$ di un giro?
+\answer Un angolo retto è un quarto di giro, quindi è il $25\%$. L'$1\%$ di $360^\circ$ è $360 : 100 = 3{,}6^\circ$. È proprio quello che fai quando disegni un areogramma.
+\end{think}
+
+\begin{example}{a pie chart}{un areogramma}
+In a class of 30 students, 12 prefer pizza, 9 pasta, 6 ice cream and 3 something else. Draw the pie chart.
+
+The whole class is the whole circle, $360^\circ$. Each group gets the same fraction of the circle that it has of the class. We set up the proportion
+\[ x : 360^\circ = \text{part} : \text{total}. \]
+Pizza: $x = \dfrac{12 \times 360^\circ}{30} = 144^\circ$. \\
+Pasta: $\dfrac{9 \times 360^\circ}{30} = 108^\circ$. \\
+Ice cream: $\dfrac{6 \times 360^\circ}{30} = 72^\circ$. \\
+Other: $\dfrac{3 \times 360^\circ}{30} = 36^\circ$. \\
+Check: $144 + 108 + 72 + 36 = 360$. The slices close the circle exactly.
+% VERIFIED: python -> 144.0, 108.0, 72.0, 36.0 ; sum 360.0
+\tcblower
+In una classe di 30 studenti, 12 preferiscono la pizza, 9 la pasta, 6 il gelato e 3 altro. Disegna l'areogramma.
+
+Tutta la classe è tutto il cerchio, $360^\circ$. Ogni gruppo riceve la stessa frazione di cerchio che ha della classe. Impostiamo la proporzione
+\[ x : 360^\circ = \text{parte} : \text{totale}. \]
+Pizza: $x = \dfrac{12 \cdot 360^\circ}{30} = 144^\circ$. \\
+Pasta: $\dfrac{9 \cdot 360^\circ}{30} = 108^\circ$. \\
+Gelato: $\dfrac{6 \cdot 360^\circ}{30} = 72^\circ$. \\
+Altro: $\dfrac{3 \cdot 360^\circ}{30} = 36^\circ$. \\
+Verifica: $144 + 108 + 72 + 36 = 360$. Le fette chiudono il cerchio esattamente.
+\end{example}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === slices 144,108,72,36 starting at 90 deg, going clockwise
+% boundaries: 90, -54, -162, -234, -270 (= 90)
+% VERIFIED: python -> 90-144 = -54 ; -54-108 = -162 ; -162-72 = -234 ; -234-36 = -270
+\begin{tikzpicture}
+  \def\R{2.1}
+  \fill[angA!55] (0,0) -- (90:\R) arc (90:-54:\R) -- cycle;
+  \fill[angB!50] (0,0) -- (-54:\R) arc (-54:-162:\R) -- cycle;
+  \fill[angC!50] (0,0) -- (-162:\R) arc (-162:-234:\R) -- cycle;
+  \fill[angD!55] (0,0) -- (-234:\R) arc (-234:-270:\R) -- cycle;
+  \foreach \a in {90,-54,-162,-234} \draw[white, line width=1.2pt] (0,0) -- (\a:\R);
+  \node[font=\small\bfseries] at (18:1.3) {$144^\circ$};
+  \node[font=\small\bfseries] at (-108:1.3) {$108^\circ$};
+  \node[font=\small\bfseries] at (-198:1.3) {$72^\circ$};
+  \node[font=\small\bfseries] at (-252:1.45) {$36^\circ$};
+  \node[anchor=west, font=\small, align=left] at (2.6,1.2) {\textcolor{angA}{$\blacksquare$} pizza: 12 ($40\%$)};
+  \node[anchor=west, font=\small, align=left] at (2.6,0.5) {\textcolor{angB}{$\blacksquare$} pasta: 9 ($30\%$)};
+  \node[anchor=west, font=\small, align=left] at (2.6,-0.2) {\textcolor{angC}{$\blacksquare$} ice cream \textperiodcentered\ \textit{gelato}: 6 ($20\%$)};
+  \node[anchor=west, font=\small, align=left] at (2.6,-0.9) {\textcolor{angD}{$\blacksquare$} other \textperiodcentered\ \textit{altro}: 3 ($10\%$)};
+\end{tikzpicture}
+\bicap{The pie chart of the worked example. Each slice is its share of $360^\circ$.}%
+      {L'areogramma dell'esempio svolto. Ogni fetta è la sua parte di $360^\circ$.}
+\label{fig:pie}
+\end{figure}
+
+\begin{keyidea}{}{}
+360 is not written in the sky. It is a very good choice, because it can be shared in many fair ways, and it comes from people who counted in sixties.
+\tcblower
+Il 360 non è scritto nel cielo. È una scelta molto buona, perché si può dividere in parti uguali in tanti modi, e viene da un popolo che contava a sessanta.
+\end{keyidea}
+
+% ================================================================
+\bisection{Types of angles}{Tipi di angoli}\label{sec:types}
+% ================================================================
+\begin{bi}
+Once we can measure, we can give names. The right angle, a quarter turn, is the reference point: it is the corner of a book, of a sheet of paper, of a room. Everything else is compared with it.
+\IT
+Quando sappiamo misurare, possiamo dare dei nomi. L'angolo retto, un quarto di giro, è il punto di riferimento: è l'angolo di un libro, di un foglio, di una stanza. Tutti gli altri si confrontano con lui.
+\end{bi}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === measures used: 0, 40, 90, 130, 180, 250, 360
+\begin{tikzpicture}[every node/.style={font=\small}]
+  \def\L{1.35}
+  \foreach \m/\en/\itl/\x/\y/\col in {
+      0/zero/nullo/0/0/angB,
+      40/acute/acuto/3.3/0/angB,
+      90/right/retto/6.6/0/angB,
+      130/obtuse/ottuso/9.9/0/angB,
+      180/straight/piatto/1.4/-3.2/angD,
+      250/reflex/concavo/5.4/-3.2/angD,
+      360/full/giro/9.4/-3.2/angD} {
+    \begin{scope}[shift={(\x,\y)}]
+      \ifthenelse{\m=0}{}{\fill[\col!22] (0,0) -- (0:0.9) arc (0:\m:0.9) -- cycle;}
+      \draw[side] (0,0) -- (0:\L);
+      \draw[side] (0,0) -- (\m:\L);
+      \ifthenelse{\m=0}{\draw[side, black!60] (0,0.05) -- (\L,0.05);}{}
+      \ifthenelse{\m=90}{\draw[line width=0.5pt] (0.25,0) -- (0.25,0.25) -- (0,0.25);}{}
+      \node[pt] at (0,0) {};
+      \node[align=center] at (0.5,-0.75) {\textbf{\en} \textperiodcentered\ \textit{\itl}\\$\m^\circ$};
+    \end{scope}
+  }
+\end{tikzpicture}
+\bicap{The family of angles, from zero to a full turn.}%
+      {La famiglia degli angoli, dall'angolo nullo al giro.}
+\label{fig:types}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{English} & \textbf{\color{itgreen}Italiano} & \textbf{Measure \textperiodcentered\ \color{itgreen}Ampiezza} & \textbf{Example \textperiodcentered\ \color{itgreen}Esempio}\\
+\midrule
+zero angle     & angolo nullo    & $0^\circ$                       & closed scissors \textperiodcentered\ \textit{forbici chiuse}\\
+acute angle    & angolo acuto    & more than $0^\circ$, less than $90^\circ$ & tip of a pizza slice \textperiodcentered\ \textit{punta di una fetta}\\
+right angle    & angolo retto    & exactly $90^\circ$              & corner of a book \textperiodcentered\ \textit{angolo di un libro}\\
+obtuse angle   & angolo ottuso   & more than $90^\circ$, less than $180^\circ$ & a laptop opened wide \textperiodcentered\ \textit{un portatile molto aperto}\\
+straight angle & angolo piatto   & exactly $180^\circ$             & a door wide open against the wall\\
+reflex angle   & angolo concavo  & more than $180^\circ$, less than $360^\circ$ & the outside of a slice \textperiodcentered\ \textit{il resto della pizza}\\
+full angle     & angolo giro     & exactly $360^\circ$             & a full turn of a wheel \textperiodcentered\ \textit{un giro di ruota}\\
+\bottomrule
+\end{tabular}
+\bicap{Names of angles by measure.}{I nomi degli angoli secondo l'ampiezza.}
+\label{tab:types}
+\end{table}
+
+\begin{anchor}{the hands of a clock}{le lancette dell'orologio}
+A clock is a protractor that moves. The dial is a full turn divided into 12 hours, so each hour mark is $360^\circ : 12 = 30^\circ$ from the next. In one minute the minute hand moves $360^\circ : 60 = 6^\circ$. The hour hand is slower: it needs a whole hour to move $30^\circ$, so it moves $0.5^\circ$ per minute.
+\tcblower
+Un orologio è un goniometro che si muove. Il quadrante è un giro diviso in 12 ore, quindi tra un'ora e la successiva ci sono $360^\circ : 12 = 30^\circ$. In un minuto la lancetta dei minuti si sposta di $360^\circ : 60 = 6^\circ$. La lancetta delle ore è più lenta: le serve un'ora intera per spostarsi di $30^\circ$, quindi si sposta di $0{,}5^\circ$ al minuto.
+\end{anchor}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === angles measured clockwise from 12. hour hand = 30h + 0.5m, minute hand = 6m
+% 3:00 -> 90 and 0 -> 90 deg ; 4:00 -> 120 and 0 -> 120 deg ; 2:30 -> 75 and 180 -> 105 deg
+% TikZ angle = 90 - clock angle.  VERIFIED: python clock(3,0)=90, clock(4,0)=120, clock(2,30)=105
+\begin{tikzpicture}
+  \foreach \h/\m/\hh/\mm/\lab/\x in {3/00/90/0/90/0, 4/00/120/0/120/4.2, 2/30/75/180/105/8.4} {
+    \begin{scope}[shift={(\x,0)}]
+      \draw[line width=0.8pt] (0,0) circle (1.45);
+      \foreach \k in {0,...,11} \draw[line width=0.8pt] ({90-30*\k}:1.45) -- ({90-30*\k}:1.28);
+      \foreach \k in {0,...,59} \draw[black!40] ({90-6*\k}:1.45) -- ({90-6*\k}:1.39);
+      \node[font=\scriptsize] at (90:1.08) {12};
+      \node[font=\scriptsize] at (0:1.08) {3};
+      \node[font=\scriptsize] at (-90:1.08) {6};
+      \node[font=\scriptsize] at (180:1.08) {9};
+      \fill[angA!25] (0,0) -- ({90-\hh}:0.6) arc ({90-\hh}:{90-\mm}:0.6) -- cycle;
+      \draw[line width=2pt, line cap=round] (0,0) -- ({90-\hh}:0.8);
+      \draw[line width=1.2pt, line cap=round] (0,0) -- ({90-\mm}:1.2);
+      \node[pt] at (0,0) {};
+      \node[font=\small] at (0,-1.8) {\h:\m\ $\to$ \textbf{\color{angA}$\lab^\circ$}};
+    \end{scope}
+  }
+\end{tikzpicture}
+\bicap{Angles on a clock. At 2:30 the hour hand is halfway between 2 and 3, so the angle is $105^\circ$, not $90^\circ$.}%
+      {Gli angoli dell'orologio. Alle 2:30 la lancetta delle ore è a metà tra il 2 e il 3, quindi l'angolo è $105^\circ$, non $90^\circ$.}
+\label{fig:clocks}
+\end{figure}
+
+\begin{think}{half past two}{le due e mezza}
+At 2:30 the minute hand points at 6 and the hour hand points near 2 and 3. Most people answer $90^\circ$ or $120^\circ$. Before reading on, find the true angle.
+\answer The minute hand is at $30 \times 6^\circ = 180^\circ$ from the 12. The hour hand is at $2 \times 30^\circ + 30 \times 0.5^\circ = 60^\circ + 15^\circ = 75^\circ$. The angle between them is $180^\circ - 75^\circ = 105^\circ$: an obtuse angle.
+% VERIFIED: python -> clock(2,30) = 105
+\tcblower
+Alle 2:30 la lancetta dei minuti indica il 6 e quella delle ore sta tra il 2 e il 3. Molti rispondono $90^\circ$ o $120^\circ$. Prima di andare avanti, trova l'angolo vero.
+\answer La lancetta dei minuti è a $30 \cdot 6^\circ = 180^\circ$ dal 12. Quella delle ore è a $2 \cdot 30^\circ + 30 \cdot 0{,}5^\circ = 60^\circ + 15^\circ = 75^\circ$. L'angolo tra le due è $180^\circ - 75^\circ = 105^\circ$: un angolo ottuso.
+\end{think}
+
+\begin{example}{more clock angles}{altri angoli dell'orologio}
+\textbf{3:00.} The hands point at 12 and 3: three hour marks, $3 \times 30^\circ = 90^\circ$. A right angle.\\
+\textbf{4:00.} Four hour marks: $4 \times 30^\circ = 120^\circ$. Obtuse.\\
+\textbf{6:00.} Six hour marks: $180^\circ$. A straight angle.\\
+\textbf{9:00.} Three hour marks the short way ($90^\circ$) or nine the long way ($270^\circ$): the two hands make a convex and a concave angle, as in Figure~\ref{fig:convex}.\\
+\textbf{10:10.} Minute hand: $10 \times 6^\circ = 60^\circ$. Hour hand: $10 \times 30^\circ + 10 \times 0.5^\circ = 305^\circ$. Difference $245^\circ$, so the convex angle is $360^\circ - 245^\circ = 115^\circ$.
+% VERIFIED: python -> clock(10,10): hour 305, minute 60, angle 115
+\tcblower
+\textbf{3:00.} Le lancette indicano il 12 e il 3: tre segni delle ore, $3 \cdot 30^\circ = 90^\circ$. Un angolo retto.\\
+\textbf{4:00.} Quattro segni: $4 \cdot 30^\circ = 120^\circ$. Ottuso.\\
+\textbf{6:00.} Sei segni: $180^\circ$. Un angolo piatto.\\
+\textbf{9:00.} Tre segni dalla parte corta ($90^\circ$) o nove dalla parte lunga ($270^\circ$): le lancette formano un angolo convesso e uno concavo, come nella figura~\ref{fig:convex}.\\
+\textbf{10:10.} Minuti: $10 \cdot 6^\circ = 60^\circ$. Ore: $10 \cdot 30^\circ + 10 \cdot 0{,}5^\circ = 305^\circ$. Differenza $245^\circ$, quindi l'angolo convesso è $360^\circ - 245^\circ = 115^\circ$.
+\end{example}
+
+% ================================================================
+\bisection{Angles in pairs}{Coppie di angoli}\label{sec:pairs}
+% ================================================================
+\begin{bi}
+Angles become interesting when they meet. Two angles are \textbf{adjacent} (consecutive) when they share the vertex and one side and do not overlap. If they are adjacent and their other two sides form a straight line, they fill a straight angle: $180^\circ$ together. Three special partnerships have their own names, and all three are about \emph{completing} something.
+\IT
+Gli angoli diventano interessanti quando si incontrano. Due angoli sono \textbf{consecutivi} quando hanno lo stesso vertice e un lato in comune e non si sovrappongono. Se sono consecutivi e gli altri due lati stanno sulla stessa retta, si dicono \textbf{adiacenti}: insieme riempiono un angolo piatto, cioè $180^\circ$. Tre coppie speciali hanno un nome proprio, e tutte e tre parlano di \emph{completare} qualcosa.
+\end{bi}
+
+\begin{defn}{three partnerships}{tre coppie}
+Two angles are\\
+\textbf{complementary} if together they make a right angle: $\alpha + \beta = 90^\circ$;\\
+\textbf{supplementary} if together they make a straight angle: $\alpha + \beta = 180^\circ$;\\
+\textbf{explementary} (conjugate) if together they make a full turn: $\alpha + \beta = 360^\circ$.
+\tcblower
+Due angoli sono\\
+\textbf{complementari} se insieme formano un angolo retto: $\alpha + \beta = 90^\circ$;\\
+\textbf{supplementari} se insieme formano un angolo piatto: $\alpha + \beta = 180^\circ$;\\
+\textbf{esplementari} se insieme formano un angolo giro: $\alpha + \beta = 360^\circ$.
+\end{defn}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === (a) 35 + 55 = 90 ; (b) 128 + 52 = 180 ; (c) 250 + 110 = 360
+% ray directions: (a) 0, 35, 90 ; (b) 0, 128, 180 ; (c) 0, 110 (reflex part 110->360)
+% VERIFIED: python -> 90-35 = 55 ; 180-128 = 52 ; 360-250 = 110
+\begin{tikzpicture}
+  \begin{scope}
+    \fill[angA!25] (0,0) -- (0:1) arc (0:35:1) -- cycle;
+    \fill[angB!25] (0,0) -- (35:1) arc (35:90:1) -- cycle;
+    \draw[side] (1.8,0) -- (0,0) -- (0,1.8); \draw[side] (0,0) -- (35:1.8);
+    \draw[line width=0.5pt] (0.22,0) -- (0.22,0.22) -- (0,0.22);
+    \node[angA, font=\small] at (17:1.35) {$35^\circ$};
+    \node[angB, font=\small] at (63:1.35) {$55^\circ$};
+    \node[font=\small, align=center] at (0.9,-0.6) {complementary\\\textit{complementari}};
+  \end{scope}
+  \begin{scope}[shift={(5.2,0)}]
+    \fill[angA!25] (0,0) -- (0:0.9) arc (0:128:0.9) -- cycle;
+    \fill[angB!25] (0,0) -- (128:0.9) arc (128:180:0.9) -- cycle;
+    \draw[side] (-1.9,0) -- (1.9,0); \draw[side] (0,0) -- (128:1.8);
+    \node[angA, font=\small] at (64:1.25) {$128^\circ$};
+    \node[angB, font=\small] at (154:1.3) {$52^\circ$};
+    \node[font=\small, align=center] at (0,-0.6) {supplementary\\\textit{supplementari}};
+  \end{scope}
+  \begin{scope}[shift={(10,0.1)}]
+    \fill[angB!25] (0,0) -- (0:0.75) arc (0:110:0.75) -- cycle;
+    \fill[angA!25] (0,0) -- (110:0.75) arc (110:360:0.75) -- cycle;
+    \draw[side] (0,0) -- (0:1.6); \draw[side] (0,0) -- (110:1.6);
+    \node[angB, font=\small] at (55:1.05) {$110^\circ$};
+    \node[angA, font=\small] at (235:1.1) {$250^\circ$};
+    \node[font=\small, align=center] at (0,-1.55) {explementary\\\textit{esplementari}};
+  \end{scope}
+\end{tikzpicture}
+\bicap{Three ways to complete: to a right angle, to a straight angle, to a full turn.}%
+      {Tre modi di completare: fino all'angolo retto, fino all'angolo piatto, fino all'angolo giro.}
+\label{fig:pairs}
+\end{figure}
+
+\begin{example}{finding the partner}{trovare il compagno}
+The complement of $35^\circ$ is $90^\circ - 35^\circ = 55^\circ$. The supplement of $128^\circ$ is $180^\circ - 128^\circ = 52^\circ$. The explement of $250^\circ$ is $360^\circ - 250^\circ = 110^\circ$.
+
+\textbf{Does every angle have a complement?} No. An angle of $100^\circ$ is already bigger than $90^\circ$, so nothing positive can complete it to $90^\circ$. Only acute angles have a complement.
+\tcblower
+Il complementare di $35^\circ$ è $90^\circ - 35^\circ = 55^\circ$. Il supplementare di $128^\circ$ è $180^\circ - 128^\circ = 52^\circ$. L'esplementare di $250^\circ$ è $360^\circ - 250^\circ = 110^\circ$.
+
+\textbf{Ogni angolo ha un complementare?} No. Un angolo di $100^\circ$ è già più grande di $90^\circ$, quindi nessun angolo positivo può completarlo a $90^\circ$. Solo gli angoli acuti hanno un complementare.
+\end{example}
+
+\begin{example}{angle puzzles}{indovinelli con gli angoli}
+\textbf{(a)} Two complementary angles; one is twice the other. Call the smaller one $x$: then $x + 2x = 90^\circ$, so $3x = 90^\circ$ and $x = 30^\circ$. The angles are $30^\circ$ and $60^\circ$.
+
+\textbf{(b)} Two supplementary angles differ by $40^\circ$. Call them $x$ and $x + 40^\circ$: $2x + 40^\circ = 180^\circ$, $2x = 140^\circ$, $x = 70^\circ$. The angles are $70^\circ$ and $110^\circ$.
+
+\textbf{(c)} Find the angle whose complement is one quarter of its supplement. Write it as an equation: $90 - x = \frac{180 - x}{4}$. Multiply by 4: $360 - 4x = 180 - x$, so $180 = 3x$ and $x = 60^\circ$. Check: complement $30^\circ$, supplement $120^\circ$, and $120 : 4 = 30$.
+% VERIFIED: python -> (a) 30, 60 ; (b) 70, 110 ; (c) 60 with 30 = 120/4
+\tcblower
+\textbf{(a)} Due angoli complementari; uno è il doppio dell'altro. Chiamo $x$ il più piccolo: allora $x + 2x = 90^\circ$, cioè $3x = 90^\circ$ e $x = 30^\circ$. Gli angoli sono $30^\circ$ e $60^\circ$.
+
+\textbf{(b)} Due angoli supplementari differiscono di $40^\circ$. Li chiamo $x$ e $x + 40^\circ$: $2x + 40^\circ = 180^\circ$, $2x = 140^\circ$, $x = 70^\circ$. Gli angoli sono $70^\circ$ e $110^\circ$.
+
+\textbf{(c)} Trova l'angolo il cui complementare è un quarto del suo supplementare. Scrivo l'equazione: $90 - x = \frac{180 - x}{4}$. Moltiplico per 4: $360 - 4x = 180 - x$, quindi $180 = 3x$ e $x = 60^\circ$. Verifica: complementare $30^\circ$, supplementare $120^\circ$, e $120 : 4 = 30$.
+\end{example}
+
+\bisubsection{Vertical angles: your first proof}{Angoli opposti al vertice: la tua prima dimostrazione}\label{sec:vertical}
+\begin{anchor}{a pair of scissors}{un paio di forbici}
+Open a pair of scissors. The two blades cross at the screw and make an X. When you open the handles wider, the blades open wider by exactly the same amount. The angle between the handles and the angle between the blades are always equal. Those two angles are called \textbf{vertical angles}: they share the vertex and their sides are the continuations of each other.
+\tcblower
+Apri un paio di forbici. Le due lame si incrociano nella vite e formano una X. Quando apri di più i manici, le lame si aprono esattamente della stessa quantità. L'angolo tra i manici e l'angolo tra le lame sono sempre uguali. Questi due angoli si chiamano \textbf{opposti al vertice}: hanno lo stesso vertice e i lati dell'uno sono i prolungamenti dei lati dell'altro.
+\end{anchor}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === lines through O at 0 deg and 40 deg: angles 40, 140, 40, 140
+% VERIFIED: python -> 180 - 40 = 140
+\begin{tikzpicture}
+  \draw[side] (180:2.6) -- (0:2.6);
+  \draw[side] (220:2.6) -- (40:2.6);
+  \fill[angA!30] (0,0) -- (0:0.8) arc (0:40:0.8) -- cycle;
+  \fill[angA!30] (0,0) -- (180:0.8) arc (180:220:0.8) -- cycle;
+  \fill[angB!18] (0,0) -- (40:0.6) arc (40:180:0.6) -- cycle;
+  \node[angA, font=\small] at (20:1.15) {$1$};
+  \node[angB, font=\small] at (110:0.9) {$2$};
+  \node[angA, font=\small] at (200:1.15) {$3$};
+  \node[angB, font=\small] at (290:0.8) {$4$};
+  \node[pt] at (0,0) {};
+  \node[below right] at (0.05,-0.05) {$O$};
+  \node[font=\small, align=left, anchor=west] at (3.0,0.5) {$\av{1} + \av{2} = 180^\circ$ (on a line \textperiodcentered\ \textit{adiacenti})\\ $\av{2} + \av{3} = 180^\circ$ (on a line \textperiodcentered\ \textit{adiacenti})\\ so \textperiodcentered\ \textit{quindi} \ $\av{1} = \av{3}$};
+\end{tikzpicture}
+\bicap{Two crossing lines make two pairs of vertical angles: $\av{1}$ and $\av{3}$, $\av{2}$ and $\av{4}$.}%
+      {Due rette che si incontrano formano due coppie di angoli opposti al vertice: $\av{1}$ e $\av{3}$, $\av{2}$ e $\av{4}$.}
+\label{fig:vertical}
+\end{figure}
+
+\begin{bi}
+Measuring is not enough to be sure: a protractor always has small errors, and we want to know that the angles are equal \emph{always}, for every X. So we reason. This is what a proof is.
+\IT
+Misurare non basta per esserne sicuri: il goniometro ha sempre piccoli errori, e noi vogliamo sapere che gli angoli sono uguali \emph{sempre}, per ogni X. Allora ragioniamo. Questo è una dimostrazione.
+\end{bi}
+
+\begin{proofbox}{vertical angles are equal}{gli angoli opposti al vertice sono congruenti}
+\textbf{Given:} two lines crossing at $O$ (Figure~\ref{fig:vertical}).\\
+\textbf{To prove:} $\av{1} = \av{3}$.
+\begin{steps}
+\step{$\av{1} + \av{2} = 180^\circ$}{they lie on a straight line}
+\step{$\av{2} + \av{3} = 180^\circ$}{they lie on a straight line}
+\step{$\av{1} = 180^\circ - \av{2}$ and $\av{3} = 180^\circ - \av{2}$}{from 1 and 2}
+\step{$\av{1} = \av{3}$}{both equal the same thing}
+\end{steps}
+The same argument gives $\av{2} = \av{4}$. \hfill QED
+\tcblower
+\textbf{Ipotesi:} due rette che si incontrano in $O$ (figura~\ref{fig:vertical}).\\
+\textbf{Tesi:} $\av{1} \cong \av{3}$.
+\begin{steps}
+\step{$\av{1} + \av{2} = 180^\circ$}{sono adiacenti}
+\step{$\av{2} + \av{3} = 180^\circ$}{sono adiacenti}
+\step{$\av{1} = 180^\circ - \av{2}$ e $\av{3} = 180^\circ - \av{2}$}{da 1 e 2}
+\step{$\av{1} \cong \av{3}$}{supplementari dello stesso angolo}
+\end{steps}
+Allo stesso modo $\av{2} \cong \av{4}$. \hfill c.v.d.
+\end{proofbox}
+
+\begin{keyidea}{}{}
+Two angles that are supplementary to the same angle are equal to each other. With that one sentence you proved something true for every X that has ever been drawn.
+\tcblower
+Due angoli supplementari dello stesso angolo sono congruenti. Con questa sola frase hai dimostrato una cosa vera per ogni X che sia mai stata disegnata.
+\end{keyidea}
+
+% ================================================================
+\bisection{Parallel lines cut by a transversal}{Rette parallele tagliate da una trasversale}\label{sec:parallel}
+% ================================================================
+\begin{anchor}{railway tracks and a road}{i binari e la strada}
+Think of two railway tracks, perfectly parallel, and a straight road that crosses them at a slant. At the first rail the road makes an X, so four angles. At the second rail it makes another X with four more. Because the rails point in the same direction, the second X is an exact copy of the first, just moved along the road.
+\tcblower
+Pensa a due binari del treno, perfettamente paralleli, e a una strada dritta che li attraversa di sbieco. Sul primo binario la strada forma una X, cioè quattro angoli. Sul secondo binario forma un'altra X con altri quattro angoli. Poiché i binari hanno la stessa direzione, la seconda X è una copia esatta della prima, solo spostata lungo la strada.
+\end{anchor}
+
+\begin{bi}
+In geometry the rails are two parallel lines $r$ and $s$, and the road is a third line $t$ called the \textbf{transversal}. The eight angles are numbered in Figure~\ref{fig:eight}. The angles \emph{between} the two parallel lines are \textbf{interior}; the ones outside are \textbf{exterior}.
+\IT
+In geometria i binari sono due rette parallele $r$ e $s$, e la strada è una terza retta $t$ che si chiama \textbf{trasversale} (o secante). Gli otto angoli sono numerati nella figura~\ref{fig:eight}. Gli angoli \emph{tra} le due parallele sono \textbf{interni}; quelli fuori sono \textbf{esterni}.
+\end{bi}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === r: y = 2, s: y = 0, t through Q = (0,0) at 65 deg -> P = (2/tan65, 2) = (0.933, 2)
+% angle labels at bisector directions: 32.5, 122.5, 212.5, 302.5 deg, radius 0.45
+% VERIFIED: python -> P = (0.933, 2.000)
+\begin{tikzpicture}
+  \coordinate (Q) at (0,0); \coordinate (P) at (0.933,2);
+  \draw[side] (-3,2) -- (4,2) node[right] {$r$};
+  \draw[side] (-3,0) -- (4,0) node[right] {$s$};
+  \draw[side] ($(Q)!-0.55!(P)$) -- ($(Q)!1.55!(P)$) node[above right] {$t$};
+  \foreach \C/\a/\b/\c/\d in {P/1/2/3/4, Q/5/6/7/8} {
+    \node[font=\small\bfseries, angA] at ($(\C)+(32.5:0.5)$) {\a};
+    \node[font=\small\bfseries, angB] at ($(\C)+(122.5:0.5)$) {\b};
+    \node[font=\small\bfseries, angA] at ($(\C)+(212.5:0.5)$) {\c};
+    \node[font=\small\bfseries, angB] at ($(\C)+(302.5:0.5)$) {\d};
+  }
+  \node[pt] at (P) {}; \node[pt] at (Q) {};
+  \node[above left, font=\small] at ($(P)+(-0.05,0.02)$) {$P$};
+  \node[below right, font=\small] at ($(Q)+(0.05,-0.02)$) {$Q$};
+  \fill[black!6] (-3,0.03) rectangle (-1.6,1.97);
+  \node[font=\small, align=center] at (-2.3,1) {interior\\\textit{interni}};
+  \node[font=\small, align=center] at (-2.3,2.55) {exterior \textperiodcentered\ \textit{esterni}};
+  \node[font=\small, align=center] at (-2.3,-0.55) {exterior \textperiodcentered\ \textit{esterni}};
+\end{tikzpicture}
+\bicap{Two parallel lines $r \parallel s$ cut by the transversal $t$ make eight angles. Angles 3, 4, 5, 6 are interior; 1, 2, 7, 8 are exterior.}%
+      {Due rette parallele $r \parallel s$ tagliate dalla trasversale $t$ formano otto angoli. Gli angoli 3, 4, 5, 6 sono interni; 1, 2, 7, 8 sono esterni.}
+\label{fig:eight}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{English} & \textbf{\color{itgreen}Italiano} & \textbf{Pairs \textperiodcentered\ \color{itgreen}Coppie} & \textbf{Rule \textperiodcentered\ \color{itgreen}Regola}\\
+\midrule
+corresponding (F)          & corrispondenti           & 1\,\&\,5, 2\,\&\,6, 3\,\&\,7, 4\,\&\,8 & equal \textperiodcentered\ \textit{congruenti}\\
+alternate interior (Z)     & alterni interni          & 3\,\&\,5, 4\,\&\,6 & equal \textperiodcentered\ \textit{congruenti}\\
+alternate exterior         & alterni esterni          & 1\,\&\,7, 2\,\&\,8 & equal \textperiodcentered\ \textit{congruenti}\\
+same side interior (C)     & coniugati interni        & 3\,\&\,6, 4\,\&\,5 & sum $180^\circ$ \textperiodcentered\ \textit{supplementari}\\
+same side exterior         & coniugati esterni        & 1\,\&\,8, 2\,\&\,7 & sum $180^\circ$ \textperiodcentered\ \textit{supplementari}\\
+\bottomrule
+\end{tabular}
+\bicap{The five families of pairs (numbers as in Figure~\ref{fig:eight}). The rules hold only if $r \parallel s$.}%
+      {Le cinque famiglie di coppie (numeri come nella figura~\ref{fig:eight}). Le regole valgono solo se $r \parallel s$.}
+\label{tab:pairs}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+% Same geometry as Figure fig:eight (P = (0.933, 2), Q = (0,0), t at 65 deg), scaled by 0.8
+% Z: angles 3 (at P, 180..245) and 5 (at Q, 0..65), both 65 deg
+% F: angles 1 (at P, 0..65) and 5 (at Q, 0..65), both 65 deg
+% C: angles 4 (at P, 245..360) = 115 and 5 (at Q, 0..65) = 65, sum 180
+\begin{tikzpicture}[scale=0.82]
+  \foreach \x/\name/\en/\itl in {0/Z/alternate interior/alterni interni, 5.6/F/corresponding/corrispondenti, 11.2/C/same side interior/coniugati interni} {
+    \begin{scope}[shift={(\x,0)}]
+      \coordinate (Q) at (0,0); \coordinate (P) at (0.933,2);
+      \draw[black!35, line width=0.6pt] (-1.8,2) -- (2.6,2);
+      \draw[black!35, line width=0.6pt] (-1.8,0) -- (2.6,0);
+      \draw[black!35, line width=0.6pt] ($(Q)!-0.4!(P)$) -- ($(Q)!1.4!(P)$);
+      \node[font=\small, align=center] at (0.45,-0.95) {\textbf{\name}\quad \en\\\textit{\itl}};
+    \end{scope}
+  }
+  % Z
+  \draw[angA, line width=2pt, line join=round] (-1.5,2) -- (0.933,2) -- (0,0) -- (2.3,0);
+  \fill[angA!35] (0.933,2) -- ++(180:0.5) arc (180:245:0.5) -- cycle;
+  \fill[angA!35] (0,0) -- ++(0:0.5) arc (0:65:0.5) -- cycle;
+  % F
+  \begin{scope}[shift={(5.6,0)}]
+    \draw[angB, line width=2pt, line join=round] (2.3,2) -- (0.933,2) -- (0,0) -- (2.3,0);
+    \draw[angB, line width=2pt] (0,0) -- ($(0.933,2)!1.4!(0,0)$);
+    \fill[angB!35] (0.933,2) -- ++(0:0.5) arc (0:65:0.5) -- cycle;
+    \fill[angB!35] (0,0) -- ++(0:0.5) arc (0:65:0.5) -- cycle;
+  \end{scope}
+  % C
+  \begin{scope}[shift={(11.2,0)}]
+    \draw[angC, line width=2pt, line join=round] (2.3,2) -- (0.933,2) -- (0,0) -- (2.3,0);
+    \fill[angC!35] (0.933,2) -- ++(245:0.45) arc (245:360:0.45) -- cycle;
+    \fill[angC!35] (0,0) -- ++(0:0.5) arc (0:65:0.5) -- cycle;
+  \end{scope}
+\end{tikzpicture}
+\bicap{Three letters to remember the pairs. In a Z the two angles are equal; in an F they are equal; in a C they add up to $180^\circ$.}%
+      {Tre lettere per ricordare le coppie. In una Z i due angoli sono congruenti; in una F sono congruenti; in una C la somma è $180^\circ$.}
+\label{fig:ZFC}
+\end{figure}
+
+\begin{rebuild}{why the Z angles are equal}{perché gli angoli della Z sono uguali}
+\begin{enumerate}[label=\arabic*.]
+\item \textbf{Slide.} Move the crossing at $Q$ along the transversal until it sits on $P$ (Figure~\ref{fig:slide}). Line $s$ moves but stays parallel to itself, and it lands exactly on $r$, because through $P$ there is only one line parallel to $s$. So every angle at $Q$ lands on the angle in the same position at $P$: corresponding angles are equal, $\av{5} = \av{1}$.
+\item \textbf{Cross.} At $P$, angles 1 and 3 are vertical angles, so $\av{1} = \av{3}$ (section~\ref{sec:vertical}).
+\item \textbf{Join.} $\av{5} = \av{1}$ and $\av{1} = \av{3}$, so $\av{5} = \av{3}$. The alternate interior angles, the two ends of the Z, are equal.
+\item \textbf{C angles.} $\av{4} + \av{3} = 180^\circ$ because they lie on line $r$. Replacing $\av{3}$ with the equal $\av{5}$ gives $\av{4} + \av{5} = 180^\circ$.
+\end{enumerate}
+\tcblower
+\begin{enumerate}[label=\arabic*.]
+\item \textbf{Trasla.} Sposta l'incrocio in $Q$ lungo la trasversale finché arriva su $P$ (figura~\ref{fig:slide}). La retta $s$ si muove ma resta parallela a sé stessa, e finisce esattamente su $r$, perché per $P$ passa una sola parallela a $s$. Così ogni angolo in $Q$ finisce sull'angolo nella stessa posizione in $P$: gli angoli corrispondenti sono congruenti, $\av{5} \cong \av{1}$.
+\item \textbf{Incrocia.} In $P$ gli angoli 1 e 3 sono opposti al vertice, quindi $\av{1} \cong \av{3}$ (paragrafo~\ref{sec:vertical}).
+\item \textbf{Unisci.} $\av{5} \cong \av{1}$ e $\av{1} \cong \av{3}$, quindi $\av{5} \cong \av{3}$. Gli angoli alterni interni, le due punte della Z, sono congruenti.
+\item \textbf{Angoli della C.} $\av{4} + \av{3} = 180^\circ$ perché sono adiacenti sulla retta $r$. Mettendo al posto di $\av{3}$ l'angolo congruente $\av{5}$, si ottiene $\av{4} + \av{5} = 180^\circ$.
+\end{enumerate}
+\end{rebuild}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === Q = (0,0), P = (0.933,2); translation vector P - Q = (0.933, 2)
+% ghost copy of the crossing at Q drawn at P: identical 65 deg angle
+\begin{tikzpicture}
+  \coordinate (Q) at (0,0); \coordinate (P) at (0.933,2);
+  \draw[side] (-2.2,2) -- (3.2,2) node[right] {$r$};
+  \draw[side] (-2.2,0) -- (3.2,0) node[right] {$s$};
+  \draw[side] ($(Q)!-0.45!(P)$) -- ($(Q)!1.45!(P)$) node[above right] {$t$};
+  \fill[angA!35] (Q) -- ++(0:0.6) arc (0:65:0.6) -- cycle;
+  \fill[angA!35] (P) -- ++(0:0.6) arc (0:65:0.6) -- cycle;
+  \node[angA, font=\small\bfseries] at ($(Q)+(32.5:0.85)$) {5};
+  \node[angA, font=\small\bfseries] at ($(P)+(32.5:0.85)$) {1};
+  \fill[angB!35] (P) -- ++(180:0.6) arc (180:245:0.6) -- cycle;
+  \node[angB, font=\small\bfseries] at ($(P)+(212.5:0.85)$) {3};
+  \draw[-{Stealth[length=2.5mm]}, dashed, line width=0.8pt, crimson] ($(Q)+(1.6,0.25)$) to[bend right=25] node[right, font=\small, align=left] {slide along $t$\\\textit{trasla lungo $t$}} ($(P)+(1.6,0.25)$);
+  \node[pt] at (P) {}; \node[pt] at (Q) {};
+  \node[below left, font=\small] at (Q) {$Q$}; \node[above left, font=\small] at ($(P)+(-0.05,0.05)$) {$P$};
+\end{tikzpicture}
+\bicap{Sliding the crossing at $Q$ up to $P$: angle 5 lands on angle 1. Angle 1 and angle 3 are vertical angles. So $\av{5} = \av{3}$.}%
+      {Traslando l'incrocio da $Q$ a $P$, l'angolo 5 va a coincidere con l'angolo 1. L'angolo 1 e l'angolo 3 sono opposti al vertice. Quindi $\av{5} \cong \av{3}$.}
+\label{fig:slide}
+\end{figure}
+
+\begin{tutor}[the parallel postulate]
+Step 1 hides the one assumption that makes Euclidean geometry what it is: through a point outside a line there is exactly one parallel line (Euclid's fifth postulate, in Playfair's form). Italian textbooks usually prove first that \emph{congruent alternate angles imply parallel lines} and then use the postulate for the converse, which is the statement used here. For a first year student the sliding picture is honest and enough; if she asks ``why only one parallel?'', the true answer is ``we assume it, and on a sphere it is false''.
+\end{tutor}
+
+\begin{trap}{the rules work for any two lines}{le regole valgono per due rette qualsiasi}
+The Z, F and C rules are true \emph{only} when the two lines are parallel. In Figure~\ref{fig:notparallel} the lines are not parallel and the Z angles are $70^\circ$ and $55^\circ$. The rule is really a test: if the alternate interior angles are equal, the lines are parallel; if they are not equal, the lines will meet somewhere.
+\tcblower
+Le regole della Z, della F e della C valgono \emph{solo} quando le due rette sono parallele. Nella figura~\ref{fig:notparallel} le rette non sono parallele e gli angoli della Z misurano $70^\circ$ e $55^\circ$. La regola è anche un test: se gli angoli alterni interni sono congruenti, le rette sono parallele; se non lo sono, prima o poi le rette si incontrano.
+\end{trap}
+
+\begin{trap}{in the notebook: ``alternate exterior $180^\circ$''}{nel quaderno: «alterni esterni $180^\circ$»}
+Alternate \emph{exterior} angles (1 and 7, 2 and 8) are \emph{equal}, just like alternate interior angles. The pairs that add up to $180^\circ$ are the \emph{same side} pairs (coniugati), the C shapes. A quick check on Figure~\ref{fig:eight}: angle 1 is acute and angle 7 is acute, so they cannot add up to $180^\circ$.
+\tcblower
+Gli angoli alterni \emph{esterni} (1 e 7, 2 e 8) sono \emph{congruenti}, proprio come gli alterni interni. Le coppie che sommano $180^\circ$ sono i \emph{coniugati}, le forme a C. Controllo veloce sulla figura~\ref{fig:eight}: l'angolo 1 è acuto e anche l'angolo 7 è acuto, quindi non possono avere somma $180^\circ$.
+\end{trap}
+
+\begin{figure}[htbp]
+\centering
+% === PRE-COMPUTATION === s: y = 0; t through Q = (0,0) at 70 deg, P = (2/tan70, 2) = (0.728, 2)
+% r through P with direction 15 deg (not parallel to s).
+%   angle 5 at Q, between ray Q->+x (0 deg) and ray Q->P (70 deg)          = 70 deg
+%   angle 3 at P, between ray P->left along r (195 deg) and ray P->Q (250 deg) = 55 deg
+% VERIFIED: python -> 250 - 195 = 55 ; 70 - 0 = 70
+\begin{tikzpicture}
+  \coordinate (Q) at (0,0);
+  \coordinate (P) at ({2/tan(70)},2);
+  \draw[side] (-2.4,0) -- (3.4,0) node[right] {$s$};
+  \draw[side] ($(P)+(195:2.9)$) -- ($(P)+(15:2.7)$) node[right] {$r$};
+  \draw[side] ($(Q)!-0.45!(P)$) -- ($(Q)!1.45!(P)$) node[above] {$t$};
+  \fill[angA!35] (Q) -- ++(0:0.6) arc (0:70:0.6) -- cycle;
+  \fill[angB!35] (P) -- ++(195:0.6) arc (195:250:0.6) -- cycle;
+  \node[angA, font=\small] at ($(Q)+(35:0.95)$) {$70^\circ$};
+  \node[angB, font=\small] at ($(P)+(222.5:1.0)$) {$55^\circ$};
+  \node[pt] at (P) {}; \node[pt] at (Q) {};
+  \node[font=\small, align=left, anchor=west] at (3.2,1.2) {$r \nparallel s$: $70^\circ \neq 55^\circ$};
+\end{tikzpicture}
+\bicap{When the lines are not parallel, the Z angles are different.}%
+      {Quando le rette non sono parallele, gli angoli della Z sono diversi.}
+\label{fig:notparallel}
+\end{figure}
+
+\begin{example}{one angle gives all eight}{un angolo li dà tutti e otto}
+In Figure~\ref{fig:eight}, $r \parallel s$ and $\av{1} = 65^\circ$. Find the other seven.
+
+$\av{2} = 180^\circ - 65^\circ = 115^\circ$ (on a line with 1).\\
+$\av{3} = 65^\circ$ (vertical with 1).\\
+$\av{4} = 115^\circ$ (vertical with 2).\\
+At $Q$ the crossing is a copy of the one at $P$ (corresponding angles): $\av{5} = 65^\circ$, $\av{6} = 115^\circ$, $\av{7} = 65^\circ$, $\av{8} = 115^\circ$.
+
+Only two values appear: every angle is either $65^\circ$ or its supplement $115^\circ$. This is always true: with parallel lines, one angle decides all eight.
+% VERIFIED: python -> 180 - 65 = 115
+\tcblower
+Nella figura~\ref{fig:eight}, $r \parallel s$ e $\av{1} = 65^\circ$. Trova gli altri sette.
+
+$\av{2} = 180^\circ - 65^\circ = 115^\circ$ (adiacente a 1).\\
+$\av{3} = 65^\circ$ (opposto al vertice di 1).\\
+$\av{4} = 115^\circ$ (opposto al vertice di 2).\\
+In $Q$ l'incrocio è una copia di quello in $P$ (angoli corrispondenti): $\av{5} = 65^\circ$, $\av{6} = 115^\circ$, $\av{7} = 65^\circ$, $\av{8} = 115^\circ$.
+
+Compaiono solo due valori: ogni angolo è $65^\circ$ oppure il suo supplementare $115^\circ$. Succede sempre: con le rette parallele, un angolo decide tutti e otto.
+\end{example}
+
+\begin{example}{angles with $x$}{angoli con la $x$}
+\textbf{(a)} Two alternate interior angles measure $3x + 10^\circ$ and $2x + 40^\circ$. They are equal, so $3x + 10 = 2x + 40$, which gives $x = 30$. Each angle is $3 \times 30 + 10 = 100^\circ$, and indeed $2 \times 30 + 40 = 100^\circ$.
+
+\textbf{(b)} Two same side interior angles measure $2x + 20^\circ$ and $x + 40^\circ$. They add up to $180^\circ$: $3x + 60 = 180$, so $x = 40$. The angles are $100^\circ$ and $80^\circ$.
+% VERIFIED: python -> (a) x = 30, 100 = 100 ; (b) x = 40, 100 + 80 = 180
+\tcblower
+\textbf{(a)} Due angoli alterni interni misurano $3x + 10^\circ$ e $2x + 40^\circ$. Sono congruenti, quindi $3x + 10 = 2x + 40$, da cui $x = 30$. Ogni angolo misura $3 \cdot 30 + 10 = 100^\circ$, e infatti $2 \cdot 30 + 40 = 100^\circ$.
+
+\textbf{(b)} Due angoli coniugati interni misurano $2x + 20^\circ$ e $x + 40^\circ$. La loro somma è $180^\circ$: $3x + 60 = 180$, quindi $x = 40$. Gli angoli misurano $100^\circ$ e $80^\circ$.
+\end{example}
+
+\begin{keyidea}{}{}
+Parallel lines copy their angles. Z and F pairs are equal, C pairs add up to $180^\circ$. In the next chapter this single fact tells us why every triangle has $180^\circ$ inside.
+\tcblower
+Le rette parallele copiano i loro angoli. Le coppie a Z e a F sono congruenti, le coppie a C hanno somma $180^\circ$. Nel prossimo capitolo questo solo fatto ci dirà perché ogni triangolo ha $180^\circ$ al suo interno.
+\end{keyidea}

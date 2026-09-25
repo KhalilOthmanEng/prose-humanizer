@@ -1,0 +1,149 @@
+% ==================================================================
+%  Angles and Congruent Triangles  |  Angoli e triangoli congruenti
+%  A bilingual booklet: English (tutor) | Italiano (studentessa)
+%
+%  Register agreed with the author (Phase 0):
+%    * simplified Feynman style: one picture per idea, a trap box,
+%      a thought experiment, worked examples, one "click" per section
+%    * parallel columns, English left, Italian right
+%    * 30 to 40 pages; includes the two proofs from the student's
+%      notebook, exercises with solutions, a summary sheet
+%
+%  Compile:  pdflatex main  (three passes)
+%  Numbers:  every value is checked by  scripts/verify.py
+% ==================================================================
+\input{preamble}
+
+\begin{document}
+\frontmatter
+\pagestyle{empty}
+
+% ------------------------------------------------------------ title page
+\begin{titlepage}
+\centering
+\vspace*{1.2cm}
+{\sffamily\large\color{slate} Geometria piana \textperiodcentered\ Plane geometry\par}
+\vspace{0.8cm}
+{\fontsize{34}{40}\selectfont\bfseries\color{navy} Angles and\\[4pt] Congruent Triangles\par}
+\vspace{0.4cm}
+{\fontsize{26}{32}\selectfont\itshape\color{itgreen} Angoli e\\[2pt] triangoli congruenti\par}
+\vspace{1.2cm}
+% decorative figure: a full turn with a highlighted angle and two congruent triangles
+\begin{tikzpicture}[scale=1.05]
+  \fill[shade] (0,0) -- (0:2.6) arc (0:50:2.6) -- cycle;
+  \draw[black!25] (0,0) circle (2.6);
+  \foreach \a in {0,10,...,350} \draw[black!35] (\a:2.45) -- (\a:2.6);
+  \foreach \a in {0,30,...,330} \draw[black!60, line width=0.6pt] (\a:2.35) -- (\a:2.6);
+  \draw[ray] (0,0) -- (0:3.1);
+  \draw[ray] (0,0) -- (50:3.1);
+  \draw[angA, line width=1pt, -{Stealth[length=2mm]}] (0:1.0) arc (0:50:1.0);
+  \node[angA, font=\large] at (25:1.35) {$50^\circ$};
+  \node[pt] at (0,0) {};
+  \node[font=\small, black!60] at (180:2.95) {$180^\circ$};
+  \node[font=\small, black!60] at (90:2.95) {$90^\circ$};
+  \node[font=\small, black!60] at (270:2.95) {$270^\circ$};
+  % congruent triangles
+  \begin{scope}[shift={(4.3,-1.4)}]
+    \draw[side, fill=angB!12, tick1] (0,0) -- (2,0);
+    \draw[side, fill=angB!12] (0,0) -- (2,0) -- (0.6,1.6) -- cycle;
+    \draw[side, tick1] (0,0) -- (2,0);
+    \draw[side, tick2] (2,0) -- (0.6,1.6);
+    \draw[side, tick3] (0.6,1.6) -- (0,0);
+  \end{scope}
+  \begin{scope}[shift={(4.9,2.3)}, rotate=-150]
+    \draw[side, fill=angC!12] (0,0) -- (2,0) -- (0.6,1.6) -- cycle;
+    \draw[side, tick1] (0,0) -- (2,0);
+    \draw[side, tick2] (2,0) -- (0.6,1.6);
+    \draw[side, tick3] (0.6,1.6) -- (0,0);
+  \end{scope}
+  \node[font=\Large, navy] at (5.9,0.55) {$\cong$};
+\end{tikzpicture}
+\vspace{1.4cm}
+
+{\large\color{navy} English for the tutor \textperiodcentered\ \textcolor{itgreen}{\itshape Italiano per la studentessa}\par}
+\vspace{0.3cm}
+{\small\color{slate} A booklet with pictures, traps, thought experiments and solved problems\\
+\textit{Un quaderno con disegni, trappole, esperimenti mentali e problemi svolti}\par}
+\vfill
+{\small\color{slate} Classe prima \textperiodcentered\ First year of secondary school\par}
+\end{titlepage}
+
+% ------------------------------------------------------------ epigraph
+\vspace*{\fill}
+\begin{center}
+\begin{minipage}{0.72\textwidth}
+\raggedleft
+{\large\itshape There is no royal road to geometry.}\\[2pt]
+{\large\itshape\color{itgreen} Non esiste una via regia per la geometria.}\\[8pt]
+{\small Euclid, answering King Ptolemy I, as reported by Proclus}\\
+{\small\color{itgreen}Euclide al re Tolomeo I, secondo il racconto di Proclo}\\[2pt]
+{\footnotesize\color{slate} (Proclus, \textit{Commentary on the First Book of Euclid's Elements}, trans. G.\,R.~Morrow, 1970)}
+\end{minipage}
+\end{center}
+\vspace*{\fill}
+\clearpage
+
+% ------------------------------------------------------------ how to use
+\pagestyle{fancy}
+\chapter*{How to use this booklet \textperiodcentered\ {\color{itgreen}\itshape Come usare questo quaderno}}
+\markboth{How to use \textperiodcentered\ Come usare}{}
+\addcontentsline{toc}{chapter}{How to use this booklet \textperiodcentered\ Come usare questo quaderno}
+
+\begin{bi}
+\colheads
+Every page is split in two. The left column is in English and is written for you, the tutor. The right column says the same thing in Italian and is written for the student. Paragraphs are aligned, so you can point at a sentence on the left and she can read the same sentence on the right.
+\IT
+Ogni pagina è divisa in due. La colonna di sinistra è in inglese ed è per il tutor. La colonna di destra dice la stessa cosa in italiano ed è per te. I paragrafi sono allineati: quando il tutor indica una frase a sinistra, tu trovi la stessa frase a destra.
+\EN
+Each idea goes through the same short journey, and each step has its own coloured box:
+\begin{itemize}
+  \item \textbf{\color{slate}The trap}: what people usually think, and why it is not quite right.
+  \item \textbf{\color{forest}Picture it}: one everyday image that carries the idea.
+  \item \textbf{\color{navy}Step by step}: the idea rebuilt from zero.
+  \item \textbf{\color{deeporange}Think first}: a question to answer before reading on.
+  \item \textbf{\color{deeppurple}Worked example}: a solved problem with every step.
+  \item \textbf{\color{crimson}The click}: the one sentence to remember.
+\end{itemize}
+\IT
+Ogni idea fa lo stesso breve percorso, e ogni tappa ha il suo riquadro colorato:
+\begin{itemize}
+  \item \textbf{\color{slate}La trappola}: quello che si pensa di solito, e perché non è del tutto giusto.
+  \item \textbf{\color{forest}Immagina}: un'immagine della vita di tutti i giorni che porta con sé l'idea.
+  \item \textbf{\color{navy}Passo dopo passo}: l'idea ricostruita da zero.
+  \item \textbf{\color{deeporange}Pensaci prima}: una domanda a cui rispondere prima di andare avanti.
+  \item \textbf{\color{deeppurple}Esempio svolto}: un problema risolto passo per passo.
+  \item \textbf{\color{crimson}Il clic}: la frase da ricordare.
+\end{itemize}
+\EN
+The booklet has three chapters. Chapter~\ref{ch:angles} explains what an angle is, why a full turn is $360^\circ$, and how angles behave in pairs and around parallel lines. Chapter~\ref{ch:triangles} uses those facts to show why the angles of a triangle add up to $180^\circ$ and what an altitude really is. Chapter~\ref{ch:congruence} explains what \emph{congruent} means, gives the three criteria with a picture for each, and ends with seven complete proofs, including the two problems from her notebook. Exercises follow, then the solutions, a one page summary and an English and Italian glossary.
+\IT
+Il quaderno ha tre capitoli. Il capitolo~\ref{ch:angles} spiega che cos'è un angolo, perché un giro completo misura $360^\circ$ e come si comportano gli angoli a coppie e vicino alle rette parallele. Il capitolo~\ref{ch:triangles} usa questi fatti per capire perché la somma degli angoli di un triangolo è $180^\circ$ e che cos'è davvero un'altezza. Il capitolo~\ref{ch:congruence} spiega che cosa vuol dire \emph{congruente}, presenta i tre criteri con un disegno per ciascuno e termina con sette dimostrazioni complete, compresi i due problemi del tuo quaderno. Poi ci sono gli esercizi, le soluzioni, un formulario di una pagina e un glossario inglese e italiano.
+\EN
+Take a pencil, a ruler, a protractor and a sheet of paper you are allowed to cut. Several ideas in this booklet are best understood with the hands before the head.
+\IT
+Prendi una matita, un righello, un goniometro e un foglio che puoi ritagliare. Molte idee di questo quaderno si capiscono prima con le mani e poi con la testa.
+\end{bi}
+
+\begin{tutor}[notation]
+Italian schools write the angle with vertex $B$ as $\ang{A}{B}{C}$ (hat on the middle letter) and a segment as $\seg{AB}$. They write $\cong$ for \emph{congruent}; her notebook uses $=$ for the same thing, and both will be understood by her teacher. Italian textbooks call corresponding parts of congruent triangles \emph{elementi omologhi}. The Italian decimal separator is a comma, so the Italian column writes $2{,}4$ where the English column writes $2.4$.
+\end{tutor}
+
+\tableofcontents
+
+\mainmatter
+\input{chapters/ch1-angles}
+\input{chapters/ch2-triangles}
+\input{chapters/ch3-congruence}
+\input{chapters/ch4-exercises}
+
+\appendix
+\titleformat{\chapter}[display]
+  {\normalfont\bfseries\color{navy}}
+  {\LARGE\sffamily Appendix\,/\,Appendice \thechapter}
+  {6pt}
+  {\Huge}
+\input{chapters/appA-solutions}
+\input{chapters/appB-summary}
+\input{chapters/appC-glossary}
+
+\end{document}
