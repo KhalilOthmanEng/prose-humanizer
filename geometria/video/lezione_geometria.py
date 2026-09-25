@@ -250,7 +250,11 @@ class LessonScene(Scene):
         path, dur = synth(text)
         cap = caption(text)
         self.add_foreground_mobjects(cap)
-        self.add_sound(path)
+        # Scene.add_sound is silently ignored right after a play() that Manim served
+        # from its cache (renderer.skip_animations stays True until the next play),
+        # which randomly drops sentences. Adding the sound through the file writer
+        # is not affected by that flag.
+        self.renderer.file_writer.add_sound(path, self.time)
         t0 = self.time
         yield dur
         rest = dur + pad - (self.time - t0)
