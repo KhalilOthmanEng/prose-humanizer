@@ -886,7 +886,7 @@ class P06_Parallele(LessonScene):
         g[0].clear_updaters()
         self.play(FadeOut(wz3), FadeOut(wz5), FadeOut(vals), FadeIn(n1))
         nb = VGroup(T("Dal quaderno:", 26, GRAY_B), T("alterni esterni: 180 gradi", 30, COL_ERR),
-                    T("alterni esterni: UGUALI", 30, COL_RES)).arrange(DOWN, aligned_edge=LEFT, buff=0.18).move_to(P(4.7, 2.45))
+                    T("alterni esterni: UGUALI", 30, COL_RES)).arrange(DOWN, aligned_edge=LEFT, buff=0.14).move_to(P(4.7, 2.75))
         w1x = wedge(P6, 0, 65, 0.85, COL_RES, 0.45)
         w7x = wedge(Q6, 180, 65, 0.85, COL_RES, 0.45)
         with self.say("E un'altra trappola, dal tuo quaderno: gli alterni esterni, come l'uno e il sette, non sommano centottanta. Sono uguali, proprio come gli alterni interni."):
