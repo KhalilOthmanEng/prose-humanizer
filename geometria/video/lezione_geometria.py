@@ -105,6 +105,10 @@ A7 = P(-3.4, -2.0)
 B7 = P(1.6, -2.0)
 AC7 = 5 * np.sin(np.radians(60)) / np.sin(np.radians(70))
 C7 = A7 + AC7 * unit(50)
+# Act 8 example: AB = 10, altitude from C = 6, AC = 12 (0.5 scene units per cm)
+A8 = P(-5.6, -2.2)
+B8 = A8 + P(5.0, 0)
+C8 = A8 + 0.5 * P(np.sqrt(12 ** 2 - 6 ** 2), 6)
 # Act 10: SAS / ASA / SSS triangle, unit 1.2: AB = 3.4, AC = 2.5, angle A = 55
 U10 = 1.2
 A10 = P(-2.4, -1.9)
@@ -525,14 +529,14 @@ class P03_Perche360(LessonScene):
         data = [("pizza", 12, "#EF8A6A"), ("pasta", 9, "#7EB6FF"), ("gelato", 6, "#06D6A0"), ("altro", 3, COL_ANG)]
         with self.say("Adesso usiamo i gradi per qualcosa di concreto: un areogramma, come quelli del tuo quaderno."):
             self.play(FadeIn(hd))
-        tab = VGroup(*[T(f"{n}: {v} studenti", 26, c) for n, v, c in data]).arrange(DOWN, aligned_edge=LEFT, buff=0.22).move_to(P(-4.3, 1.1))
+        tab = VGroup(*[T(f"{n}: {v} studenti", 26, c) for n, v, c in data]).arrange(DOWN, aligned_edge=LEFT, buff=0.18).move_to(P(-4.6, 2.0))
         with self.say("In una classe di trenta studenti, dodici preferiscono la pizza, nove la pasta, sei il gelato e tre altro."):
             self.play(LaggedStart(*[FadeIn(x, shift=RIGHT * 0.2) for x in tab], lag_ratio=0.3), run_time=2.0)
         prop = M(r"x : 360^\circ = \text{parte} : \text{totale}", 38).move_to(P(2.7, 2.3))
         with self.say("Tutta la classe è tutto il cerchio. Impostiamo la proporzione: x sta a trecentosessanta come la parte sta al totale."):
             self.play(Write(prop), run_time=1.8)
-        Cp = P(-1.0, -1.0)
-        Rp = 1.75
+        Cp = P(-2.6, -0.9)
+        Rp = 1.55
         start = 90.0
         calcs = VGroup()
         slices = VGroup()
@@ -541,13 +545,13 @@ class P03_Perche360(LessonScene):
             slices.add(wedge(Cp, start - ang, ang, Rp, c, 0.85))
             calcs.add(M(rf"\frac{{{v}\cdot 360^\circ}}{{30}} = {int(ang)}^\circ", 34, c))
             start -= ang
-        calcs.arrange(DOWN, aligned_edge=LEFT, buff=0.18).move_to(P(3.4, -0.55))
+        calcs.arrange(DOWN, aligned_edge=LEFT, buff=0.18).move_to(P(2.6, -0.3))
         with self.say("Pizza: dodici per trecentosessanta, diviso trenta, fa centoquarantaquattro gradi."):
             self.play(Write(calcs[0]), FadeIn(slices[0], scale=0.9), run_time=1.6)
         with self.say("Pasta: centootto gradi. Gelato: settantadue. Altro: trentasei."):
             for k in (1, 2, 3):
                 self.play(Write(calcs[k]), FadeIn(slices[k], scale=0.9), run_time=1.0)
-        chk = M(r"144 + 108 + 72 + 36 = 360", 40, COL_RES).move_to(P(0.6, -2.55))
+        chk = M(r"144 + 108 + 72 + 36 = 360", 38, COL_RES).move_to(P(2.6, -2.3))
         with self.say("Controlliamo: centoquarantaquattro più centootto più settantadue più trentasei fa trecentosessanta. Il cerchio si chiude esattamente."):
             self.play(FadeOut(tab), run_time=0.3)
             self.play(Write(chk), run_time=1.6)
@@ -744,6 +748,20 @@ class P05_Coppie(LessonScene):
             self.play(TransformMatchingTex(eqB, eqC))
             self.play(Write(res))
         self.wipe()
+        p2 = T("Due angoli supplementari differiscono di 40°.", 30).move_to(P(0, 2.0))
+        eqD = MathTex(r"x", r"+", r"(x + 40^\circ)", r"=", r"180^\circ", font_size=50).move_to(P(0, 0.7))
+        eqE = MathTex(r"2x", r"=", r"140^\circ", font_size=50).move_to(P(0, 0.7))
+        eqF = MathTex(r"x", r"=", r"70^\circ", font_size=50).move_to(P(0, 0.7))
+        res2 = M(r"70^\circ \ \text{e}\ 110^\circ", 50, COL_RES).move_to(P(0, -0.6))
+        with self.say("Un altro indovinello: due angoli supplementari differiscono di 40°. Chiamo x il più piccolo: l'altro è x più 40."):
+            self.play(FadeIn(p2))
+            self.play(Write(eqD))
+        with self.say("La somma è 180, quindi 2x fa 140, e x vale 70. Gli angoli sono 70 e 110 gradi."):
+            self.play(TransformMatchingTex(eqD, eqE))
+            self.wait(0.5)
+            self.play(TransformMatchingTex(eqE, eqF))
+            self.play(Write(res2))
+        self.wipe()
 
         # vertical angles
         O4 = P(-2.8, -0.6)
@@ -828,7 +846,7 @@ class P06_Parallele(LessonScene):
         w5 = wedge(Q6, 0, 65, 0.85, COL_ANG, 0.5)
         Fpath = VMobject(color=COL_ANG, stroke_width=7).set_points_as_corners([P(2.6, 1.3), P6, Q6, P(2.6, -1.2)])
         Fstem = Line(Q6, Q6 - 1.0 * unit(65), color=COL_ANG, stroke_width=7)
-        lF = T("F: corrispondenti, uguali", 30, COL_ANG).move_to(P(3.2, 2.5))
+        lF = T("F: corrispondenti, uguali", 30, COL_ANG).move_to(P(4.7, 2.5))
         with self.say("Per questo gli angoli nella stessa posizione sono uguali: si chiamano corrispondenti, e formano una effe."):
             self.play(FadeIn(w1), FadeIn(w5), Create(Fpath), Create(Fstem), run_time=1.5)
             self.play(FadeIn(lF))
@@ -839,14 +857,14 @@ class P06_Parallele(LessonScene):
             self.play(Indicate(n1[2], scale_factor=1.5), Indicate(n1[0], scale_factor=1.5))
         Zpath = VMobject(color=COL_RES, stroke_width=7).set_points_as_corners([P(-4.2, 1.3), P6, Q6, P(3.2, -1.2)])
         w5b = wedge(Q6, 0, 65, 0.85, COL_RES, 0.5)
-        lZ = T("Z: alterni interni, uguali", 30, COL_RES).move_to(P(3.2, 2.5))
+        lZ = T("Z: alterni interni, uguali", 30, COL_RES).move_to(P(4.7, 2.5))
         with self.say("Ma l'angolo uno è uguale al cinque. Quindi il tre e il cinque sono uguali: sono gli alterni interni, e formano una zeta."):
             self.play(FadeOut(w1), w3.animate.set_color(COL_RES), FadeIn(w5b), Create(Zpath), run_time=1.6)
             self.play(FadeIn(lZ))
         self.play(FadeOut(Zpath), FadeOut(lZ), FadeOut(w3))
         w4 = wedge(P6, 245, 115, 0.85, COL_GIV, 0.45)
         Cpath = VMobject(color=COL_GIV, stroke_width=7).set_points_as_corners([P(3.2, 1.3), P6, Q6, P(3.2, -1.2)])
-        lC = VGroup(T("C: coniugati", 30, COL_GIV), M(r"\widehat{4} + \widehat{5} = 180^\circ", 38, COL_GIV)).arrange(DOWN, buff=0.2).move_to(P(3.9, 2.55))
+        lC = VGroup(T("C: coniugati", 30, COL_GIV), M(r"\widehat{4} + \widehat{5} = 180^\circ", 38, COL_GIV)).arrange(DOWN, buff=0.2).move_to(P(4.7, 2.55))
         with self.say("E l'angolo quattro con il cinque? Stanno dalla stessa parte: sono coniugati, formano una ci, e la loro somma è centottanta gradi."):
             self.play(FadeIn(w4), w5b.animate.set_color(COL_ANG), Create(Cpath), run_time=1.5)
             self.play(FadeIn(lC))
@@ -859,7 +877,7 @@ class P06_Parallele(LessonScene):
         wz5 = wedge(Q6, 0, 65, 0.85, COL_ERR, 0.45)
         vals = always_redraw(lambda: VGroup(
             M(r"\widehat{3} =", 36, COL_ERR), DecimalNumber(65 - de.get_value(), num_decimal_places=0, unit=r"^\circ", font_size=36, color=COL_ERR),
-            M(r"\quad \widehat{5} = 65^\circ", 36, COL_ERR)).arrange(RIGHT, buff=0.12).move_to(P(3.4, 2.55)))
+            M(r"\quad \widehat{5} = 65^\circ", 36, COL_ERR)).arrange(RIGHT, buff=0.12).move_to(P(4.6, 2.55)))
         with self.say("Attenzione, trappola: queste regole valgono solo se le rette sono parallele. Se inclino la retta erre, gli angoli della zeta diventano diversi."):
             self.play(FadeOut(n1), FadeIn(wz3), FadeIn(wz5), FadeIn(vals))
             self.play(de.animate.set_value(12), run_time=2.5)
@@ -868,7 +886,7 @@ class P06_Parallele(LessonScene):
         g[0].clear_updaters()
         self.play(FadeOut(wz3), FadeOut(wz5), FadeOut(vals), FadeIn(n1))
         nb = VGroup(T("Dal quaderno:", 26, GRAY_B), T("alterni esterni: 180 gradi", 30, COL_ERR),
-                    T("alterni esterni: UGUALI", 30, COL_RES)).arrange(DOWN, aligned_edge=LEFT, buff=0.18).move_to(P(3.9, 2.45))
+                    T("alterni esterni: UGUALI", 30, COL_RES)).arrange(DOWN, aligned_edge=LEFT, buff=0.18).move_to(P(4.7, 2.45))
         w1x = wedge(P6, 0, 65, 0.85, COL_RES, 0.45)
         w7x = wedge(Q6, 180, 65, 0.85, COL_RES, 0.45)
         with self.say("E un'altra trappola, dal tuo quaderno: gli alterni esterni, come l'uno e il sette, non sommano centottanta. Sono uguali, proprio come gli alterni interni."):
@@ -891,6 +909,23 @@ class P06_Parallele(LessonScene):
                 self.play(FadeIn(v1[k], scale=0.7), run_time=0.8)
         with self.say("Nell'incrocio di sotto tutto si ripete. Con le parallele, un solo angolo decide tutti e otto."):
             self.play(LaggedStart(*[FadeIn(x, scale=0.7) for x in v2], lag_ratio=0.25), run_time=2.0)
+        self.play(FadeOut(v1), FadeOut(v2), FadeOut(ex))
+        z3 = wedge(P6, 180, 65, 0.85, COL_RES, 0.45)
+        z5 = wedge(Q6, 0, 65, 0.85, COL_RES, 0.45)
+        e3 = M(r"3x + 10^\circ", 34, COL_RES).move_to(P6 + 1.55 * unit(205))
+        e5 = M(r"2x + 40^\circ", 34, COL_RES).move_to(Q6 + 1.6 * unit(22))
+        with self.say("Ultimo esempio: due angoli alterni interni misurano 3x più 10 gradi e 2x più 40 gradi. Sono alterni interni, quindi sono uguali."):
+            self.play(FadeIn(z3), FadeIn(z5), Write(e3), Write(e5))
+        s1 = MathTex(r"3x + 10", r"=", r"2x + 40", font_size=44).move_to(P(3.9, 2.55))
+        s2 = MathTex(r"x", r"=", r"30", font_size=44).move_to(P(3.9, 2.55))
+        s3 = M(r"3\cdot 30 + 10 = 100^\circ", 42, COL_RES).move_to(P(3.8, -2.2))
+        with self.say("Allora 3x più 10 è uguale a 2x più 40: tolgo 2x e 10 da entrambe le parti, e x vale 30."):
+            self.play(Write(s1))
+            self.wait(0.6)
+            self.play(TransformMatchingTex(s1, s2))
+        with self.say("Ogni angolo misura 3 per 30 più 10, cioè 100 gradi. E infatti anche 2 per 30 più 40 fa 100."):
+            self.play(Write(s3))
+            self.play(Circumscribe(s3, color=COL_RES))
         self.end()
 
 
@@ -946,6 +981,24 @@ class P07_Somma180(LessonScene):
         with self.say("Quindi in ogni triangolo, alfa più beta più gamma fa centottanta gradi."):
             self.play(res.animate.set_opacity(1).scale(1.1))
             self.play(Circumscribe(res, color=COL_RES))
+        self.wipe()
+        t2 = tri(A, B, C, WHITE, fill=GRAY_E, op=0.25)
+        n50 = M(r"50^\circ", 32, COL_ANG).move_to(A + 1.25 * unit(25))
+        n70 = M(r"70^\circ", 32, COL_ANG3).move_to(C + 1.25 * unit(265))
+        n60 = M(r"60^\circ", 32, COL_ANG2).move_to(B + 1.2 * unit(150))
+        base_w = VGroup(wedge(A, 0, 50, 0.85, COL_ANG, 0.6), wedge(B, 120, 60, 0.85, COL_ANG2, 0.6), wedge(C, 230, 70, 0.85, COL_ANG3, 0.6))
+        Dx = B + RIGHT * 2.6
+        with self.say("Una conseguenza utile: l'angolo esterno. Prendo il triangolo con angoli di 50, 60 e 70 gradi, e prolungo il lato AB oltre B."):
+            self.play(Create(t2), FadeIn(VGroup(la, lb, lc)), FadeIn(base_w), FadeIn(VGroup(n50, n60, n70)))
+            self.play(Create(DashedLine(B, Dx, color=WHITE)), FadeIn(M("D", 32).next_to(Dx, DOWN, buff=0.15)))
+        wext = wedge(B, 0, 120, 0.7, COL_RES, 0.5)
+        next_ = M(r"120^\circ", 34, COL_RES).move_to(B + 1.05 * unit(55))
+        eqx = M(r"180^\circ - 60^\circ = 120^\circ = 50^\circ + 70^\circ", 38, COL_RES).move_to(P(3.3, 2.5))
+        with self.say("L'angolo esterno in B è il supplementare di 60: cioè 120 gradi. E guarda: 120 è proprio 50 più 70!"):
+            self.play(FadeIn(wext), Write(next_))
+            self.play(Write(eqx), run_time=1.8)
+        with self.say("Un angolo esterno è sempre uguale alla somma dei due angoli interni lontani da lui."):
+            self.play(Circumscribe(eqx, color=COL_RES))
         self.wipe()
 
         e1 = VGroup(T("Due angoli: 50° e 60°. Il terzo?", 32),
@@ -1061,27 +1114,34 @@ class P08_Altezze(LessonScene):
 
         info = VGroup()
 
-        def show(base_pair, alt, text_formula):
+        def show(base_pair, alt, text_formula, base_len, alt_len, alt_side=RIGHT):
             nonlocal info
             p, q = base_pair
+            v = verts()
+            cen = (v[0] + v[1] + v[2]) / 3
+            mid = (p + q) / 2
+            away = (mid - cen) / norm(mid - cen)
+            a0, a1 = alt.get_start(), alt.get_end()
             items = VGroup(Line(p, q, color=COL_ANG2, stroke_width=8), alt,
-                           M(text_formula, 44, COL_RES).move_to(P(3.3, 0.3)))
+                           M(text_formula, 44, COL_RES).move_to(P(3.3, 0.3)),
+                           M(base_len, 34, COL_ANG2).move_to(mid + 0.38 * away),
+                           M(alt_len, 34, COL_AUX).next_to((a0 + a1) / 2, alt_side, buff=0.15))
             info = items
             return items
 
         with self.say("L'altezza non è la linea verticale: dipende da quale lato scegli come base. Guarda questo triangolo rettangolo con i lati tre, quattro e cinque."):
             self.play(Create(poly))
         v0, v1, v2 = verts()
-        it = show((v0, v1), Line(v0, v2, color=COL_AUX, stroke_width=6), r"\frac{4\cdot 3}{2} = 6")
+        it = show((v0, v1), Line(v0, v2, color=COL_AUX, stroke_width=6), r"\frac{4\cdot 3}{2} = 6", "4", "3", LEFT)
         with self.say("Base quattro, altezza tre: l'area è quattro per tre diviso due, cioè sei."):
-            self.play(Create(it[0]), Create(it[1]))
+            self.play(Create(it[0]), Create(it[1]), FadeIn(it[3]), FadeIn(it[4]))
             self.play(Write(it[2]))
         self.play(FadeOut(info))
         self.play(Rotate(poly, angle=PI / 2, about_point=poly.get_center()), run_time=1.5)
         v0, v1, v2 = verts()
-        it = show((v2, v0), Line(v0, v1, color=COL_AUX, stroke_width=6), r"\frac{3\cdot 4}{2} = 6")
+        it = show((v2, v0), Line(v0, v1, color=COL_AUX, stroke_width=6), r"\frac{3\cdot 4}{2} = 6", "3", "4", RIGHT)
         with self.say("Lo giro: base tre, altezza quattro. L'area è ancora sei."):
-            self.play(Create(it[0]), Create(it[1]))
+            self.play(Create(it[0]), Create(it[1]), FadeIn(it[3]), FadeIn(it[4]))
             self.play(Write(it[2]))
         self.play(FadeOut(info))
         # rotate so that the hypotenuse is horizontal with the right angle on top
@@ -1091,13 +1151,36 @@ class P08_Altezze(LessonScene):
         self.play(Rotate(poly, angle=np.radians(rot), about_point=poly.get_center()), run_time=1.5)
         v0, v1, v2 = verts()
         F = foot(v0, v1, v2)
-        it = show((v1, v2), Line(v0, F, color=COL_AUX, stroke_width=6), r"\frac{5\cdot h}{2} = 6 \ \Rightarrow\ h = 2{,}4")
+        it = show((v1, v2), Line(v0, F, color=COL_AUX, stroke_width=6), r"\frac{5\cdot h}{2} = 6 \ \Rightarrow\ h = 2{,}4", "5", "h", RIGHT)
         with self.say("Lo giro ancora: base cinque. L'area è sempre sei, quindi cinque per acca diviso due fa sei, e l'altezza è due virgola quattro."):
-            self.play(Create(it[0]), Create(it[1]), Create(rmark(F, v2, v0, 0.2, COL_AUX)))
+            self.play(Create(it[0]), Create(it[1]), Create(rmark(F, v2, v0, 0.2, COL_AUX)), FadeIn(it[3]), FadeIn(it[4]))
             self.play(Write(it[2]))
         rule = T("L'altezza viaggia sempre con la sua base.", 32, COL_RES).move_to(P(0, 2.7))
         with self.say("La regola da ricordare: l'altezza viaggia sempre insieme alla sua base."):
             self.play(Write(rule))
+        self.wipe()
+        # base 10 with altitude 6; another side of 12 (scale 0.5 unit per cm)
+        A, B = A8, B8
+        C = C8
+        Hc = foot(C, A, B)
+        Fb = foot(B, A, C)
+        tr = tri(A, B, C, WHITE, fill=GRAY_E, op=0.3)
+        G = (A + B + C) / 3
+        labs = VGroup(vlabel("A", A, G), vlabel("B", B, G), vlabel("C", C, G))
+        with self.say("Un ultimo esempio. Un triangolo ha un lato di 10 centimetri, e l'altezza relativa a quel lato è 6 centimetri."):
+            self.play(Create(tr), FadeIn(labs))
+            self.play(Create(seg(A, B, COL_ANG2, 7)), Create(DashedLine(B, Hc, color=GRAY_B)), Create(seg(C, Hc, COL_AUX, 5)), Create(rmark(Hc, A, C, 0.2, COL_AUX)))
+            self.play(FadeIn(M("10", 32, COL_ANG2).next_to((A + B) / 2, DOWN, buff=0.15)), FadeIn(M("6", 32, COL_AUX).next_to((C + Hc) / 2, RIGHT, buff=0.12)))
+        a1 = M(r"\text{Area} = \frac{10\cdot 6}{2} = 30", 40).move_to(P(3.6, 2.4))
+        with self.say("L'area è 10 per 6 diviso 2: 30 centimetri quadrati."):
+            self.play(Write(a1))
+        with self.say("Un altro lato, AC, misura 12 centimetri. Quanto è lunga l'altezza relativa a quel lato?"):
+            self.play(Create(seg(A, C, COL_ANG2, 7)), FadeIn(M("12", 32, COL_ANG2).move_to((A + C) / 2 + P(-0.35, 0.3))))
+            self.play(Create(seg(B, Fb, COL_RES, 5)), Create(rmark(Fb, C, B, 0.2, COL_RES)))
+        a2 = M(r"\frac{12\cdot h}{2} = 30 \ \Rightarrow\ h = 5", 40, COL_RES).move_to(P(3.6, 1.1))
+        with self.say("L'area non cambia: 12 per acca diviso 2 fa 30, quindi acca è 5 centimetri."):
+            self.play(Write(a2))
+            self.play(Circumscribe(a2, color=COL_RES))
         self.end()
 
 
@@ -1152,21 +1235,21 @@ class P09_Congruenza(LessonScene):
         # traps
         k = 0.62
         ta = VGroup(tri(P(-6, -1.8), P(-6 + 4 * k, -1.8), P(-6, -1.8 + 3 * k), WHITE, fill=COL_GIV, op=0.25),
-                    M(r"A = 6", 30).move_to(P(-5.3, -1.2)))
+                    M(r"A = 6", 30).move_to(P(-5.3, -1.2))).shift(UP * 0.5)
         tb = VGroup(tri(P(-3.0, -1.8), P(-3.0 + 6 * k, -1.8), P(-3.0, -1.8 + 2 * k), WHITE, fill=COL_ERR, op=0.25),
-                    M(r"A = 6", 30).move_to(P(-2.2, -1.45)))
-        neq = M(r"\ncong", 50, COL_ERR).move_to(P(-3.4, 0.4))
+                    M(r"A = 6", 30).move_to(P(-2.2, -1.45))).shift(UP * 0.5)
+        neq = M(r"\ncong", 50, COL_ERR).move_to(P(-3.4, 0.9))
         tt = T("Trappola 1: stessa area", 30, COL_ERR).move_to(P(-3.6, 2.6))
         with self.say("Trappola numero uno: stessa area non vuol dire congruenti. Questi due triangoli hanno entrambi area sei, ma forme diverse."):
             self.play(FadeIn(tt), Create(ta), Create(tb), run_time=1.5)
             self.play(Write(neq))
         eqa = VGroup(tri(P(1.2, -1.8), P(4.4, -1.8), P(2.8, -1.8 + 2.771), WHITE, fill=COL_GIV, op=0.25),
-                     tri(P(5.0, -1.8), P(6.4, -1.8), P(5.7, -1.8 + 1.212), WHITE, fill=COL_ERR, op=0.25))
-        a60 = T("tutti gli angoli: 60°", 26).move_to(P(3.9, -2.45))
+                     tri(P(5.0, -1.8), P(6.4, -1.8), P(5.7, -1.8 + 1.212), WHITE, fill=COL_ERR, op=0.25)).shift(UP * 0.5)
+        a60 = T("tutti gli angoli: 60°", 26).move_to(P(3.9, -1.95))
         tt2 = T("Trappola 2: stessi angoli", 30, COL_ERR).move_to(P(3.8, 2.6))
         with self.say("Trappola numero due: stessi angoli non basta. Due triangoli equilateri hanno tutti gli angoli di sessanta gradi, ma uno può essere molto più grande."):
             self.play(FadeIn(tt2), Create(eqa), FadeIn(a60), run_time=1.5)
-        fin = T("Congruenti = stessa forma E stessa grandezza", 32, COL_RES).move_to(P(0, 1.3))
+        fin = T("Congruenti = stessa forma E stessa grandezza", 32, COL_RES).move_to(P(0, 1.95))
         with self.say("Congruenti vuol dire stessa forma e stessa grandezza."):
             self.play(Write(fin))
         self.end()
@@ -1547,4 +1630,10 @@ if __name__ == "__main__":
         Cc = t * unit(30)
         check("SSA |BC| = 4", norm(Cc - P(6, 0)), 4)
     check("3-4-5 altitude", 2 * 6 / 5, 2.4)
+    check("act 8 example AC (cm)", norm(C8 - A8) / 0.5, 12)
+    check("act 8 example altitude from C (cm)", (C8[1] - A8[1]) / 0.5, 6)
+    check("act 8 example altitude to AC (cm)", norm(foot(B8, A8, C8) - B8) / 0.5, 5)
+    check("supplementary puzzle", (180 - 40) / 2, 70)
+    check("alternate x", (40 - 10) / (3 - 2), 30)
+    check("exterior angle", 180 - 60, 50 + 70)
     print("ALL OK" if ok else "SOME CHECKS FAILED")
