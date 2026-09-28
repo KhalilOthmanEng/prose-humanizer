@@ -39,7 +39,7 @@ La geometria tiene solo l'essenziale della porta. Il cardine diventa un punto, i
   % (b) the geometric angle
   \begin{scope}[shift={(6.2,0)}]
     \coordinate (O) at (0,0); \coordinate (A) at (3,0); \coordinate (B) at (70:3);
-    \fill[shade] (O) -- (1.6,0) arc (0:70:1.6) -- cycle;
+    \fill[lightfill] (O) -- (1.6,0) arc (0:70:1.6) -- cycle;
     \draw[ray] (O) -- (A); \draw[ray] (O) -- (B);
     \pic[draw, angA, line width=0.9pt, angle radius=9mm, "$\alpha$", angle eccentricity=1.35] {angle=A--O--B};
     \node[pt] at (O) {};

@@ -1,0 +1,503 @@
+% STATUS: COMPLETE DRAFT
+% Parte 2: piano cartesiano, angoli, triangoli e congruenza, Pitagora poligoni e cerchio
+% Every number and coordinate is checked in verifica.py (same ids).
+
+% ================================================================
+\sezione{Piano cartesiano e funzioni}{Coordinate plane and functions}
+% ================================================================
+
+\begin{esercizio}{C1}{1}{Figure nel piano cartesiano}{Shapes in the coordinate plane}
+Disegna i punti $A(1;1)$, $B(7;1)$, $C(7;5)$, $D(1;5)$ e uniscili in ordine. Che figura ottieni? Calcola perimetro, area e diagonale (unità di misura: cm).
+\en{Plot the points and join them in order. Which shape is it? Find its perimeter, area and diagonal (unit: cm).}
+\end{esercizio}
+\begin{solbox}
+% === PRE-COMPUTATION === rectangle 6 x 4 ; diagonal sqrt(52) = 7.21 ; VERIFIED in verifica.py (C1)
+\begin{minipage}{0.52\linewidth}
+È un \textbf{rettangolo}: $\seg{AB}=7-1=6\cm$ (stessa $y$, orizzontale), $\seg{BC}=5-1=4\cm$ (stessa $x$, verticale).
+\en{A rectangle: horizontal side 6, vertical side 4.}
+\[2p=2(6+4)=\mathbf{20\cm}\qquad A=6\cdot4=\mathbf{24\cmq}\]
+\[d=\sqrt{6^2+4^2}=\sqrt{52}\approx\mathbf{7,21\cm}\]
+\end{minipage}\hfill
+\begin{minipage}{0.44\linewidth}\centering
+\begin{tikzpicture}[scale=0.42]
+  \draw[gridl] (0,0) grid (8,6);
+  \draw[axis] (0,0) -- (8.6,0) node[right, font=\small] {$x$};
+  \draw[axis] (0,0) -- (0,6.6) node[above, font=\small] {$y$};
+  \foreach \k in {1,...,7} \node[font=\tiny, below] at (\k,0) {\k};
+  \foreach \k in {1,...,5} \node[font=\tiny, left] at (0,\k) {\k};
+  \fill[fgB!15] (1,1) rectangle (7,5);
+  \draw[side, fgB] (1,1) -- (7,1) -- (7,5) -- (1,5) -- cycle;
+  \draw[helper] (1,1) -- (7,5);
+  \foreach \p/\n/\d in {(1,1)/A/below left, (7,1)/B/below right, (7,5)/C/above right, (1,5)/D/above left}
+    {\node[pt] at \p {}; \node[font=\small, \d] at \p {$\n$};}
+\end{tikzpicture}
+\end{minipage}
+\end{solbox}
+
+\begin{esercizio}{C2}{2}{Distanza tra due punti}{Distance between two points}
+I punti $A(-2;-1)$, $B(4;-1)$, $C(1;3)$ sono i vertici di un triangolo.
+\en{The points are the vertices of a triangle.}
+\begin{enumerate}
+\item Calcola la lunghezza dei tre lati (per $\seg{AC}$ e $\seg{BC}$ usa il teorema di Pitagora). \enx{Find the three sides, using Pythagoras for the slanted ones.}
+\item Che tipo di triangolo è? \enx{What kind of triangle is it?}
+\item Calcola perimetro e area. \enx{Find perimeter and area.}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+% === PRE-COMPUTATION === AB = 6, AC = BC = sqrt(3^2+4^2) = 5, height 4 ; VERIFIED (C2)
+\begin{minipage}{0.55\linewidth}
+\begin{enumerate}
+\item $\seg{AB}=4-(-2)=\mathbf{6}$. \ Per $\seg{AC}$: spostamento orizzontale $3$, verticale $4$, quindi $\seg{AC}=\sqrt{3^2+4^2}=\sqrt{25}=\mathbf{5}$. Allo stesso modo $\seg{BC}=\sqrt{3^2+4^2}=\mathbf{5}$.
+\item $\seg{AC}\cong\seg{BC}$: triangolo \textbf{isoscele} di base $AB$.
+\item $2p=6+5+5=\mathbf{16}$. \ L'altezza relativa ad $AB$ va da $C$ a $H(1;-1)$ ed è lunga $4$: \ $A=\frac{6\cdot4}{2}=\mathbf{12}$.
+\end{enumerate}
+\en{Each slanted side is the hypotenuse of a right triangle with legs 3 and 4.}
+\end{minipage}\hfill
+\begin{minipage}{0.42\linewidth}\centering
+\begin{tikzpicture}[scale=0.5]
+  \draw[gridl] (-3,-2) grid (5,4);
+  \draw[axis] (-3,0) -- (5.6,0) node[right, font=\small] {$x$};
+  \draw[axis] (0,-2) -- (0,4.6) node[above, font=\small] {$y$};
+  \fill[fgB!15] (-2,-1) -- (4,-1) -- (1,3) -- cycle;
+  \draw[side, fgB] (-2,-1) -- (4,-1) -- (1,3) -- cycle;
+  \draw[helper, fgA] (-2,-1) -- (1,-1) node[midway, below, font=\tiny] {3};
+  \draw[helper, fgA] (1,-1) -- (1,3) node[midway, right, font=\tiny] {4};
+  \foreach \p/\n/\d in {(-2,-1)/A/left, (4,-1)/B/right, (1,3)/C/above}
+    {\node[pt] at \p {}; \node[font=\small, \d] at \p {$\n$};}
+  \node[font=\tiny, below right] at (1,-1) {$H$};
+\end{tikzpicture}
+\end{minipage}
+\end{solbox}
+
+\begin{esercizio}{C3}{2}{Proporzionalità diretta e inversa nei grafici}{Direct and inverse proportion in graphs}
+\begin{center}
+\small
+\begin{tabular}{c|cccc}
+$x$ & 1 & 2 & 3 & 4\\ \hline
+$y$ & 3 & 6 & 9 & 12
+\end{tabular}
+\qquad\qquad
+\begin{tabular}{c|cccccc}
+$x$ & 1 & 2 & 3 & 4 & 6 & 12\\ \hline
+$y$ & 12 & 6 & 4 & 3 & 2 & 1
+\end{tabular}
+\end{center}
+\begin{enumerate}
+\item Quale tabella rappresenta una proporzionalità diretta e quale una inversa? Perché?
+\en{Which table shows direct proportion and which inverse proportion? Why?}
+\item Scrivi la legge di ciascuna ($y=\dots$) e disegna i due grafici.
+\en{Write each rule ($y = \dots$) and draw both graphs.}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item Tabella 1: il \textbf{rapporto} $\frac yx$ è sempre $3$: proporzionalità \textbf{diretta}. \ Tabella 2: il \textbf{prodotto} $x\cdot y$ è sempre $12$: proporzionalità \textbf{inversa}.
+\en{Constant ratio: direct proportion. Constant product: inverse proportion.}
+\item $y=3x$ è una \textbf{retta che passa per l'origine}; \ $y=\dfrac{12}{x}$ è un ramo di \textbf{iperbole}: quando $x$ raddoppia, $y$ si dimezza.
+\end{enumerate}
+% === PRE-COMPUTATION === y = 3x for x in [0,4] ; y = 12/x for x in [1,12] ; VERIFIED (C3)
+\begin{center}
+\begin{tikzpicture}[xscale=0.42, yscale=0.2]
+  \draw[gridl, xstep=1, ystep=2] (0,0) grid (4.5,13);
+  \draw[axis] (0,0) -- (5,0) node[right, font=\small] {$x$};
+  \draw[axis] (0,0) -- (0,14) node[above, font=\small] {$y$};
+  \foreach \k in {1,...,4} \node[font=\tiny, below] at (\k,0) {\k};
+  \foreach \k in {3,6,9,12} \node[font=\tiny, left] at (0,\k) {\k};
+  \draw[fgB, line width=1.2pt] (0,0) -- (4.3,12.9);
+  \foreach \k in {1,...,4} \node[pt, fgB] at (\k,3*\k) {};
+  \node[fgB, font=\small] at (2.2,11) {$y=3x$};
+\end{tikzpicture}
+\hspace{1cm}
+\begin{tikzpicture}[scale=0.3]
+  \draw[gridl] (0,0) grid (13,13);
+  \draw[axis] (0,0) -- (13.6,0) node[right, font=\small] {$x$};
+  \draw[axis] (0,0) -- (0,13.6) node[above, font=\small] {$y$};
+  \foreach \k in {2,4,...,12} {\node[font=\tiny, below] at (\k,0) {\k}; \node[font=\tiny, left] at (0,\k) {\k};}
+  \draw[fgA, line width=1.2pt, domain=0.95:12.6, samples=80, smooth] plot (\x,{12/\x});
+  \foreach \a/\b in {1/12,2/6,3/4,4/3,6/2,12/1} \node[pt, fgA] at (\a,\b) {};
+  \node[fgA, font=\small] at (7.5,6) {$y=\dfrac{12}{x}$};
+\end{tikzpicture}
+\end{center}
+\end{solbox}
+
+\begin{esercizio}{C4}{3}{Due rette nel piano}{Two lines in the plane}
+Considera le rette $r:\ y=2x-1$ \ e \ $s:\ y=-x+5$.
+\en{Consider the two lines above.}
+\begin{enumerate}
+\item Disegnale nello stesso piano cartesiano (costruisci una tabella per ciascuna). \enx{Draw them, using a table of values for each.}
+\item Trova il loro punto di intersezione. \enx{Find their intersection point.}
+\item Il punto $P(4;7)$ appartiene a $r$? E a $s$? \enx{Does $P(4;7)$ lie on $r$? On $s$?}
+\item Calcola l'area del triangolo formato dalle due rette e dall'asse $x$. \enx{Find the area of the triangle formed by the two lines and the $x$ axis.}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+% === PRE-COMPUTATION === intersection (2;3); r meets y=0 at x=1/2, s at x=5 ; area = 4.5*3/2 = 6.75 ; VERIFIED (C4)
+\begin{minipage}{0.54\linewidth}
+\begin{enumerate}
+\item $r$: $x=0\to y=-1$; \ $x=2\to y=3$. \quad $s$: $x=0\to y=5$; \ $x=5\to y=0$.
+\item Stessa $y$: \ $2x-1=-x+5\Rightarrow 3x=6\Rightarrow x=2$, \ $y=2\cdot2-1=3$. \ Intersezione $\mathbf{(2;3)}$.
+\item $r$: $2\cdot4-1=7$ \checkmark, \ $P\in r$. \quad $s$: $-4+5=1\ne7$, \ $P\notin s$.
+\item $r$ taglia l'asse $x$ ($y=0$) in $x=\frac12$, \ $s$ in $x=5$. Base $5-\frac12=\frac92$, altezza $3$ (la $y$ dell'intersezione):
+\[A=\frac{\frac92\cdot3}{2}=\frac{27}{4}=\mathbf{6,75}\]
+\end{enumerate}
+\en{Two lines meet where they have the same $y$. A point lies on a line if its coordinates satisfy the equation.}
+\end{minipage}\hfill
+\begin{minipage}{0.43\linewidth}\centering
+\begin{tikzpicture}[scale=0.45]
+  \draw[gridl] (-1,-2) grid (6,8);
+  \draw[axis] (-1,0) -- (6.6,0) node[right, font=\small] {$x$};
+  \draw[axis] (0,-2) -- (0,8.6) node[above, font=\small] {$y$};
+  \foreach \k in {1,...,5} \node[font=\tiny, below] at (\k,0) {\k};
+  \foreach \k in {2,4,6} \node[font=\tiny, left] at (0,\k) {\k};
+  \fill[fgD!25] (0.5,0) -- (5,0) -- (2,3) -- cycle;
+  \draw[fgB, line width=1.1pt] (-0.5,-2) -- (4.5,8) node[above, font=\small] {$r$};
+  \draw[fgA, line width=1.1pt] (-1,6) -- (6,-1) node[right, font=\small] {$s$};
+  \node[pt] at (2,3) {}; \node[font=\small, right] at (2.1,3.2) {$(2;3)$};
+  \node[pt, fgB] at (4,7) {}; \node[font=\small, left] at (4,7) {$P$};
+\end{tikzpicture}
+\end{minipage}
+\end{solbox}
+
+% ================================================================
+\sezione{Angoli e rette parallele}{Angles and parallel lines}
+% ================================================================
+
+\begin{esercizio}{A1}{1}{Coppie e tipi di angoli}{Pairs and types of angles}
+\begin{enumerate}
+\item Trova il complementare, il supplementare e l'esplementare di $38^\circ$.
+\en{Find the complement, the supplement and the explement of $38^\circ$.}
+\item Classifica gli angoli: $35^\circ$, $90^\circ$, $145^\circ$, $180^\circ$, $250^\circ$, $360^\circ$.
+\en{Name each type of angle.}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item Complementare $90^\circ-38^\circ=\mathbf{52^\circ}$; \ supplementare $180^\circ-38^\circ=\mathbf{142^\circ}$; \ esplementare $360^\circ-38^\circ=\mathbf{322^\circ}$.
+\item $35^\circ$ acuto; \ $90^\circ$ retto; \ $145^\circ$ ottuso; \ $180^\circ$ piatto; \ $250^\circ$ concavo; \ $360^\circ$ giro.
+\en{acute, right, obtuse, straight, reflex, full angle.}
+\end{enumerate}
+\end{solbox}
+
+\begin{esercizio}{A2}{2}{Rette parallele tagliate da una trasversale}{Parallel lines and a transversal}
+Nella figura $r\parallel s$. I due angoli segnati sono corrispondenti. Trova $x$ e l'ampiezza di tutti gli otto angoli.
+\en{In the figure $r \parallel s$ and the two marked angles are corresponding angles. Find $x$ and all eight angles.}
+\begin{center}
+% === PRE-COMPUTATION === r: y = 1.8, s: y = 0, t through (0,0) at 75 deg -> P = (1.8/tan75, 1.8) = (0.482, 1.8)
+\begin{tikzpicture}[scale=0.95]
+  \coordinate (Q) at (0,0); \coordinate (P) at (0.482,1.8);
+  \draw[side] (-3,1.8) -- (3.4,1.8) node[right] {$r$};
+  \draw[side] (-3,0) -- (3.4,0) node[right] {$s$};
+  \draw[side, fgB] ($(Q)!-0.45!(P)$) -- ($(Q)!1.5!(P)$) node[above] {$t$};
+  \fill[fgA!30] (P) -- ++(0:0.5) arc (0:75:0.5) -- cycle;
+  \fill[fgA!30] (Q) -- ++(0:0.5) arc (0:75:0.5) -- cycle;
+  \node[fgA, font=\small, anchor=west] at ($(P)+(0.55,0.25)$) {$3x+15^\circ$};
+  \node[fgA, font=\small, anchor=west] at ($(Q)+(0.55,0.25)$) {$5x-25^\circ$};
+\end{tikzpicture}
+\end{center}
+\end{esercizio}
+\begin{solbox}
+Gli angoli corrispondenti sono congruenti: \enx{corresponding angles are equal}
+\[3x+15=5x-25\ \Rightarrow\ 40=2x\ \Rightarrow\ \boxed{x=20}\qquad 3\cdot20+15=75^\circ=5\cdot20-25\ \checkmark\]
+In ogni incrocio ci sono solo due valori: $\mathbf{75^\circ}$ e il suo supplementare $180^\circ-75^\circ=\mathbf{105^\circ}$. Gli angoli opposti al vertice sono uguali, quelli adiacenti sono supplementari.
+\en{At each crossing only two values appear, $75^\circ$ and $105^\circ$: vertical angles are equal, adjacent ones add up to $180^\circ$.}
+\begin{center}
+\begin{tikzpicture}[scale=0.85]
+  \coordinate (Q) at (0,0); \coordinate (P) at (0.482,1.8);
+  \draw[side] (-2.6,1.8) -- (3,1.8) node[right] {$r$};
+  \draw[side] (-2.6,0) -- (3,0) node[right] {$s$};
+  \draw[side, fgB] ($(Q)!-0.45!(P)$) -- ($(Q)!1.5!(P)$) node[above] {$t$};
+  \foreach \C in {P,Q} {
+    \node[font=\scriptsize, fgA] at ($(\C)+(37.5:0.62)$) {$75^\circ$};
+    \node[font=\scriptsize, fgB] at ($(\C)+(127.5:0.62)$) {$105^\circ$};
+    \node[font=\scriptsize, fgA] at ($(\C)+(217.5:0.62)$) {$75^\circ$};
+    \node[font=\scriptsize, fgB] at ($(\C)+(307.5:0.62)$) {$105^\circ$};
+  }
+\end{tikzpicture}
+\end{center}
+\end{solbox}
+
+\begin{esercizio}{A3}{2}{Problemi con gli angoli}{Angle problems}
+\begin{enumerate}
+\item Due angoli sono supplementari. Uno è il quadruplo dell'altro diminuito di $20^\circ$. Trova i due angoli.
+\en{Two angles are supplementary. One is four times the other minus $20^\circ$. Find both.}
+\item Che angolo formano le lancette dell'orologio alle 4:30?
+\en{What angle do the clock hands make at 4:30?}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item $x+(4x-20^\circ)=180^\circ\Rightarrow 5x=200^\circ\Rightarrow x=\mathbf{40^\circ}$; l'altro è $4\cdot40^\circ-20^\circ=\mathbf{140^\circ}$. Controllo: $40^\circ+140^\circ=180^\circ$ \checkmark
+\item Minuti: sul 6, cioè $180^\circ$ dal 12. Ore: si muove di $30^\circ$ ogni ora e di $0,5^\circ$ ogni minuto, quindi $4\cdot30^\circ+30\cdot0,5^\circ=135^\circ$. \ Angolo $=180^\circ-135^\circ=\mathbf{45^\circ}$.
+\en{The hour hand is halfway between 4 and 5, not on the 4.}
+\end{enumerate}
+\end{solbox}
+
+% ================================================================
+\sezione{Triangoli e congruenza}{Triangles and congruence}
+% ================================================================
+
+\begin{esercizio}{T1}{1}{Somma degli angoli e angolo esterno}{Angle sum and exterior angle}
+Trova gli angoli mancanti. \enx{Find the missing angles.}
+\begin{enumerate}
+\item Un triangolo ha due angoli di $47^\circ$ e $68^\circ$. \enx{two angles are $47^\circ$ and $68^\circ$}
+\item Un triangolo isoscele ha l'angolo al vertice di $36^\circ$. \enx{isosceles, vertex angle $36^\circ$}
+\item Un triangolo rettangolo ha un angolo acuto di $25^\circ$. \enx{right triangle with an acute angle of $25^\circ$}
+\item Nella figura, l'angolo esterno in $C$ misura $110^\circ$ e $\av A=45^\circ$. Trova $\av B$ e l'angolo interno $\av C$.
+\en{In the figure the exterior angle at $C$ is $110^\circ$ and $\hat A = 45^\circ$. Find $\hat B$ and the interior angle $\hat C$.}
+\end{enumerate}
+\begin{center}
+% === PRE-COMPUTATION === A=45, B=65, C=70 ; AB=5 ; AC = 5 sin65/sin70 = 4.822 ; C = (3.410,3.410)
+% D on the extension of AC beyond C ; exterior angle BCD = 110 = A + B ; VERIFIED (T1)
+\begin{tikzpicture}[scale=0.6]
+  \coordinate (A) at (0,0); \coordinate (B) at (5,0); \coordinate (C) at (3.410,3.410);
+  \coordinate (D) at ($(C)+(45:1.8)$);
+  \draw[side] (A) -- (B) -- (C) -- cycle;
+  \draw[helper] (C) -- (D);
+  \pic[draw, fgB, angle radius=6mm, "$45^\circ$", angle eccentricity=1.7, font=\scriptsize] {angle=B--A--C};
+  \pic[draw, fgA, fill=fgA!20, angle radius=5mm, "$110^\circ$", angle eccentricity=1.9, font=\scriptsize] {angle=B--C--D};
+  \node[below left] at (A) {$A$}; \node[below right] at (B) {$B$}; \node[left] at (C) {$C$}; \node[above right] at (D) {$D$};
+\end{tikzpicture}
+\end{center}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item $180^\circ-47^\circ-68^\circ=\mathbf{65^\circ}$.
+\item Gli angoli alla base sono congruenti: $\frac{180^\circ-36^\circ}{2}=\mathbf{72^\circ}$ ciascuno.
+\item Gli angoli acuti sono complementari: $90^\circ-25^\circ=\mathbf{65^\circ}$.
+\item L'angolo esterno è uguale alla somma dei due interni non adiacenti: $\av A+\av B=110^\circ\Rightarrow\av B=\mathbf{65^\circ}$. L'angolo interno $\av C$ è adiacente a quello esterno: $\av C=180^\circ-110^\circ=\mathbf{70^\circ}$. Controllo: $45^\circ+65^\circ+70^\circ=180^\circ$ \checkmark
+\en{An exterior angle equals the sum of the two far interior angles.}
+\end{enumerate}
+\end{solbox}
+
+\begin{esercizio}{T2}{2}{I punti notevoli del triangolo}{Special points of a triangle}
+\begin{enumerate}
+\item Collega ogni gruppo di segmenti al punto in cui si incontrano: \emph{altezze, mediane, bisettrici, assi} $\to$ \emph{ortocentro, baricentro, incentro, circocentro}.
+\en{Match each set of lines to their meeting point: altitudes, medians, angle bisectors, perpendicular bisectors.}
+\item Quale punto è il centro della circonferenza circoscritta? E dell'inscritta?
+\en{Which point is the centre of the circumscribed circle? And of the inscribed circle?}
+\item In un triangolo ottusangolo, quali punti notevoli cadono fuori dal triangolo? E in un triangolo rettangolo, dove si trovano ortocentro e circocentro?
+\en{In an obtuse triangle, which special points lie outside? In a right triangle, where are the orthocentre and the circumcentre?}
+\item Disegna un triangolo ottusangolo e le sue tre altezze. \enx{Draw an obtuse triangle and its three altitudes.}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item altezze $\to$ \textbf{ortocentro}; \ mediane $\to$ \textbf{baricentro}; \ bisettrici $\to$ \textbf{incentro}; \ assi $\to$ \textbf{circocentro}.
+\item \textbf{Circocentro}: è equidistante dai tre vertici, centro della circonferenza circoscritta. \ \textbf{Incentro}: è equidistante dai tre lati, centro della circonferenza inscritta.
+\item Nell'ottusangolo cadono fuori \textbf{ortocentro e circocentro}; baricentro e incentro sono sempre interni. Nel rettangolo l'ortocentro è il \textbf{vertice dell'angolo retto} e il circocentro è il \textbf{punto medio dell'ipotenusa}.
+\en{Centroid and incentre are always inside. In a right triangle the circumcentre is the midpoint of the hypotenuse.}
+\end{enumerate}
+\begin{center}
+% === PRE-COMPUTATION === (left) obtuse A(0,0) B(3.4,0) C(-0.7,2.4): orthocentre (-0.700,-1.196)
+% (right) A(0,0) B(4,0) C(1.4,2.6): circumcentre (2,0.6), radius sqrt(4.36) = 2.088
+\begin{tikzpicture}[scale=0.62]
+  \coordinate (A) at (0,0); \coordinate (B) at (3.4,0); \coordinate (C) at (-0.7,2.4); \coordinate (O) at (-0.7,-1.196);
+  \coordinate (Ha) at ($(B)!(A)!(C)$); \coordinate (Hb) at ($(A)!(B)!(C)$); \coordinate (Hc) at ($(A)!(C)!(B)$);
+  \draw[helper] (Hc) -- (A); \draw[helper] (A) -- (Hb);
+  \draw[helper, fgB] (Hc) -- (O); \draw[helper, fgB] (Hb) -- (O); \draw[helper, fgB] (A) -- (O);
+  \fill[lightfill] (A) -- (B) -- (C) -- cycle; \draw[side] (A) -- (B) -- (C) -- cycle;
+  \draw[fgB, line width=0.9pt] (A) -- (Ha); \draw[fgB, line width=0.9pt] (B) -- (Hb); \draw[fgB, line width=0.9pt] (C) -- (Hc);
+  \node[circle, fill=fgA, inner sep=1.5pt] at (O) {}; \node[fgA, font=\scriptsize, left] at (O) {ortocentro};
+  \node[below right, font=\small] at (A) {$A$}; \node[below right, font=\small] at (B) {$B$}; \node[above, font=\small] at (C) {$C$};
+  \node[font=\scriptsize, align=center] at (1.5,-2.2) {altezze (ottusangolo)};
+\end{tikzpicture}
+\hspace{1cm}
+\begin{tikzpicture}[scale=0.62]
+  \coordinate (A) at (0,0); \coordinate (B) at (4,0); \coordinate (C) at (1.4,2.6); \coordinate (O) at (2,0.6);
+  \draw[fgC!70, line width=0.6pt] (O) circle (2.088);
+  \fill[lightfill] (A) -- (B) -- (C) -- cycle; \draw[side] (A) -- (B) -- (C) -- cycle;
+  \foreach \X/\Y in {A/B, B/C, C/A} {
+    \coordinate (M) at ($(\X)!0.5!(\Y)$);
+    \draw[fgC, line width=0.7pt] ($(M)!1.1cm!90:(\Y)$) -- ($(M)!1.1cm!-90:(\Y)$);
+    \draw[tick1] (\X) -- (M); \draw[tick1] (M) -- (\Y);
+  }
+  \node[circle, fill=fgA, inner sep=1.5pt] at (O) {}; \draw[fgA, line width=0.4pt] (O) -- (3.3,-1.3) node[below, font=\scriptsize] {circocentro};
+  \node[below left, font=\small] at (A) {$A$}; \node[below right, font=\small] at (B) {$B$}; \node[above, font=\small] at (C) {$C$};
+  \node[font=\scriptsize] at (2,-2.2) {assi e circonferenza circoscritta};
+\end{tikzpicture}
+\end{center}
+\end{solbox}
+
+\begin{esercizio}{T3}{2}{Dimostrazione con il primo criterio}{Proof with the first criterion}
+Nel triangolo isoscele $ABC$ di base $BC$, prolunga la base da entrambe le parti di due segmenti congruenti $\seg{BD}\cong\seg{CE}$. Dimostra che il triangolo $ADE$ è isoscele.
+\en{In the isosceles triangle $ABC$ with base $BC$, extend the base on both sides by congruent segments $BD \cong CE$. Prove that triangle $ADE$ is isosceles.}
+\begin{center}
+% === PRE-COMPUTATION === A(0,2.6) B(-1.3,0) C(1.3,0) D(-2.9,0) E(2.9,0): BD = CE = 1.6
+\begin{tikzpicture}[scale=0.8]
+  \coordinate (A) at (0,2.6); \coordinate (B) at (-1.3,0); \coordinate (C) at (1.3,0);
+  \coordinate (D) at (-2.9,0); \coordinate (E) at (2.9,0);
+  \draw[side] (D) -- (E);
+  \draw[side, tick1] (A) -- (B); \draw[side, tick1] (A) -- (C);
+  \draw[side, fgB] (A) -- (D); \draw[side, fgB] (A) -- (E);
+  \draw[tick2] (D) -- (B); \draw[tick2] (C) -- (E);
+  \node[above] at (A) {$A$}; \node[below] at (B) {$B$}; \node[below] at (C) {$C$}; \node[below] at (D) {$D$}; \node[below] at (E) {$E$};
+\end{tikzpicture}
+\end{center}
+\end{esercizio}
+\begin{solbox}
+\textbf{Ipotesi:} $\seg{AB}\cong\seg{AC}$; \ $\seg{BD}\cong\seg{CE}$. \qquad \textbf{Tesi:} $\seg{AD}\cong\seg{AE}$.\\
+Considero i triangoli $ABD$ e $ACE$: \enx{compare triangles $ABD$ and $ACE$}
+\begin{enumerate}[label=\arabic*.]
+\item $\seg{AB}\cong\seg{AC}$ \hfill {\small\itshape per ipotesi}
+\item $\seg{BD}\cong\seg{CE}$ \hfill {\small\itshape per ipotesi}
+\item $\ang{A}{B}{D}\cong\ang{A}{C}{E}$ \hfill {\small\itshape supplementari di angoli congruenti (gli angoli alla base)}
+\end{enumerate}
+Per il \textbf{primo criterio} (LAL) $\tri{ABD}\cong\tri{ACE}$, quindi $\seg{AD}\cong\seg{AE}$ (lati omologhi): il triangolo $ADE$ è isoscele. \hfill c.v.d.
+\en{The angles at $B$ and $C$ are supplements of the equal base angles, so they are equal. SAS gives the congruence, and $AD \cong AE$.}
+\end{solbox}
+
+\begin{esercizio}{T4}{3}{Mediana prolungata}{Extended median}
+Nel triangolo $ABC$ sia $M$ il punto medio di $BC$. Prolunga la mediana $AM$ oltre $M$ di un segmento $\seg{MD}\cong\seg{AM}$. Dimostra che $\seg{AB}\cong\seg{CD}$ e che $AB\parallel CD$.
+\en{In triangle $ABC$ let $M$ be the midpoint of $BC$. Extend the median $AM$ beyond $M$ to $D$ with $MD \cong AM$. Prove that $AB \cong CD$ and $AB \parallel CD$.}
+\begin{center}
+% === PRE-COMPUTATION === B(0,0) C(4,0) A(0.9,2.4) M(2,0) D = 2M - A = (3.1,-2.4)
+\begin{tikzpicture}[scale=0.7]
+  \coordinate (B) at (0,0); \coordinate (C) at (4,0); \coordinate (A) at (0.9,2.4);
+  \coordinate (M) at (2,0); \coordinate (D) at (3.1,-2.4);
+  \draw[side] (A) -- (B) -- (C) -- cycle;
+  \draw[side, tick2] (A) -- (M); \draw[side, fgB, tick2] (M) -- (D);
+  \draw[side, fgB] (C) -- (D);
+  \draw[tick1] (B) -- (M); \draw[tick1] (M) -- (C);
+  \node[above] at (A) {$A$}; \node[left] at (B) {$B$}; \node[right] at (C) {$C$};
+  \node[below left] at (M) {$M$}; \node[below] at (D) {$D$};
+\end{tikzpicture}
+\end{center}
+\end{esercizio}
+\begin{solbox}
+\textbf{Ipotesi:} $\seg{BM}\cong\seg{MC}$; \ $\seg{AM}\cong\seg{MD}$. \qquad \textbf{Tesi:} $\seg{AB}\cong\seg{CD}$, \ $AB\parallel CD$.\\
+Considero i triangoli $ABM$ e $DCM$:
+\begin{enumerate}[label=\arabic*.]
+\item $\seg{BM}\cong\seg{MC}$ \hfill {\small\itshape $M$ è il punto medio}
+\item $\seg{AM}\cong\seg{MD}$ \hfill {\small\itshape per costruzione}
+\item $\ang{A}{M}{B}\cong\ang{D}{M}{C}$ \hfill {\small\itshape opposti al vertice}
+\end{enumerate}
+Per il \textbf{primo criterio} $\tri{ABM}\cong\tri{DCM}$, quindi $\seg{AB}\cong\seg{CD}$ \ e \ $\ang{A}{B}{M}\cong\ang{D}{C}{M}$.
+Questi due angoli sono \textbf{alterni interni} rispetto alle rette $AB$ e $CD$ tagliate dalla trasversale $BC$: essendo congruenti, $AB\parallel CD$. \hfill c.v.d.
+\en{Equal alternate interior angles mean the lines are parallel. In fact $ABDC$ is a parallelogram.}
+\end{solbox}
+
+% ================================================================
+\sezione{Teorema di Pitagora, poligoni e cerchio}{Pythagoras, polygons and circle}
+% ================================================================
+
+\begin{esercizio}{G1}{1}{Il teorema di Pitagora}{Pythagoras' theorem}
+\begin{enumerate}
+\item Un triangolo rettangolo ha i cateti di $9\cm$ e $12\cm$. Calcola ipotenusa, perimetro, area e altezza relativa all'ipotenusa.
+\en{A right triangle has legs $9$ and $12\cm$. Find hypotenuse, perimeter, area and the altitude to the hypotenuse.}
+\item In un triangolo rettangolo l'ipotenusa è $26\cm$ e un cateto $10\cm$. Calcola l'altro cateto.
+\en{The hypotenuse is $26\cm$ and one leg is $10\cm$. Find the other leg.}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+$i^2=c^2+C^2$ \ da cui \ $i=\sqrt{c^2+C^2}$ \ e \ $c=\sqrt{i^2-C^2}$. \enx{hypotenuse squared = sum of the squares of the legs}
+\begin{enumerate}
+\item $i=\sqrt{9^2+12^2}=\sqrt{81+144}=\sqrt{225}=\mathbf{15\cm}$; \ $2p=9+12+15=\mathbf{36\cm}$; \ $A=\frac{9\cdot12}{2}=\mathbf{54\cmq}$; \ $h=\frac{2A}{i}=\frac{108}{15}=\mathbf{7,2\cm}$.
+\item $c=\sqrt{26^2-10^2}=\sqrt{676-100}=\sqrt{576}=\mathbf{24\cm}$.
+\end{enumerate}
+\errore{per trovare un \emph{cateto} si sottrae: $\sqrt{26^2-10^2}$, non $\sqrt{26^2+10^2}$.}{to find a leg you subtract the squares.}
+\end{solbox}
+
+\begin{esercizio}{G2}{1}{Rettangolo e quadrato}{Rectangle and square}
+\begin{enumerate}
+\item Un rettangolo ha la base di $24\cm$ e la diagonale di $25\cm$. Calcola altezza, perimetro e area.
+\en{A rectangle has base $24\cm$ and diagonal $25\cm$. Find height, perimeter and area.}
+\item Calcola la diagonale di un quadrato di lato $5\cm$.
+\en{Find the diagonal of a square with side $5\cm$.}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item La diagonale divide il rettangolo in due triangoli rettangoli: $h=\sqrt{25^2-24^2}=\sqrt{625-576}=\sqrt{49}=\mathbf{7\cm}$; \ $2p=2(24+7)=\mathbf{62\cm}$; \ $A=24\cdot7=\mathbf{168\cmq}$.
+\item $d=\ell\sqrt2=5\cdot1,414\approx\mathbf{7,07\cm}$.
+\end{enumerate}
+\end{solbox}
+
+\begin{esercizio}{G3}{1}{La ruota della bicicletta}{The bicycle wheel}
+Una ruota di bicicletta ha il diametro di $70\cm$. Quanto misura la circonferenza? Quanti giri deve fare la ruota per percorrere $1\unit{km}$?
+\en{A bicycle wheel has a diameter of $70\cm$. What is its circumference? How many turns does it make in $1\unit{km}$?}
+\end{esercizio}
+\begin{solbox}
+$C=\pi\cdot d=3,14\cdot70=\mathbf{219,8\cm}$. \quad $1\unit{km}=100\,000\cm$: \quad $100\,000:219,8\approx454,96$, \ circa \textbf{455 giri}.
+\en{In one turn the wheel moves forward by exactly one circumference.}
+\errore{prima di dividere, i km vanno trasformati in cm.}{convert km to cm before dividing.}
+\end{solbox}
+
+\begin{esercizio}{G4}{2}{Il rombo}{The rhombus}
+Un rombo ha le diagonali di $16\cm$ e $30\cm$. Calcola lato, perimetro, area e altezza.
+\en{A rhombus has diagonals $16$ and $30\cm$. Find its side, perimeter, area and height.}
+\begin{center}
+% === PRE-COMPUTATION === half diagonals 8 and 15 (scale 0.1): side 17
+\begin{tikzpicture}[scale=1]
+  \coordinate (L) at (-1.5,0); \coordinate (R) at (1.5,0); \coordinate (T) at (0,0.8); \coordinate (Bt) at (0,-0.8);
+  \fill[lightfill] (L) -- (T) -- (R) -- (Bt) -- cycle;
+  \draw[side] (L) -- (T) -- (R) -- (Bt) -- cycle;
+  \draw[helper] (L) -- (R); \draw[helper] (T) -- (Bt);
+  \node[font=\scriptsize, above] at (0.75,0) {$15$}; \node[font=\scriptsize, right] at (0,0.4) {$8$};
+\end{tikzpicture}
+\end{center}
+\end{esercizio}
+\begin{solbox}
+Le diagonali si tagliano a metà ad angolo retto: il lato è l'ipotenusa di un triangolo con cateti $8$ e $15$.
+\en{The diagonals bisect each other at right angles.}
+\[\ell=\sqrt{8^2+15^2}=\sqrt{289}=\mathbf{17\cm}\qquad 2p=4\cdot17=\mathbf{68\cm}\]
+\[A=\frac{16\cdot30}{2}=\mathbf{240\cmq}\qquad h=\frac{A}{\ell}=\frac{240}{17}\approx\mathbf{14,12\cm}\]
+\end{solbox}
+
+\begin{esercizio}{G5}{2}{Il trapezio isoscele}{The isosceles trapezium}
+Un trapezio isoscele ha le basi di $22\cm$ e $10\cm$ e il lato obliquo di $10\cm$. Calcola altezza, area, perimetro e diagonale.
+\en{An isosceles trapezium has bases $22$ and $10\cm$ and slanted sides of $10\cm$. Find height, area, perimeter and diagonal.}
+\begin{center}
+% === PRE-COMPUTATION === scale 0.18: bases 3.96 and 1.8, projection 6 -> 1.08, height 8 -> 1.44
+\begin{tikzpicture}[scale=1]
+  \coordinate (A) at (0,0); \coordinate (B) at (3.96,0); \coordinate (C) at (2.88,1.44); \coordinate (D) at (1.08,1.44);
+  \fill[lightfill] (A) -- (B) -- (C) -- (D) -- cycle;
+  \draw[side] (A) -- (B) -- (C) -- (D) -- cycle;
+  \draw[helper] (D) -- (1.08,0) node[below, font=\scriptsize] {$H$};
+  \node[below left, font=\small] at (A) {$A$}; \node[below right, font=\small] at (B) {$B$};
+  \node[above right, font=\small] at (C) {$C$}; \node[above left, font=\small] at (D) {$D$};
+  \node[font=\scriptsize, below] at (2.5,0) {$22$}; \node[font=\scriptsize, above] at (1.98,1.44) {$10$};
+  \node[font=\scriptsize, left] at (0.5,0.8) {$10$};
+\end{tikzpicture}
+\end{center}
+\end{esercizio}
+\begin{solbox}
+Proiezione del lato obliquo: $\seg{AH}=\frac{22-10}{2}=6\cm$. \ Altezza: $h=\sqrt{10^2-6^2}=\sqrt{64}=\mathbf{8\cm}$.
+\[A=\frac{(22+10)\cdot8}{2}=\mathbf{128\cmq}\qquad 2p=22+10+10+10=\mathbf{52\cm}\]
+Diagonale $\seg{BD}$: da $B$ a $H$ ci sono $22-6=16\cm$, quindi $\seg{BD}=\sqrt{16^2+8^2}=\sqrt{320}\approx\mathbf{17,89\cm}$.
+\en{The height splits off a right triangle with hypotenuse 10 and base 6.}
+\end{solbox}
+
+\begin{esercizio}{G6}{3}{Triangolo inscritto in una circonferenza}{Triangle inscribed in a circle}
+Un triangolo rettangolo con i cateti di $6\cm$ e $8\cm$ è inscritto in una circonferenza (l'ipotenusa è un diametro). Usa $\pi=3,14$.
+\en{A right triangle with legs $6$ and $8\cm$ is inscribed in a circle (its hypotenuse is a diameter). Use $\pi = 3.14$.}
+\begin{enumerate}
+\item Calcola il raggio. \enx{Find the radius.}
+\item Calcola la lunghezza della circonferenza e l'area del cerchio. \enx{Find the circumference and the area of the disc.}
+\item Calcola l'area della parte di cerchio esterna al triangolo. \enx{Find the area of the part of the disc outside the triangle.}
+\item Calcola la lunghezza di un arco di $72^\circ$ e l'area del settore circolare corrispondente. \enx{Find the length of a $72^\circ$ arc and the area of its sector.}
+\end{enumerate}
+\begin{center}
+% === PRE-COMPUTATION === r = 5 (scale 0.3): A(-5,0) B(5,0) C = (-5+36/10, 48/10) = (-1.4,4.8), |OC| = 5
+% sector 72 deg drawn between 234 and 306 deg
+\begin{tikzpicture}[scale=0.3]
+  \fill[fgD!30] (0,0) -- (234:5) arc (234:306:5) -- cycle;
+  \draw[line width=0.8pt] (0,0) circle (5);
+  \coordinate (TA) at (-5,0); \coordinate (TB) at (5,0); \coordinate (TC) at (-1.4,4.8);
+  \fill[fgB!18] (TA) -- (TB) -- (TC) -- cycle;
+  \draw[side] (TA) -- (TB) -- (TC) -- cycle;
+  \rang{TB}{TC}{TA}
+  \node[pt] at (0,0) {}; \node[font=\scriptsize, below] at (0,0) {$O$};
+  \node[font=\scriptsize, left] at (-3.3,2.6) {$6$}; \node[font=\scriptsize, right] at (1.9,2.6) {$8$};
+  \node[font=\scriptsize] at (0,-3.6) {$72^\circ$};
+\end{tikzpicture}
+\end{center}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item $i=\sqrt{6^2+8^2}=10\cm$ è il diametro, quindi $r=\mathbf{5\cm}$.
+\item $C=2\pi r=2\cdot3,14\cdot5=\mathbf{31,4\cm}$; \quad $A=\pi r^2=3,14\cdot25=\mathbf{78,5\cmq}$.
+\item Area del triangolo $\frac{6\cdot8}{2}=24\cmq$; \ parte esterna $78,5-24=\mathbf{54,5\cmq}$.
+\item L'arco e il settore sono la frazione $\frac{72}{360}=\frac15$ del totale: \ arco $=\frac{31,4}{5}=\mathbf{6,28\cm}$; \ settore $=\frac{78,5}{5}=\mathbf{15,7\cmq}$.
+\en{An arc of $72^\circ$ is one fifth of the circle: the same idea as the pie chart.}
+\end{enumerate}
+\end{solbox}

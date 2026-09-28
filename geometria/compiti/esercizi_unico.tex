@@ -1,0 +1,1563 @@
+% ==================================================================
+%  esercizi.tex : QUESTIONS ONLY (solutions are hidden)
+%  Compile: pdflatex esercizi   (twice)
+%  Same source as soluzioni.tex; every number is checked in verifica.py
+% ==================================================================
+\def\modoesercizi{}      % hide every solution in this file
+% ===== preambolo.tex =====
+% ==================================================================
+%  preambolo.tex : shared preamble for esercizi.tex and soluzioni.tex
+%  Italian first, English after (grey italic). Decimal comma in math.
+% ==================================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{libertinus}
+\usepackage{libertinust1math}
+\usepackage[english,italian]{babel}
+\usepackage{icomma}            % 2,5 is a decimal number in math mode
+\usepackage{geometry}
+\geometry{a4paper, left=2cm, right=2cm, top=2.2cm, bottom=2cm, headheight=14pt}
+\usepackage{microtype}
+\usepackage[table]{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, calc, angles, quotes, patterns, decorations.markings}
+\usepackage[most]{tcolorbox}
+\usepackage[inline]{enumitem}
+\usepackage{comment}
+\usepackage{multicol}
+\usepackage{needspace}
+\usepackage{array, booktabs, tabularx}
+\usepackage{cancel}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt plus 1pt}
+\setlist{nosep, leftmargin=1.6em, topsep=2pt, itemsep=2pt}
+\setlist[enumerate,1]{label=\textbf{\alph*)}}
+\newlist{elenco}{enumerate*}{1}
+\setlist[elenco]{label=\textbf{\alph*)}, itemjoin=\hspace{2.2em}, afterlabel=\ }
+
+% ---------------------------------------------------------- colours
+\definecolor{navy}{HTML}{1B2A4A}
+\definecolor{engray}{HTML}{55606E}
+\definecolor{lv1}{HTML}{2E8B57}
+\definecolor{lv2}{HTML}{D68910}
+\definecolor{lv3}{HTML}{C0392B}
+\definecolor{solbg}{HTML}{F1F8F3}
+\definecolor{solfr}{HTML}{2E8B57}
+\definecolor{trapbg}{HTML}{FDF1F0}
+\definecolor{fgA}{HTML}{C0392B}
+\definecolor{fgB}{HTML}{1F6FB2}
+\definecolor{fgC}{HTML}{2E8B57}
+\definecolor{fgD}{HTML}{D68910}
+\definecolor{lightfill}{HTML}{DCE6F2}
+
+% ---------------------------------------------------------- language
+% \en{...}: the English version, on its own line, grey italic
+\newcommand{\en}[1]{\par{\small\itshape\color{engray}#1\par}}
+% \enx{...}: short English gloss inside a sentence
+\newcommand{\enx}[1]{{\small\itshape\color{engray}(#1)}}
+
+% ---------------------------------------------------------- math helpers
+\newcommand{\ang}[3]{#1\widehat{#2}#3}
+\newcommand{\av}[1]{\widehat{#1}}
+\newcommand{\seg}[1]{\overline{#1}}
+\newcommand{\tri}[1]{\triangle #1}
+\newcommand{\unit}[1]{\,\mathrm{#1}}
+\newcommand{\cm}{\unit{cm}}
+\newcommand{\cmq}{\unit{cm^2}}
+\newcommand{\cmc}{\unit{cm^3}}
+\newcommand{\mq}{\unit{m^2}}
+
+% ---------------------------------------------------------- levels
+\newcommand{\stella}[1]{\textcolor{#1}{$\bigstar$}}
+\newcommand{\livello}[1]{%
+  \ifcase#1\or\stella{lv1}\or\stella{lv2}\stella{lv2}\or\stella{lv3}\stella{lv3}\stella{lv3}\fi}
+
+% ---------------------------------------------------------- sections
+\newcounter{sezione}
+% \sezione{Titolo italiano}{English title}
+\newcommand{\sezione}[2]{%
+  \par\addvspace{14pt}\Needspace{10\baselineskip}%
+  \refstepcounter{sezione}%
+  \noindent\begin{tcolorbox}[enhanced, colback=navy, colframe=navy, sharp corners,
+      left=6pt, right=6pt, top=3pt, bottom=3pt, boxsep=0pt, before skip=0pt, after skip=6pt]
+    {\color{white}\large\bfseries \thesezione.\ #1\hfill{\normalsize\itshape #2}}
+  \end{tcolorbox}\par}
+
+% ---------------------------------------------------------- exercises
+% \begin{esercizio}{ID}{level 1..3}{Titolo}{Title}  statement  \end{esercizio}
+% the statement is kept in one piece (never split across pages); the solution follows it
+\newtcolorbox{esercizio}[4]{blank, unbreakable, before skip=10pt plus 2pt, after skip=2pt,
+  before upper={\noindent{\large\bfseries\color{navy}#1}\hspace{0.6em}\livello{#2}\hspace{0.6em}%
+  {\bfseries #3}\hspace{0.4em}{\color{engray}\itshape\,/\ #4}\par
+  \vspace{-3pt}{\color{navy!30}\rule{\linewidth}{0.6pt}}\par\vspace{1pt}}}
+
+% solution box: shown in soluzioni.tex; esercizi.tex defines \modoesercizi and hides it
+\ifdefined\modoesercizi
+  \excludecomment{solbox}
+\else
+\newtcolorbox{solbox}{enhanced, breakable, colback=solbg, colframe=solfr, boxrule=0.6pt,
+  arc=2pt, left=6pt, right=6pt, top=4pt, bottom=4pt, before skip=6pt, after skip=4pt,
+  title={Soluzione \textperiodcentered\ \itshape Solution}, fonttitle=\sffamily\bfseries\small,
+  coltitle=white, colbacktitle=solfr, attach boxed title to top left={xshift=6pt, yshift=-2pt},
+  boxed title style={sharp corners, boxrule=0pt}}
+\fi
+% warning inside a solution: common mistake
+\newtcolorbox{attenzione}{enhanced, colback=trapbg, colframe=fgA!70, boxrule=0.5pt, arc=2pt,
+  left=5pt, right=5pt, top=2pt, bottom=2pt, before skip=4pt, after skip=2pt, fontupper=\small}
+\newcommand{\errore}[2]{\begin{attenzione}\textbf{\color{fgA}Attenzione:} #1\par
+  {\itshape\color{engray}Watch out: #2}\end{attenzione}}
+
+% ---------------------------------------------------------- tikz styles
+\tikzset{
+  pt/.style={circle, fill=black, inner sep=1.1pt},
+  side/.style={line width=0.9pt, line join=round},
+  helper/.style={line width=0.5pt, dashed, black!55},
+  hidden/.style={line width=0.6pt, dashed, black!50},
+  axis/.style={-{Stealth[length=2mm]}, line width=0.7pt},
+  gridl/.style={black!12, line width=0.3pt},
+  tick1/.style={postaction={decorate, decoration={markings,
+      mark=at position 0.5 with {\draw[line width=0.7pt] (0,-3pt)--(0,3pt);}}}},
+  tick2/.style={postaction={decorate, decoration={markings,
+      mark=at position 0.5 with {\draw[line width=0.7pt] (-1.2pt,-3pt)--(-1.2pt,3pt) (1.2pt,-3pt)--(1.2pt,3pt);}}}},
+}
+\newcommand{\rang}[3]{\pic[draw, line width=0.5pt, angle radius=2.2mm] {right angle=#1--#2--#3};}
+
+% ---------------------------------------------------------- header
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyfoot[C]{\small\thepage}
+
+
+\fancyhead[L]{\small\color{engray}Matematica \textperiodcentered\ Esercizi per casa}
+\fancyhead[R]{\small\color{engray}\itshape Maths \textperiodcentered\ Homework}
+
+\begin{document}
+
+\begin{center}
+{\LARGE\bfseries\color{navy} Esercizi di matematica}\\[3pt]
+{\large\itshape\color{engray} Maths exercises}\\[6pt]
+{\normalsize Preparazione all'esame di terza media \textperiodcentered\ \textit{\color{engray}Practice for the final exam of lower secondary school}}
+\end{center}
+\vspace{2pt}
+\noindent Nome \enx{name}\ \rule{6cm}{0.4pt}\hfill Data \enx{date}\ \rule{3.5cm}{0.4pt}
+
+\begin{tcolorbox}[colback=navy!4, colframe=navy!50, boxrule=0.5pt, arc=2pt, left=6pt, right=6pt, top=4pt, bottom=4pt,
+  title={Come lavorare \textperiodcentered\ \itshape How to work}, fonttitle=\bfseries\small, colbacktitle=navy!70]
+\begin{itemize}[leftmargin=1.2em]
+\item Ogni esercizio ha un livello: \livello{1} base, \livello{2} intermedio, \livello{3} avanzato. Parti dal livello base di ogni sezione; quando lo sai fare, passa al successivo.
+\en{Each exercise has a level: one star basic, two stars intermediate, three stars advanced. Start with the basic ones; when they are easy, move up.}
+\item Lavora sul quaderno: copia il numero dell'esercizio e scrivi \emph{tutti} i passaggi, non solo il risultato. Quando c'è una figura, ridisegnala. Fai sempre la verifica quando puoi.
+\en{Work in your notebook: copy the exercise number and write every step, not only the result. When there is a figure, draw it again. Check your answer whenever you can.}
+\item Usa $\pi=3,14$. La calcolatrice va bene per la geometria solida e le radici. La virgola è il separatore decimale: $2,5$ vuol dire due e mezzo.
+\en{Use $\pi = 3.14$. A calculator is fine for solid geometry and square roots. The comma is the decimal separator: $2,5$ means two and a half.}
+\item Alla fine controlla con il file delle soluzioni e segna gli errori con un colore diverso: sono la parte più utile!
+\en{At the end, check with the solutions file and mark your mistakes in another colour: they are the most useful part.}
+\end{itemize}
+\end{tcolorbox}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}rlll@{}}
+\toprule
+& \textbf{Sezione} & \textbf{\itshape\color{engray}Section} & \textbf{Esercizi}\\
+\midrule
+1 & Numeri naturali e proprietà & \itshape\color{engray}Natural numbers & N1, N2\\
+2 & Frazioni, potenze e radici & \itshape\color{engray}Fractions, powers, roots & F1 to F5\\
+3 & Equazioni di primo grado & \itshape\color{engray}Linear equations & E1 to E4\\
+4 & Proporzioni e percentuali & \itshape\color{engray}Proportions, percentages & P1 to P5\\
+5 & Statistica e probabilità & \itshape\color{engray}Statistics, probability & S1 to S5\\
+6 & Piano cartesiano e funzioni & \itshape\color{engray}Coordinate plane, functions & C1 to C4\\
+7 & Angoli e rette parallele & \itshape\color{engray}Angles, parallel lines & A1 to A3\\
+8 & Triangoli e congruenza & \itshape\color{engray}Triangles, congruence & T1 to T4\\
+9 & Pitagora, poligoni e cerchio & \itshape\color{engray}Pythagoras, polygons, circle & G1 to G6\\
+10 & Geometria solida & \itshape\color{engray}Solid geometry & V1 to V7\\
+11 & Simulazione della prova d'esame & \itshape\color{engray}Mock exam & X1 to X4\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% ===== contenuto.tex =====
+% contenuto.tex : all exercises with their solutions (single source)
+% ===== parti/parte1-numeri.tex =====
+% STATUS: COMPLETE DRAFT
+% Parte 1: numeri, frazioni e potenze, equazioni, proporzioni e percentuali, statistica e probabilità
+% Every number is checked in verifica.py (same ids).
+
+% ================================================================
+\sezione{Numeri naturali e proprietà}{Natural numbers and properties}
+% ================================================================
+
+\begin{esercizio}{N1}{1}{Le proprietà delle operazioni}{Properties of the operations}
+Scrivi il nome della proprietà usata in ogni uguaglianza.
+\en{Write the name of the property used in each equality.}
+\begin{multicols}{2}
+\begin{enumerate}
+\item $7\cdot(10+3)=7\cdot10+7\cdot3$
+\item $36:4=(36:2):(4:2)$
+\item $5\cdot 0\cdot 8=0$
+\item $12+8=8+12$
+\item $(4\cdot 5)\cdot 2=4\cdot(5\cdot 2)$
+\end{enumerate}
+\end{multicols}
+\vspace{-4pt}
+Poi calcola, se è possibile, $0:9$, \ $9:0$, \ $0:0$ e spiega la risposta.
+\en{Then compute, if possible, $0:9$, $9:0$, $0:0$ and explain your answer.}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item Proprietà \textbf{distributiva} della moltiplicazione rispetto all'addizione. \enx{distributive}
+\item Proprietà \textbf{invariantiva} della divisione: dividendo e divisore divisi per lo stesso numero. \enx{invariance of the quotient}
+\item Legge di \textbf{annullamento del prodotto}: se un fattore è $0$, il prodotto è $0$. \enx{zero product law}
+\item Proprietà \textbf{commutativa} dell'addizione. \enx{commutative}
+\item Proprietà \textbf{associativa} della moltiplicazione. \enx{associative}
+\end{enumerate}
+$0:9=0$, perché $0\cdot 9=0$.\quad
+$9:0$ è \textbf{impossibile}: nessun numero moltiplicato per $0$ dà $9$.\quad
+$0:0$ è \textbf{indeterminata}: ogni numero moltiplicato per $0$ dà $0$.
+\en{$0:9=0$. $9:0$ is impossible (no number times $0$ gives $9$). $0:0$ is undetermined (every number works).}
+\end{solbox}
+
+\begin{esercizio}{N2}{2}{mcm e MCD nei problemi}{LCM and GCD in word problems}
+\begin{enumerate}
+\item Due autobus partono insieme dal capolinea alle 7:00. Il primo ripassa ogni 12 minuti, il secondo ogni 18 minuti. A che ora ripartono di nuovo insieme per la prima volta?
+\en{Two buses leave the terminal together at 7:00. One comes back every 12 minutes, the other every 18 minutes. When do they leave together again for the first time?}
+\item Una maestra ha 48 penne e 72 matite. Vuole preparare astucci tutti uguali, usando tutto il materiale. Qual è il numero massimo di astucci? Quante penne e quante matite ci sono in ognuno?
+\en{A teacher has 48 pens and 72 pencils. She wants identical pencil cases, using everything. What is the largest number of cases? How many pens and pencils in each?}
+\end{enumerate}
+Scomponi prima i numeri in fattori primi. \enx{First write each number as a product of primes.}
+\end{esercizio}
+\begin{solbox}
+$12=2^2\cdot3$, \quad $18=2\cdot3^2$, \quad $48=2^4\cdot3$, \quad $72=2^3\cdot3^2$.
+\begin{enumerate}
+\item Cerco quando gli eventi si ripetono \emph{insieme}: $\text{mcm}(12,18)=2^2\cdot3^2=36$. Ripartono insieme dopo 36 minuti, alle \textbf{7:36}.
+\en{Events repeating together: least common multiple. They meet after 36 minutes, at 7:36.}
+\item Divido in parti uguali \emph{il più grandi possibile}: $\text{MCD}(48,72)=2^3\cdot3=24$. Quindi \textbf{24 astucci}, ognuno con $48:24=2$ penne e $72:24=3$ matite.
+\en{Sharing into the largest equal groups: greatest common divisor, 24 cases with 2 pens and 3 pencils each.}
+\end{enumerate}
+\errore{mcm: fattori comuni e non comuni con l'esponente \emph{maggiore}; MCD: solo i fattori comuni con l'esponente \emph{minore}.}
+{LCM takes all prime factors with the highest power; GCD takes only common factors with the lowest power.}
+\end{solbox}
+
+% ================================================================
+\sezione{Frazioni, potenze e radici}{Fractions, powers and roots}
+% ================================================================
+
+\begin{esercizio}{F1}{1}{Espressione con le frazioni}{Expression with fractions}
+Calcola: \enx{Compute:}
+\[\left(\frac34+\frac16\right)\cdot\frac{6}{11}-\frac13\]
+\end{esercizio}
+\begin{solbox}
+\[
+\left(\frac{9}{12}+\frac{2}{12}\right)\cdot\frac{6}{11}-\frac13
+=\frac{\cancel{11}}{\cancelto{2}{12}}\cdot\frac{\cancel{6}}{\cancel{11}}-\frac13
+=\frac12-\frac13=\frac{3-2}{6}=\boxed{\frac16}
+\]
+Prima le parentesi, poi la moltiplicazione, infine la sottrazione.
+\en{First the brackets, then the multiplication, and the subtraction last.}
+\end{solbox}
+
+\begin{esercizio}{F2}{1}{Le proprietà delle potenze}{Properties of powers}
+Calcola usando le proprietà delle potenze. \enx{Compute using the properties of powers.}
+\begin{multicols}{2}
+\begin{enumerate}
+\item $2^3\cdot 2^4:2^5$
+\item $(3^2)^3:3^4$
+\item $\left(\dfrac25\right)^3\cdot\left(\dfrac52\right)^3$
+\item $(-2)^3,\ \ (-2)^4,\ \ -2^4,\ \ \left(-\dfrac13\right)^2$
+\item $7^0,\ \ 1^9,\ \ 0^5$
+\end{enumerate}
+\end{multicols}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item Stessa base: si sommano e sottraggono gli esponenti. $2^{3+4-5}=2^2=\mathbf{4}$
+\item Potenza di potenza: si moltiplicano gli esponenti. $3^{6}:3^4=3^{2}=\mathbf{9}$
+\item Stesso esponente: si moltiplicano le basi. $\left(\frac25\cdot\frac52\right)^3=1^3=\mathbf{1}$
+\item $(-2)^3=\mathbf{-8}$ (esponente dispari: il segno resta); $(-2)^4=\mathbf{16}$ (esponente pari: positivo); $-2^4=\mathbf{-16}$ (il meno è \emph{fuori} dalla potenza); $\left(-\frac13\right)^2=\mathbf{\frac19}$.
+\item $7^0=\mathbf{1}$ (ogni numero diverso da zero elevato a $0$ fa $1$); $1^9=\mathbf{1}$; $0^5=\mathbf{0}$.
+\end{enumerate}
+\en{Same base: add or subtract exponents. Power of a power: multiply exponents. Same exponent: multiply the bases. An odd exponent keeps the minus sign; an even one makes the result positive; in $-2^4$ the minus sign is outside the power.}
+\end{solbox}
+
+\begin{esercizio}{F3}{2}{Potenze di frazioni}{Powers of fractions}
+Calcola: \enx{Compute:}
+\[\left[\left(\frac53\right)^4:\left(\frac53\right)^2\right]\cdot\frac{9}{25}+\left(\frac12\right)^2\]
+\end{esercizio}
+\begin{solbox}
+\[
+\left(\frac53\right)^{4-2}\cdot\frac{9}{25}+\frac14
+=\frac{25}{9}\cdot\frac{9}{25}+\frac14
+=1+\frac14=\boxed{\frac54}
+\]
+\end{solbox}
+
+\begin{esercizio}{F4}{2}{Numeri decimali periodici e radici quadrate}{Repeating decimals and square roots}
+\begin{enumerate}
+\item Trova la frazione generatrice di $0,\overline{3}$, \ $0,\overline{45}$, \ $1,2\overline{5}$.
+\en{Write each repeating decimal as a fraction.}
+\item Calcola $\sqrt{144}$, \ $\sqrt{\dfrac{9}{25}}$, \ $\sqrt{0,49}$.
+\en{Compute the square roots.}
+\item Tra quali due numeri interi consecutivi si trova $\sqrt{50}$?
+\en{Between which two consecutive whole numbers is $\sqrt{50}$?}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item Regola: al numeratore tutto il numero senza virgola meno la parte che non si ripete; al denominatore tanti $9$ quante sono le cifre del periodo, seguiti da tanti $0$ quante sono le cifre dell'antiperiodo.
+\en{Numerator: the whole number without the comma minus the non repeating part. Denominator: one 9 for each repeating digit, then one 0 for each non repeating decimal digit.}
+\[0,\overline{3}=\frac39=\frac13\qquad 0,\overline{45}=\frac{45}{99}=\frac{5}{11}\qquad 1,2\overline{5}=\frac{125-12}{90}=\frac{113}{90}\]
+\item $\sqrt{144}=\mathbf{12}$ perché $12^2=144$; \quad $\sqrt{\frac{9}{25}}=\mathbf{\frac35}$; \quad $\sqrt{0,49}=\mathbf{0,7}$ perché $0,7^2=0,49$.
+\item $7^2=49<50<64=8^2$, quindi $\sqrt{50}$ è tra \textbf{7 e 8} (circa $7,07$).
+\end{enumerate}
+\end{solbox}
+
+\begin{esercizio}{F5}{3}{Espressione lunga}{A long expression}
+Calcola con attenzione ai segni. \enx{Compute, paying attention to the signs.}
+\[\left\{\left[\left(1-\frac14\right)\cdot\left(1+\frac13\right)-\left(\frac12\right)^2\right]:\left(\frac34\right)^2+\left(-\frac23\right)^2\right\}\cdot\frac{9}{16}-\left(-\frac12\right)^3\]
+\end{esercizio}
+\begin{solbox}
+Tonde, poi quadre, poi graffe. \enx{Round brackets, then square, then curly.}
+\begin{align*}
+&\left(1-\tfrac14\right)\cdot\left(1+\tfrac13\right)=\tfrac34\cdot\tfrac43=1
+&&\left[\,1-\tfrac14\,\right]=\tfrac34\\
+&\tfrac34:\left(\tfrac34\right)^2=\tfrac34\cdot\tfrac{16}{9}=\tfrac43
+&&\tfrac43+\left(-\tfrac23\right)^2=\tfrac43+\tfrac49=\tfrac{12+4}{9}=\tfrac{16}{9}\\
+&\tfrac{16}{9}\cdot\tfrac{9}{16}=1
+&&1-\left(-\tfrac12\right)^3=1-\left(-\tfrac18\right)=1+\tfrac18=\boxed{\tfrac98}
+\end{align*}
+\errore{$\left(-\frac12\right)^3=-\frac18$, e \emph{meno per meno} fa più: $1-\left(-\frac18\right)=1+\frac18$.}
+{a negative base with an odd exponent stays negative, and subtracting a negative number means adding.}
+\end{solbox}
+
+% ================================================================
+\sezione{Equazioni di primo grado}{Linear equations}
+% ================================================================
+
+\begin{esercizio}{E1}{1}{Equazioni semplici}{Simple equations}
+Risolvi e fai la verifica. \enx{Solve and check.}
+\begin{multicols}{2}
+\begin{enumerate}
+\item $3x-7=2x+5$
+\item $4(x-2)=2x+6$
+\end{enumerate}
+\end{multicols}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item $3x-2x=5+7\ \Rightarrow\ \boxed{x=12}$. \ Verifica: $3\cdot12-7=29$ e $2\cdot12+5=29$. \checkmark
+\item $4x-8=2x+6\ \Rightarrow\ 2x=14\ \Rightarrow\ \boxed{x=7}$. \ Verifica: $4\cdot5=20$ e $14+6=20$. \checkmark
+\end{enumerate}
+\en{Move the $x$ terms to one side and the numbers to the other, changing sign when a term crosses the equals sign.}
+\end{solbox}
+
+\begin{esercizio}{E2}{2}{Equazione con le parentesi}{Equation with brackets}
+Risolvi e verifica: \enx{Solve and check:}
+\[2(x+3)-3(x-1)=5-2x\]
+\end{esercizio}
+\begin{solbox}
+\[2x+6-3x+3=5-2x\ \Rightarrow\ -x+9=5-2x\ \Rightarrow\ -x+2x=5-9\ \Rightarrow\ \boxed{x=-4}\]
+Verifica: $2(-1)-3(-5)=-2+15=13$ \ e \ $5-2(-4)=5+8=13$. \checkmark
+\errore{$-3(x-1)=-3x\mathbf{+3}$: il meno davanti alla parentesi cambia \emph{tutti} i segni dentro.}
+{the minus sign in front of the bracket changes every sign inside it.}
+\end{solbox}
+
+\begin{esercizio}{E3}{2}{Equazione con le frazioni}{Equation with fractions}
+Risolvi e verifica: \enx{Solve and check:}
+\[\frac{x-1}{2}+\frac{x}{3}=2+\frac{x+1}{6}\]
+\end{esercizio}
+\begin{solbox}
+Moltiplico tutto per il mcm dei denominatori, $6$: \enx{multiply every term by 6}
+\[3(x-1)+2x=12+(x+1)\ \Rightarrow\ 3x-3+2x=x+13\ \Rightarrow\ 4x=16\ \Rightarrow\ \boxed{x=4}\]
+Verifica: $\frac32+\frac43=\frac{9+8}{6}=\frac{17}{6}$ \ e \ $2+\frac56=\frac{17}{6}$. \checkmark
+\errore{anche il $2$ va moltiplicato per $6$.}{the whole number $2$ must be multiplied by 6 too.}
+\end{solbox}
+
+\begin{esercizio}{E4}{3}{Problemi risolti con le equazioni}{Word problems with equations}
+\begin{enumerate}
+\item Il perimetro di un rettangolo è $56\cm$ e la base supera l'altezza di $8\cm$. Trova base, altezza e area.
+\en{A rectangle has perimeter $56\cm$ and its base is $8\cm$ longer than its height. Find base, height and area.}
+\item La somma di tre numeri naturali consecutivi è $84$. Quali sono?
+\en{The sum of three consecutive natural numbers is $84$. Find them.}
+\item Una di queste equazioni è impossibile e l'altra è indeterminata. Quale è quale? \ $2(x+1)=2x+2$ \quad $3x+1=3x+5$
+\en{One equation is impossible and the other is undetermined. Which is which?}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item Altezza $x$, base $x+8$: \ $2(x+x+8)=56\Rightarrow 4x+16=56\Rightarrow x=10$. \ Altezza $\mathbf{10\cm}$, base $\mathbf{18\cm}$, area $10\cdot18=\mathbf{180\cmq}$.
+\item $n+(n+1)+(n+2)=84\Rightarrow 3n+3=84\Rightarrow n=27$. \ I numeri sono $\mathbf{27,\ 28,\ 29}$.
+\item $2x+2=2x+2\Rightarrow 0x=0$: vera per ogni $x$, \textbf{indeterminata}. \quad $3x+1=3x+5\Rightarrow 0x=4$: nessun $x$, \textbf{impossibile}.
+\en{$0x=0$ holds for every $x$ (undetermined); $0x=4$ never holds (impossible).}
+\end{enumerate}
+\end{solbox}
+
+% ================================================================
+\sezione{Proporzioni e percentuali}{Proportions and percentages}
+% ================================================================
+
+\begin{esercizio}{P1}{1}{Proporzioni}{Proportions}
+Trova il termine incognito. \enx{Find the unknown term.}
+\begin{multicols}{3}
+\begin{enumerate}
+\item $6:x=9:12$
+\item $x:5=14:10$
+\item $(x+2):x=5:3$
+\end{enumerate}
+\end{multicols}
+\end{esercizio}
+\begin{solbox}
+Proprietà fondamentale: prodotto dei medi $=$ prodotto degli estremi. \enx{product of the means equals product of the extremes}
+\begin{enumerate}
+\item $9x=6\cdot12=72\Rightarrow \boxed{x=8}$
+\item $10x=5\cdot14=70\Rightarrow \boxed{x=7}$
+\item $3(x+2)=5x\Rightarrow 3x+6=5x\Rightarrow 6=2x\Rightarrow \boxed{x=3}$. \ Verifica: $5:3=5:3$. \checkmark
+\end{enumerate}
+\end{solbox}
+
+\begin{esercizio}{P2}{1}{Calcolo di percentuali}{Working with percentages}
+\begin{enumerate}
+\item Quanto è il $15\%$ di $240$? \enx{What is 15\% of 240?}
+\item $18$ è quale percentuale di $72$? \enx{18 is what percentage of 72?}
+\item Il $30\%$ di un numero è $45$. Qual è il numero? \enx{30\% of a number is 45. Find the number.}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item $240\cdot\frac{15}{100}=\mathbf{36}$
+\item $\frac{18}{72}\cdot100=\frac14\cdot100=\mathbf{25\%}$
+\item $45:30=x:100\Rightarrow x=\frac{45\cdot100}{30}=\mathbf{150}$
+\end{enumerate}
+\end{solbox}
+
+\begin{esercizio}{P3}{2}{Sconti e aumenti}{Discounts and increases}
+\begin{enumerate}
+\item Un paio di scarpe costa $170$\,€ dopo uno sconto del $20\%$. Qual era il prezzo prima dello sconto?
+\en{A pair of shoes costs 170\,€ after a 20\% discount. What was the price before the discount?}
+\item Un giubbotto costa $80$\,€. Il prezzo aumenta del $10\%$ e poi viene scontato del $10\%$. Torna a costare $80$\,€? Perché?
+\en{A jacket costs 80\,€. Its price goes up by 10\%, then goes down by 10\%. Is it 80\,€ again? Why?}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item Dopo lo sconto si paga $100\%-20\%=80\%$ del prezzo iniziale:
+\[80:170=100:x\ \Rightarrow\ x=\frac{170\cdot100}{80}=\boxed{212,50\ \text{€}}\qquad\text{verifica: } 212,50\cdot0,8=170\ \checkmark\]
+\errore{$170+20\%$ di $170=204$ è sbagliato: il $20\%$ si calcola sul prezzo \emph{iniziale}, non su quello scontato.}
+{adding 20\% of 170 is wrong, because the 20\% was taken from the original price.}
+\item $80\cdot1,1=88$\,€, \ poi $88\cdot0,9=\mathbf{79,20}$\,€. \ \textbf{No}: il secondo $10\%$ si calcola su $88$, un numero più grande, quindi toglie più di quanto era stato aggiunto.
+\en{No: the second 10\% is taken from 88, so it removes more than was added.}
+\end{enumerate}
+\end{solbox}
+
+\begin{esercizio}{P4}{2}{Consumo di energia}{Energy use}
+Un elettrodomestico consuma $1,5$\,kWh in $4$ ore.
+\en{An appliance uses 1.5\,kWh in 4 hours.}
+\begin{enumerate}
+\item Quanto consuma in $10$ ore? \enx{How much in 10 hours?}
+\item E se lavora per $10$ ore al $60\%$ della potenza? \enx{And at 60\% of its power, for 10 hours?}
+\item Se $1$\,kWh costa $0,28$\,€, quanto si spende nel caso b)? \enx{If 1\,kWh costs 0.28\,€, what does case b) cost?}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item Proporzionalità diretta: $1,5:4=x:10\Rightarrow x=\frac{1,5\cdot10}{4}=\mathbf{3,75}$\,kWh.
+\item $3,75\cdot\frac{60}{100}=\mathbf{2,25}$\,kWh.
+\item $2,25\cdot0,28=\mathbf{0,63}$\,€.
+\end{enumerate}
+\end{solbox}
+
+\begin{esercizio}{P5}{3}{Proporzionalità diretta e inversa}{Direct and inverse proportion}
+\begin{enumerate}
+\item Un atleta percorre $12$\,km in $48$ minuti, a velocità costante. In quanto tempo percorre $20$\,km?
+\en{A runner covers 12\,km in 48 minutes at constant speed. How long for 20\,km?}
+\item $6$ operai costruiscono un muro in $10$ giorni. Quanti giorni servono a $4$ operai che lavorano allo stesso ritmo?
+\en{6 workers build a wall in 10 days. How many days for 4 workers at the same pace?}
+\item Per ogni caso, le grandezze sono direttamente o inversamente proporzionali? Scrivi la costante.
+\en{In each case, are the quantities directly or inversely proportional? Write the constant.}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item $12:48=20:x\Rightarrow x=\frac{48\cdot20}{12}=\mathbf{80}$ minuti $=1$\,h $20$\,min.
+\item Meno operai, \emph{più} giorni: $6\cdot10=4\cdot x\Rightarrow x=\mathbf{15}$ giorni.
+\item Caso a) \textbf{diretta}: il rapporto è costante, $\frac{48}{12}=4$ minuti per km. \ Caso b) \textbf{inversa}: il prodotto è costante, $6\cdot10=60$.
+\en{a) direct proportion, constant ratio 4 minutes per km; b) inverse proportion, constant product 60.}
+\end{enumerate}
+\errore{nel caso b) la proporzione $6:10=4:x$ è sbagliata: darebbe meno giorni con meno operai.}
+{in case b) the direct proportion $6:10=4:x$ is wrong: fewer workers would finish sooner.}
+\end{solbox}
+
+% ================================================================
+\sezione{Statistica e probabilità}{Statistics and probability}
+% ================================================================
+
+\begin{esercizio}{S1}{1}{Media, moda, mediana}{Mean, mode, median}
+I voti di Luca in matematica sono: \ $6,\ 7,\ 5,\ 8,\ 7,\ 9,\ 7,\ 6$. \ Calcola media, moda, mediana e campo di variazione.
+\en{Luca's maths marks are listed above. Find the mean, mode, median and range.}
+\end{esercizio}
+\begin{solbox}
+Media: $\frac{6+7+5+8+7+9+7+6}{8}=\frac{55}{8}=\mathbf{6,875}$.\quad
+Dati in ordine: $5,6,6,7,7,7,8,9$: \ mediana $=\frac{7+7}{2}=\mathbf{7}$ (i due valori centrali).\quad
+Moda $=\mathbf{7}$ (compare 3 volte).\quad
+Campo di variazione $=9-5=\mathbf{4}$.
+\en{With an even number of data the median is the mean of the two middle values, after sorting.}
+\end{solbox}
+
+\begin{esercizio}{S2}{2}{Dalla tabella all'areogramma}{From a table to a pie chart}
+In una biblioteca ci sono: gialli $96$, fantasy $60$, romanzi storici $48$, biografie $36$.
+\en{A library has 96 crime novels, 60 fantasy, 48 historical novels and 36 biographies.}
+\begin{enumerate}
+\item Calcola il totale e la frequenza relativa percentuale di ogni genere.
+\en{Find the total and the percentage of each type.}
+\item Calcola l'ampiezza in gradi di ogni settore e disegna l'areogramma con il goniometro.
+\en{Find the angle of each sector and draw the pie chart with a protractor.}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+Totale $96+60+48+36=240$.\quad Percentuale $=\frac{\text{frequenza}}{240}\cdot100$; \quad gradi $=\frac{\text{frequenza}}{240}\cdot360^\circ$.
+\begin{center}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+genere & frequenza & percentuale & gradi\\
+\midrule
+gialli & $96$ & $40\%$ & $144^\circ$\\
+fantasy & $60$ & $25\%$ & $90^\circ$\\
+romanzi storici & $48$ & $20\%$ & $72^\circ$\\
+biografie & $36$ & $15\%$ & $54^\circ$\\
+\midrule
+totale & $240$ & $100\%$ & $360^\circ$\\
+\bottomrule
+\end{tabular}
+\hspace{1cm}
+% sectors from 90 deg clockwise: 144, 90, 72, 54 -> boundaries 90, -54, -144, -216, -270
+\begin{tikzpicture}[baseline=(c.base)]
+  \coordinate (c) at (0,0);
+  \def\R{1.35}
+  \fill[fgA!55] (0,0) -- (90:\R) arc (90:-54:\R) -- cycle;
+  \fill[fgB!50] (0,0) -- (-54:\R) arc (-54:-144:\R) -- cycle;
+  \fill[fgC!50] (0,0) -- (-144:\R) arc (-144:-216:\R) -- cycle;
+  \fill[fgD!55] (0,0) -- (-216:\R) arc (-216:-270:\R) -- cycle;
+  \foreach \a in {90,-54,-144,-216} \draw[white, line width=1pt] (0,0) -- (\a:\R);
+  \node[font=\scriptsize] at (18:0.85) {$144^\circ$};
+  \node[font=\scriptsize] at (-99:0.85) {$90^\circ$};
+  \node[font=\scriptsize] at (-180:0.85) {$72^\circ$};
+  \node[font=\scriptsize] at (-243:0.9) {$54^\circ$};
+\end{tikzpicture}
+\end{center}
+Controllo: la somma delle percentuali è $100\%$ e quella dei gradi è $360^\circ$. \enx{check both totals}
+\end{solbox}
+
+\begin{esercizio}{S3}{2}{Dall'areogramma ai dati}{From a pie chart back to the data}
+L'areogramma rappresenta i giudizi di $72$ alunni. \enx{The pie chart shows the grades of 72 pupils.}
+\begin{center}
+% sectors: sufficiente 150, buono 120, ottimo (unknown) 90 ; drawn to scale
+\begin{tikzpicture}
+  \def\R{1.5}
+  \fill[fgB!40] (0,0) -- (90:\R) arc (90:-60:\R) -- cycle;
+  \fill[fgC!40] (0,0) -- (-60:\R) arc (-60:-180:\R) -- cycle;
+  \fill[fgD!45] (0,0) -- (-180:\R) arc (-180:-270:\R) -- cycle;
+  \foreach \a in {90,-60,-180} \draw[white, line width=1pt] (0,0) -- (\a:\R);
+  \node[font=\small, align=center] at (15:0.85) {sufficiente\\$150^\circ$};
+  \node[font=\small, align=center] at (-120:0.85) {buono\\$120^\circ$};
+  \node[font=\small, align=center] at (-225:0.8) {ottimo\\$?$};
+\end{tikzpicture}
+\end{center}
+\begin{enumerate}
+\item Quanto è ampio il settore «ottimo»? \enx{What is the angle of the sector ``excellent''?}
+\item Quanti alunni hanno preso ciascun giudizio? \enx{How many pupils got each grade?}
+\item Che percentuale di alunni ha preso «ottimo»? \enx{What percentage got ``excellent''?}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item $360^\circ-(150^\circ+120^\circ)=\mathbf{90^\circ}$.
+\item Alunni $=\frac{\text{gradi}}{360^\circ}\cdot72$: \ sufficiente $\frac{150}{360}\cdot72=\mathbf{30}$; \ buono $\frac{120}{360}\cdot72=\mathbf{24}$; \ ottimo $\frac{90}{360}\cdot72=\mathbf{18}$. \ Controllo: $30+24+18=72$. \checkmark
+\item $\frac{90}{360}=\frac14=\mathbf{25\%}$.
+\end{enumerate}
+\end{solbox}
+
+\begin{esercizio}{S4}{1}{Probabilità con un dado}{Probability with one die}
+Lanci un dado a sei facce. Scrivi la probabilità come frazione, numero decimale e percentuale.
+\en{You roll a six sided die. Write each probability as a fraction, a decimal and a percentage.}
+\begin{multicols}{2}
+\begin{enumerate}
+\item Esce un numero pari. \enx{an even number}
+\item Esce un numero maggiore di $4$. \enx{more than 4}
+\item Esce il $7$. \enx{a 7}
+\item Esce un numero da $1$ a $6$. \enx{a number from 1 to 6}
+\end{enumerate}
+\end{multicols}
+\end{esercizio}
+\begin{solbox}
+$P=\dfrac{\text{casi favorevoli}}{\text{casi possibili}}$
+\begin{enumerate}
+\item $\{2,4,6\}$: \ $\frac36=\frac12=0,5=\mathbf{50\%}$
+\item $\{5,6\}$: \ $\frac26=\frac13\approx0,33\approx\mathbf{33,3\%}$
+\item Evento \textbf{impossibile}: $P=\mathbf{0}$.
+\item Evento \textbf{certo}: $P=\mathbf{1}=100\%$.
+\end{enumerate}
+\en{Probability is always between 0 (impossible) and 1 (certain).}
+\end{solbox}
+
+\begin{esercizio}{S5}{3}{Urne e due dadi}{Urns and two dice}
+\begin{enumerate}
+\item Un'urna contiene $5$ palline rosse, $3$ blu e $2$ verdi. Ne estrai una. Calcola la probabilità che sia: rossa; non blu; rossa oppure verde.
+\en{An urn holds 5 red, 3 blue and 2 green balls. You draw one. Find P(red), P(not blue), P(red or green).}
+\item Lanci due dadi. Costruisci la tabella delle somme e calcola la probabilità che: la somma sia $7$; i due numeri siano uguali; la somma sia maggiore di $10$.
+\en{You roll two dice. Build the table of sums and find P(sum 7), P(both the same), P(sum greater than 10).}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item Casi possibili $10$. \ $P(\text{rossa})=\frac{5}{10}=\mathbf{\frac12}$; \ $P(\text{non blu})=1-\frac{3}{10}=\mathbf{\frac{7}{10}}$ (evento contrario); \ $P(\text{rossa o verde})=\frac{5+2}{10}=\mathbf{\frac{7}{10}}$.
+\item $6\cdot6=36$ casi possibili.
+\begin{center}
+% 6x6 table of sums; sum 7 in green, doubles in orange (4+... none overlap), sum > 10 in red
+\begin{tikzpicture}[scale=0.52]
+  \foreach \i in {1,...,6} {
+    \node[font=\scriptsize\bfseries] at (\i,0.1) {\i};
+    \node[font=\scriptsize\bfseries] at (-0.05,-\i) {\i};
+    \foreach \j in {1,...,6} {
+      \pgfmathtruncatemacro{\s}{\i+\j}
+      \ifnum\s=7 \fill[fgC!35] (\i-0.5,-\j-0.5) rectangle (\i+0.5,-\j+0.5); \fi
+      \ifnum\i=\j \fill[fgD!40] (\i-0.5,-\j-0.5) rectangle (\i+0.5,-\j+0.5); \fi
+      \ifnum\s>10 \draw[fgA, line width=1pt] (\i-0.42,-\j-0.42) rectangle (\i+0.42,-\j+0.42); \fi
+      \node[font=\scriptsize] at (\i,-\j) {\s};
+    }
+  }
+  \foreach \k in {0,...,6} {\draw[black!40] (\k+0.5,-0.5) -- (\k+0.5,-6.5); \draw[black!40] (0.5,-\k-0.5) -- (6.5,-\k-0.5);}
+  \node[font=\scriptsize, anchor=west] at (7,-1.5) {\textcolor{fgC!80!black}{$\blacksquare$} somma 7: $6$ casi};
+  \node[font=\scriptsize, anchor=west] at (7,-2.7) {\textcolor{fgD}{$\blacksquare$} numeri uguali: $6$ casi};
+  \node[font=\scriptsize, anchor=west] at (7,-3.9) {\textcolor{fgA}{$\square$} somma $>10$: $3$ casi};
+\end{tikzpicture}
+\end{center}
+$P(\text{somma }7)=\frac{6}{36}=\mathbf{\frac16}$; \quad $P(\text{uguali})=\frac{6}{36}=\mathbf{\frac16}$; \quad $P(\text{somma}>10)=\frac{3}{36}=\mathbf{\frac{1}{12}}$ (casi $5{+}6$, $6{+}5$, $6{+}6$).
+\end{enumerate}
+\errore{$1+6$ e $6+1$ sono due casi diversi: nella tabella occupano due caselle.}{$1+6$ and $6+1$ are two different outcomes.}
+\end{solbox}
+
+
+% ===== parti/parte2-piano.tex =====
+% STATUS: COMPLETE DRAFT
+% Parte 2: piano cartesiano, angoli, triangoli e congruenza, Pitagora poligoni e cerchio
+% Every number and coordinate is checked in verifica.py (same ids).
+
+% ================================================================
+\sezione{Piano cartesiano e funzioni}{Coordinate plane and functions}
+% ================================================================
+
+\begin{esercizio}{C1}{1}{Figure nel piano cartesiano}{Shapes in the coordinate plane}
+Disegna i punti $A(1;1)$, $B(7;1)$, $C(7;5)$, $D(1;5)$ e uniscili in ordine. Che figura ottieni? Calcola perimetro, area e diagonale (unità di misura: cm).
+\en{Plot the points and join them in order. Which shape is it? Find its perimeter, area and diagonal (unit: cm).}
+\end{esercizio}
+\begin{solbox}
+% === PRE-COMPUTATION === rectangle 6 x 4 ; diagonal sqrt(52) = 7.21 ; VERIFIED in verifica.py (C1)
+\begin{minipage}{0.52\linewidth}
+È un \textbf{rettangolo}: $\seg{AB}=7-1=6\cm$ (stessa $y$, orizzontale), $\seg{BC}=5-1=4\cm$ (stessa $x$, verticale).
+\en{A rectangle: horizontal side 6, vertical side 4.}
+\[2p=2(6+4)=\mathbf{20\cm}\qquad A=6\cdot4=\mathbf{24\cmq}\]
+\[d=\sqrt{6^2+4^2}=\sqrt{52}\approx\mathbf{7,21\cm}\]
+\end{minipage}\hfill
+\begin{minipage}{0.44\linewidth}\centering
+\begin{tikzpicture}[scale=0.42]
+  \draw[gridl] (0,0) grid (8,6);
+  \draw[axis] (0,0) -- (8.6,0) node[right, font=\small] {$x$};
+  \draw[axis] (0,0) -- (0,6.6) node[above, font=\small] {$y$};
+  \foreach \k in {1,...,7} \node[font=\tiny, below] at (\k,0) {\k};
+  \foreach \k in {1,...,5} \node[font=\tiny, left] at (0,\k) {\k};
+  \fill[fgB!15] (1,1) rectangle (7,5);
+  \draw[side, fgB] (1,1) -- (7,1) -- (7,5) -- (1,5) -- cycle;
+  \draw[helper] (1,1) -- (7,5);
+  \foreach \p/\n/\d in {(1,1)/A/below left, (7,1)/B/below right, (7,5)/C/above right, (1,5)/D/above left}
+    {\node[pt] at \p {}; \node[font=\small, \d] at \p {$\n$};}
+\end{tikzpicture}
+\end{minipage}
+\end{solbox}
+
+\begin{esercizio}{C2}{2}{Distanza tra due punti}{Distance between two points}
+I punti $A(-2;-1)$, $B(4;-1)$, $C(1;3)$ sono i vertici di un triangolo.
+\en{The points are the vertices of a triangle.}
+\begin{enumerate}
+\item Calcola la lunghezza dei tre lati (per $\seg{AC}$ e $\seg{BC}$ usa il teorema di Pitagora). \enx{Find the three sides, using Pythagoras for the slanted ones.}
+\item Che tipo di triangolo è? \enx{What kind of triangle is it?}
+\item Calcola perimetro e area. \enx{Find perimeter and area.}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+% === PRE-COMPUTATION === AB = 6, AC = BC = sqrt(3^2+4^2) = 5, height 4 ; VERIFIED (C2)
+\begin{minipage}{0.55\linewidth}
+\begin{enumerate}
+\item $\seg{AB}=4-(-2)=\mathbf{6}$. \ Per $\seg{AC}$: spostamento orizzontale $3$, verticale $4$, quindi $\seg{AC}=\sqrt{3^2+4^2}=\sqrt{25}=\mathbf{5}$. Allo stesso modo $\seg{BC}=\sqrt{3^2+4^2}=\mathbf{5}$.
+\item $\seg{AC}\cong\seg{BC}$: triangolo \textbf{isoscele} di base $AB$.
+\item $2p=6+5+5=\mathbf{16}$. \ L'altezza relativa ad $AB$ va da $C$ a $H(1;-1)$ ed è lunga $4$: \ $A=\frac{6\cdot4}{2}=\mathbf{12}$.
+\end{enumerate}
+\en{Each slanted side is the hypotenuse of a right triangle with legs 3 and 4.}
+\end{minipage}\hfill
+\begin{minipage}{0.42\linewidth}\centering
+\begin{tikzpicture}[scale=0.5]
+  \draw[gridl] (-3,-2) grid (5,4);
+  \draw[axis] (-3,0) -- (5.6,0) node[right, font=\small] {$x$};
+  \draw[axis] (0,-2) -- (0,4.6) node[above, font=\small] {$y$};
+  \fill[fgB!15] (-2,-1) -- (4,-1) -- (1,3) -- cycle;
+  \draw[side, fgB] (-2,-1) -- (4,-1) -- (1,3) -- cycle;
+  \draw[helper, fgA] (-2,-1) -- (1,-1) node[midway, below, font=\tiny] {3};
+  \draw[helper, fgA] (1,-1) -- (1,3) node[midway, right, font=\tiny] {4};
+  \foreach \p/\n/\d in {(-2,-1)/A/left, (4,-1)/B/right, (1,3)/C/above}
+    {\node[pt] at \p {}; \node[font=\small, \d] at \p {$\n$};}
+  \node[font=\tiny, below right] at (1,-1) {$H$};
+\end{tikzpicture}
+\end{minipage}
+\end{solbox}
+
+\begin{esercizio}{C3}{2}{Proporzionalità diretta e inversa nei grafici}{Direct and inverse proportion in graphs}
+\begin{center}
+\small
+\begin{tabular}{c|cccc}
+$x$ & 1 & 2 & 3 & 4\\ \hline
+$y$ & 3 & 6 & 9 & 12
+\end{tabular}
+\qquad\qquad
+\begin{tabular}{c|cccccc}
+$x$ & 1 & 2 & 3 & 4 & 6 & 12\\ \hline
+$y$ & 12 & 6 & 4 & 3 & 2 & 1
+\end{tabular}
+\end{center}
+\begin{enumerate}
+\item Quale tabella rappresenta una proporzionalità diretta e quale una inversa? Perché?
+\en{Which table shows direct proportion and which inverse proportion? Why?}
+\item Scrivi la legge di ciascuna ($y=\dots$) e disegna i due grafici.
+\en{Write each rule ($y = \dots$) and draw both graphs.}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item Tabella 1: il \textbf{rapporto} $\frac yx$ è sempre $3$: proporzionalità \textbf{diretta}. \ Tabella 2: il \textbf{prodotto} $x\cdot y$ è sempre $12$: proporzionalità \textbf{inversa}.
+\en{Constant ratio: direct proportion. Constant product: inverse proportion.}
+\item $y=3x$ è una \textbf{retta che passa per l'origine}; \ $y=\dfrac{12}{x}$ è un ramo di \textbf{iperbole}: quando $x$ raddoppia, $y$ si dimezza.
+\end{enumerate}
+% === PRE-COMPUTATION === y = 3x for x in [0,4] ; y = 12/x for x in [1,12] ; VERIFIED (C3)
+\begin{center}
+\begin{tikzpicture}[xscale=0.42, yscale=0.2]
+  \draw[gridl, xstep=1, ystep=2] (0,0) grid (4.5,13);
+  \draw[axis] (0,0) -- (5,0) node[right, font=\small] {$x$};
+  \draw[axis] (0,0) -- (0,14) node[above, font=\small] {$y$};
+  \foreach \k in {1,...,4} \node[font=\tiny, below] at (\k,0) {\k};
+  \foreach \k in {3,6,9,12} \node[font=\tiny, left] at (0,\k) {\k};
+  \draw[fgB, line width=1.2pt] (0,0) -- (4.3,12.9);
+  \foreach \k in {1,...,4} \node[pt, fgB] at (\k,3*\k) {};
+  \node[fgB, font=\small] at (2.2,11) {$y=3x$};
+\end{tikzpicture}
+\hspace{1cm}
+\begin{tikzpicture}[scale=0.3]
+  \draw[gridl] (0,0) grid (13,13);
+  \draw[axis] (0,0) -- (13.6,0) node[right, font=\small] {$x$};
+  \draw[axis] (0,0) -- (0,13.6) node[above, font=\small] {$y$};
+  \foreach \k in {2,4,...,12} {\node[font=\tiny, below] at (\k,0) {\k}; \node[font=\tiny, left] at (0,\k) {\k};}
+  \draw[fgA, line width=1.2pt, domain=0.95:12.6, samples=80, smooth] plot (\x,{12/\x});
+  \foreach \a/\b in {1/12,2/6,3/4,4/3,6/2,12/1} \node[pt, fgA] at (\a,\b) {};
+  \node[fgA, font=\small] at (7.5,6) {$y=\dfrac{12}{x}$};
+\end{tikzpicture}
+\end{center}
+\end{solbox}
+
+\begin{esercizio}{C4}{3}{Due rette nel piano}{Two lines in the plane}
+Considera le rette $r:\ y=2x-1$ \ e \ $s:\ y=-x+5$.
+\en{Consider the two lines above.}
+\begin{enumerate}
+\item Disegnale nello stesso piano cartesiano (costruisci una tabella per ciascuna). \enx{Draw them, using a table of values for each.}
+\item Trova il loro punto di intersezione. \enx{Find their intersection point.}
+\item Il punto $P(4;7)$ appartiene a $r$? E a $s$? \enx{Does $P(4;7)$ lie on $r$? On $s$?}
+\item Calcola l'area del triangolo formato dalle due rette e dall'asse $x$. \enx{Find the area of the triangle formed by the two lines and the $x$ axis.}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+% === PRE-COMPUTATION === intersection (2;3); r meets y=0 at x=1/2, s at x=5 ; area = 4.5*3/2 = 6.75 ; VERIFIED (C4)
+\begin{minipage}{0.54\linewidth}
+\begin{enumerate}
+\item $r$: $x=0\to y=-1$; \ $x=2\to y=3$. \quad $s$: $x=0\to y=5$; \ $x=5\to y=0$.
+\item Stessa $y$: \ $2x-1=-x+5\Rightarrow 3x=6\Rightarrow x=2$, \ $y=2\cdot2-1=3$. \ Intersezione $\mathbf{(2;3)}$.
+\item $r$: $2\cdot4-1=7$ \checkmark, \ $P\in r$. \quad $s$: $-4+5=1\ne7$, \ $P\notin s$.
+\item $r$ taglia l'asse $x$ ($y=0$) in $x=\frac12$, \ $s$ in $x=5$. Base $5-\frac12=\frac92$, altezza $3$ (la $y$ dell'intersezione):
+\[A=\frac{\frac92\cdot3}{2}=\frac{27}{4}=\mathbf{6,75}\]
+\end{enumerate}
+\en{Two lines meet where they have the same $y$. A point lies on a line if its coordinates satisfy the equation.}
+\end{minipage}\hfill
+\begin{minipage}{0.43\linewidth}\centering
+\begin{tikzpicture}[scale=0.45]
+  \draw[gridl] (-1,-2) grid (6,8);
+  \draw[axis] (-1,0) -- (6.6,0) node[right, font=\small] {$x$};
+  \draw[axis] (0,-2) -- (0,8.6) node[above, font=\small] {$y$};
+  \foreach \k in {1,...,5} \node[font=\tiny, below] at (\k,0) {\k};
+  \foreach \k in {2,4,6} \node[font=\tiny, left] at (0,\k) {\k};
+  \fill[fgD!25] (0.5,0) -- (5,0) -- (2,3) -- cycle;
+  \draw[fgB, line width=1.1pt] (-0.5,-2) -- (4.5,8) node[above, font=\small] {$r$};
+  \draw[fgA, line width=1.1pt] (-1,6) -- (6,-1) node[right, font=\small] {$s$};
+  \node[pt] at (2,3) {}; \node[font=\small, right] at (2.1,3.2) {$(2;3)$};
+  \node[pt, fgB] at (4,7) {}; \node[font=\small, left] at (4,7) {$P$};
+\end{tikzpicture}
+\end{minipage}
+\end{solbox}
+
+% ================================================================
+\sezione{Angoli e rette parallele}{Angles and parallel lines}
+% ================================================================
+
+\begin{esercizio}{A1}{1}{Coppie e tipi di angoli}{Pairs and types of angles}
+\begin{enumerate}
+\item Trova il complementare, il supplementare e l'esplementare di $38^\circ$.
+\en{Find the complement, the supplement and the explement of $38^\circ$.}
+\item Classifica gli angoli: $35^\circ$, $90^\circ$, $145^\circ$, $180^\circ$, $250^\circ$, $360^\circ$.
+\en{Name each type of angle.}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item Complementare $90^\circ-38^\circ=\mathbf{52^\circ}$; \ supplementare $180^\circ-38^\circ=\mathbf{142^\circ}$; \ esplementare $360^\circ-38^\circ=\mathbf{322^\circ}$.
+\item $35^\circ$ acuto; \ $90^\circ$ retto; \ $145^\circ$ ottuso; \ $180^\circ$ piatto; \ $250^\circ$ concavo; \ $360^\circ$ giro.
+\en{acute, right, obtuse, straight, reflex, full angle.}
+\end{enumerate}
+\end{solbox}
+
+\begin{esercizio}{A2}{2}{Rette parallele tagliate da una trasversale}{Parallel lines and a transversal}
+Nella figura $r\parallel s$. I due angoli segnati sono corrispondenti. Trova $x$ e l'ampiezza di tutti gli otto angoli.
+\en{In the figure $r \parallel s$ and the two marked angles are corresponding angles. Find $x$ and all eight angles.}
+\begin{center}
+% === PRE-COMPUTATION === r: y = 1.8, s: y = 0, t through (0,0) at 75 deg -> P = (1.8/tan75, 1.8) = (0.482, 1.8)
+\begin{tikzpicture}[scale=0.95]
+  \coordinate (Q) at (0,0); \coordinate (P) at (0.482,1.8);
+  \draw[side] (-3,1.8) -- (3.4,1.8) node[right] {$r$};
+  \draw[side] (-3,0) -- (3.4,0) node[right] {$s$};
+  \draw[side, fgB] ($(Q)!-0.45!(P)$) -- ($(Q)!1.5!(P)$) node[above] {$t$};
+  \fill[fgA!30] (P) -- ++(0:0.5) arc (0:75:0.5) -- cycle;
+  \fill[fgA!30] (Q) -- ++(0:0.5) arc (0:75:0.5) -- cycle;
+  \node[fgA, font=\small, anchor=west] at ($(P)+(0.55,0.25)$) {$3x+15^\circ$};
+  \node[fgA, font=\small, anchor=west] at ($(Q)+(0.55,0.25)$) {$5x-25^\circ$};
+\end{tikzpicture}
+\end{center}
+\end{esercizio}
+\begin{solbox}
+Gli angoli corrispondenti sono congruenti: \enx{corresponding angles are equal}
+\[3x+15=5x-25\ \Rightarrow\ 40=2x\ \Rightarrow\ \boxed{x=20}\qquad 3\cdot20+15=75^\circ=5\cdot20-25\ \checkmark\]
+In ogni incrocio ci sono solo due valori: $\mathbf{75^\circ}$ e il suo supplementare $180^\circ-75^\circ=\mathbf{105^\circ}$. Gli angoli opposti al vertice sono uguali, quelli adiacenti sono supplementari.
+\en{At each crossing only two values appear, $75^\circ$ and $105^\circ$: vertical angles are equal, adjacent ones add up to $180^\circ$.}
+\begin{center}
+\begin{tikzpicture}[scale=0.85]
+  \coordinate (Q) at (0,0); \coordinate (P) at (0.482,1.8);
+  \draw[side] (-2.6,1.8) -- (3,1.8) node[right] {$r$};
+  \draw[side] (-2.6,0) -- (3,0) node[right] {$s$};
+  \draw[side, fgB] ($(Q)!-0.45!(P)$) -- ($(Q)!1.5!(P)$) node[above] {$t$};
+  \foreach \C in {P,Q} {
+    \node[font=\scriptsize, fgA] at ($(\C)+(37.5:0.62)$) {$75^\circ$};
+    \node[font=\scriptsize, fgB] at ($(\C)+(127.5:0.62)$) {$105^\circ$};
+    \node[font=\scriptsize, fgA] at ($(\C)+(217.5:0.62)$) {$75^\circ$};
+    \node[font=\scriptsize, fgB] at ($(\C)+(307.5:0.62)$) {$105^\circ$};
+  }
+\end{tikzpicture}
+\end{center}
+\end{solbox}
+
+\begin{esercizio}{A3}{2}{Problemi con gli angoli}{Angle problems}
+\begin{enumerate}
+\item Due angoli sono supplementari. Uno è il quadruplo dell'altro diminuito di $20^\circ$. Trova i due angoli.
+\en{Two angles are supplementary. One is four times the other minus $20^\circ$. Find both.}
+\item Che angolo formano le lancette dell'orologio alle 4:30?
+\en{What angle do the clock hands make at 4:30?}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item $x+(4x-20^\circ)=180^\circ\Rightarrow 5x=200^\circ\Rightarrow x=\mathbf{40^\circ}$; l'altro è $4\cdot40^\circ-20^\circ=\mathbf{140^\circ}$. Controllo: $40^\circ+140^\circ=180^\circ$ \checkmark
+\item Minuti: sul 6, cioè $180^\circ$ dal 12. Ore: si muove di $30^\circ$ ogni ora e di $0,5^\circ$ ogni minuto, quindi $4\cdot30^\circ+30\cdot0,5^\circ=135^\circ$. \ Angolo $=180^\circ-135^\circ=\mathbf{45^\circ}$.
+\en{The hour hand is halfway between 4 and 5, not on the 4.}
+\end{enumerate}
+\end{solbox}
+
+% ================================================================
+\sezione{Triangoli e congruenza}{Triangles and congruence}
+% ================================================================
+
+\begin{esercizio}{T1}{1}{Somma degli angoli e angolo esterno}{Angle sum and exterior angle}
+Trova gli angoli mancanti. \enx{Find the missing angles.}
+\begin{enumerate}
+\item Un triangolo ha due angoli di $47^\circ$ e $68^\circ$. \enx{two angles are $47^\circ$ and $68^\circ$}
+\item Un triangolo isoscele ha l'angolo al vertice di $36^\circ$. \enx{isosceles, vertex angle $36^\circ$}
+\item Un triangolo rettangolo ha un angolo acuto di $25^\circ$. \enx{right triangle with an acute angle of $25^\circ$}
+\item Nella figura, l'angolo esterno in $C$ misura $110^\circ$ e $\av A=45^\circ$. Trova $\av B$ e l'angolo interno $\av C$.
+\en{In the figure the exterior angle at $C$ is $110^\circ$ and $\hat A = 45^\circ$. Find $\hat B$ and the interior angle $\hat C$.}
+\end{enumerate}
+\begin{center}
+% === PRE-COMPUTATION === A=45, B=65, C=70 ; AB=5 ; AC = 5 sin65/sin70 = 4.822 ; C = (3.410,3.410)
+% D on the extension of AC beyond C ; exterior angle BCD = 110 = A + B ; VERIFIED (T1)
+\begin{tikzpicture}[scale=0.6]
+  \coordinate (A) at (0,0); \coordinate (B) at (5,0); \coordinate (C) at (3.410,3.410);
+  \coordinate (D) at ($(C)+(45:1.8)$);
+  \draw[side] (A) -- (B) -- (C) -- cycle;
+  \draw[helper] (C) -- (D);
+  \pic[draw, fgB, angle radius=6mm, "$45^\circ$", angle eccentricity=1.7, font=\scriptsize] {angle=B--A--C};
+  \pic[draw, fgA, fill=fgA!20, angle radius=5mm, "$110^\circ$", angle eccentricity=1.9, font=\scriptsize] {angle=B--C--D};
+  \node[below left] at (A) {$A$}; \node[below right] at (B) {$B$}; \node[left] at (C) {$C$}; \node[above right] at (D) {$D$};
+\end{tikzpicture}
+\end{center}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item $180^\circ-47^\circ-68^\circ=\mathbf{65^\circ}$.
+\item Gli angoli alla base sono congruenti: $\frac{180^\circ-36^\circ}{2}=\mathbf{72^\circ}$ ciascuno.
+\item Gli angoli acuti sono complementari: $90^\circ-25^\circ=\mathbf{65^\circ}$.
+\item L'angolo esterno è uguale alla somma dei due interni non adiacenti: $\av A+\av B=110^\circ\Rightarrow\av B=\mathbf{65^\circ}$. L'angolo interno $\av C$ è adiacente a quello esterno: $\av C=180^\circ-110^\circ=\mathbf{70^\circ}$. Controllo: $45^\circ+65^\circ+70^\circ=180^\circ$ \checkmark
+\en{An exterior angle equals the sum of the two far interior angles.}
+\end{enumerate}
+\end{solbox}
+
+\begin{esercizio}{T2}{2}{I punti notevoli del triangolo}{Special points of a triangle}
+\begin{enumerate}
+\item Collega ogni gruppo di segmenti al punto in cui si incontrano: \emph{altezze, mediane, bisettrici, assi} $\to$ \emph{ortocentro, baricentro, incentro, circocentro}.
+\en{Match each set of lines to their meeting point: altitudes, medians, angle bisectors, perpendicular bisectors.}
+\item Quale punto è il centro della circonferenza circoscritta? E dell'inscritta?
+\en{Which point is the centre of the circumscribed circle? And of the inscribed circle?}
+\item In un triangolo ottusangolo, quali punti notevoli cadono fuori dal triangolo? E in un triangolo rettangolo, dove si trovano ortocentro e circocentro?
+\en{In an obtuse triangle, which special points lie outside? In a right triangle, where are the orthocentre and the circumcentre?}
+\item Disegna un triangolo ottusangolo e le sue tre altezze. \enx{Draw an obtuse triangle and its three altitudes.}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item altezze $\to$ \textbf{ortocentro}; \ mediane $\to$ \textbf{baricentro}; \ bisettrici $\to$ \textbf{incentro}; \ assi $\to$ \textbf{circocentro}.
+\item \textbf{Circocentro}: è equidistante dai tre vertici, centro della circonferenza circoscritta. \ \textbf{Incentro}: è equidistante dai tre lati, centro della circonferenza inscritta.
+\item Nell'ottusangolo cadono fuori \textbf{ortocentro e circocentro}; baricentro e incentro sono sempre interni. Nel rettangolo l'ortocentro è il \textbf{vertice dell'angolo retto} e il circocentro è il \textbf{punto medio dell'ipotenusa}.
+\en{Centroid and incentre are always inside. In a right triangle the circumcentre is the midpoint of the hypotenuse.}
+\end{enumerate}
+\begin{center}
+% === PRE-COMPUTATION === (left) obtuse A(0,0) B(3.4,0) C(-0.7,2.4): orthocentre (-0.700,-1.196)
+% (right) A(0,0) B(4,0) C(1.4,2.6): circumcentre (2,0.6), radius sqrt(4.36) = 2.088
+\begin{tikzpicture}[scale=0.62]
+  \coordinate (A) at (0,0); \coordinate (B) at (3.4,0); \coordinate (C) at (-0.7,2.4); \coordinate (O) at (-0.7,-1.196);
+  \coordinate (Ha) at ($(B)!(A)!(C)$); \coordinate (Hb) at ($(A)!(B)!(C)$); \coordinate (Hc) at ($(A)!(C)!(B)$);
+  \draw[helper] (Hc) -- (A); \draw[helper] (A) -- (Hb);
+  \draw[helper, fgB] (Hc) -- (O); \draw[helper, fgB] (Hb) -- (O); \draw[helper, fgB] (A) -- (O);
+  \fill[lightfill] (A) -- (B) -- (C) -- cycle; \draw[side] (A) -- (B) -- (C) -- cycle;
+  \draw[fgB, line width=0.9pt] (A) -- (Ha); \draw[fgB, line width=0.9pt] (B) -- (Hb); \draw[fgB, line width=0.9pt] (C) -- (Hc);
+  \node[circle, fill=fgA, inner sep=1.5pt] at (O) {}; \node[fgA, font=\scriptsize, left] at (O) {ortocentro};
+  \node[below right, font=\small] at (A) {$A$}; \node[below right, font=\small] at (B) {$B$}; \node[above, font=\small] at (C) {$C$};
+  \node[font=\scriptsize, align=center] at (1.5,-2.2) {altezze (ottusangolo)};
+\end{tikzpicture}
+\hspace{1cm}
+\begin{tikzpicture}[scale=0.62]
+  \coordinate (A) at (0,0); \coordinate (B) at (4,0); \coordinate (C) at (1.4,2.6); \coordinate (O) at (2,0.6);
+  \draw[fgC!70, line width=0.6pt] (O) circle (2.088);
+  \fill[lightfill] (A) -- (B) -- (C) -- cycle; \draw[side] (A) -- (B) -- (C) -- cycle;
+  \foreach \X/\Y in {A/B, B/C, C/A} {
+    \coordinate (M) at ($(\X)!0.5!(\Y)$);
+    \draw[fgC, line width=0.7pt] ($(M)!1.1cm!90:(\Y)$) -- ($(M)!1.1cm!-90:(\Y)$);
+    \draw[tick1] (\X) -- (M); \draw[tick1] (M) -- (\Y);
+  }
+  \node[circle, fill=fgA, inner sep=1.5pt] at (O) {}; \draw[fgA, line width=0.4pt] (O) -- (3.3,-1.3) node[below, font=\scriptsize] {circocentro};
+  \node[below left, font=\small] at (A) {$A$}; \node[below right, font=\small] at (B) {$B$}; \node[above, font=\small] at (C) {$C$};
+  \node[font=\scriptsize] at (2,-2.2) {assi e circonferenza circoscritta};
+\end{tikzpicture}
+\end{center}
+\end{solbox}
+
+\begin{esercizio}{T3}{2}{Dimostrazione con il primo criterio}{Proof with the first criterion}
+Nel triangolo isoscele $ABC$ di base $BC$, prolunga la base da entrambe le parti di due segmenti congruenti $\seg{BD}\cong\seg{CE}$. Dimostra che il triangolo $ADE$ è isoscele.
+\en{In the isosceles triangle $ABC$ with base $BC$, extend the base on both sides by congruent segments $BD \cong CE$. Prove that triangle $ADE$ is isosceles.}
+\begin{center}
+% === PRE-COMPUTATION === A(0,2.6) B(-1.3,0) C(1.3,0) D(-2.9,0) E(2.9,0): BD = CE = 1.6
+\begin{tikzpicture}[scale=0.8]
+  \coordinate (A) at (0,2.6); \coordinate (B) at (-1.3,0); \coordinate (C) at (1.3,0);
+  \coordinate (D) at (-2.9,0); \coordinate (E) at (2.9,0);
+  \draw[side] (D) -- (E);
+  \draw[side, tick1] (A) -- (B); \draw[side, tick1] (A) -- (C);
+  \draw[side, fgB] (A) -- (D); \draw[side, fgB] (A) -- (E);
+  \draw[tick2] (D) -- (B); \draw[tick2] (C) -- (E);
+  \node[above] at (A) {$A$}; \node[below] at (B) {$B$}; \node[below] at (C) {$C$}; \node[below] at (D) {$D$}; \node[below] at (E) {$E$};
+\end{tikzpicture}
+\end{center}
+\end{esercizio}
+\begin{solbox}
+\textbf{Ipotesi:} $\seg{AB}\cong\seg{AC}$; \ $\seg{BD}\cong\seg{CE}$. \qquad \textbf{Tesi:} $\seg{AD}\cong\seg{AE}$.\\
+Considero i triangoli $ABD$ e $ACE$: \enx{compare triangles $ABD$ and $ACE$}
+\begin{enumerate}[label=\arabic*.]
+\item $\seg{AB}\cong\seg{AC}$ \hfill {\small\itshape per ipotesi}
+\item $\seg{BD}\cong\seg{CE}$ \hfill {\small\itshape per ipotesi}
+\item $\ang{A}{B}{D}\cong\ang{A}{C}{E}$ \hfill {\small\itshape supplementari di angoli congruenti (gli angoli alla base)}
+\end{enumerate}
+Per il \textbf{primo criterio} (LAL) $\tri{ABD}\cong\tri{ACE}$, quindi $\seg{AD}\cong\seg{AE}$ (lati omologhi): il triangolo $ADE$ è isoscele. \hfill c.v.d.
+\en{The angles at $B$ and $C$ are supplements of the equal base angles, so they are equal. SAS gives the congruence, and $AD \cong AE$.}
+\end{solbox}
+
+\begin{esercizio}{T4}{3}{Mediana prolungata}{Extended median}
+Nel triangolo $ABC$ sia $M$ il punto medio di $BC$. Prolunga la mediana $AM$ oltre $M$ di un segmento $\seg{MD}\cong\seg{AM}$. Dimostra che $\seg{AB}\cong\seg{CD}$ e che $AB\parallel CD$.
+\en{In triangle $ABC$ let $M$ be the midpoint of $BC$. Extend the median $AM$ beyond $M$ to $D$ with $MD \cong AM$. Prove that $AB \cong CD$ and $AB \parallel CD$.}
+\begin{center}
+% === PRE-COMPUTATION === B(0,0) C(4,0) A(0.9,2.4) M(2,0) D = 2M - A = (3.1,-2.4)
+\begin{tikzpicture}[scale=0.7]
+  \coordinate (B) at (0,0); \coordinate (C) at (4,0); \coordinate (A) at (0.9,2.4);
+  \coordinate (M) at (2,0); \coordinate (D) at (3.1,-2.4);
+  \draw[side] (A) -- (B) -- (C) -- cycle;
+  \draw[side, tick2] (A) -- (M); \draw[side, fgB, tick2] (M) -- (D);
+  \draw[side, fgB] (C) -- (D);
+  \draw[tick1] (B) -- (M); \draw[tick1] (M) -- (C);
+  \node[above] at (A) {$A$}; \node[left] at (B) {$B$}; \node[right] at (C) {$C$};
+  \node[below left] at (M) {$M$}; \node[below] at (D) {$D$};
+\end{tikzpicture}
+\end{center}
+\end{esercizio}
+\begin{solbox}
+\textbf{Ipotesi:} $\seg{BM}\cong\seg{MC}$; \ $\seg{AM}\cong\seg{MD}$. \qquad \textbf{Tesi:} $\seg{AB}\cong\seg{CD}$, \ $AB\parallel CD$.\\
+Considero i triangoli $ABM$ e $DCM$:
+\begin{enumerate}[label=\arabic*.]
+\item $\seg{BM}\cong\seg{MC}$ \hfill {\small\itshape $M$ è il punto medio}
+\item $\seg{AM}\cong\seg{MD}$ \hfill {\small\itshape per costruzione}
+\item $\ang{A}{M}{B}\cong\ang{D}{M}{C}$ \hfill {\small\itshape opposti al vertice}
+\end{enumerate}
+Per il \textbf{primo criterio} $\tri{ABM}\cong\tri{DCM}$, quindi $\seg{AB}\cong\seg{CD}$ \ e \ $\ang{A}{B}{M}\cong\ang{D}{C}{M}$.
+Questi due angoli sono \textbf{alterni interni} rispetto alle rette $AB$ e $CD$ tagliate dalla trasversale $BC$: essendo congruenti, $AB\parallel CD$. \hfill c.v.d.
+\en{Equal alternate interior angles mean the lines are parallel. In fact $ABDC$ is a parallelogram.}
+\end{solbox}
+
+% ================================================================
+\sezione{Teorema di Pitagora, poligoni e cerchio}{Pythagoras, polygons and circle}
+% ================================================================
+
+\begin{esercizio}{G1}{1}{Il teorema di Pitagora}{Pythagoras' theorem}
+\begin{enumerate}
+\item Un triangolo rettangolo ha i cateti di $9\cm$ e $12\cm$. Calcola ipotenusa, perimetro, area e altezza relativa all'ipotenusa.
+\en{A right triangle has legs $9$ and $12\cm$. Find hypotenuse, perimeter, area and the altitude to the hypotenuse.}
+\item In un triangolo rettangolo l'ipotenusa è $26\cm$ e un cateto $10\cm$. Calcola l'altro cateto.
+\en{The hypotenuse is $26\cm$ and one leg is $10\cm$. Find the other leg.}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+$i^2=c^2+C^2$ \ da cui \ $i=\sqrt{c^2+C^2}$ \ e \ $c=\sqrt{i^2-C^2}$. \enx{hypotenuse squared = sum of the squares of the legs}
+\begin{enumerate}
+\item $i=\sqrt{9^2+12^2}=\sqrt{81+144}=\sqrt{225}=\mathbf{15\cm}$; \ $2p=9+12+15=\mathbf{36\cm}$; \ $A=\frac{9\cdot12}{2}=\mathbf{54\cmq}$; \ $h=\frac{2A}{i}=\frac{108}{15}=\mathbf{7,2\cm}$.
+\item $c=\sqrt{26^2-10^2}=\sqrt{676-100}=\sqrt{576}=\mathbf{24\cm}$.
+\end{enumerate}
+\errore{per trovare un \emph{cateto} si sottrae: $\sqrt{26^2-10^2}$, non $\sqrt{26^2+10^2}$.}{to find a leg you subtract the squares.}
+\end{solbox}
+
+\begin{esercizio}{G2}{1}{Rettangolo e quadrato}{Rectangle and square}
+\begin{enumerate}
+\item Un rettangolo ha la base di $24\cm$ e la diagonale di $25\cm$. Calcola altezza, perimetro e area.
+\en{A rectangle has base $24\cm$ and diagonal $25\cm$. Find height, perimeter and area.}
+\item Calcola la diagonale di un quadrato di lato $5\cm$.
+\en{Find the diagonal of a square with side $5\cm$.}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item La diagonale divide il rettangolo in due triangoli rettangoli: $h=\sqrt{25^2-24^2}=\sqrt{625-576}=\sqrt{49}=\mathbf{7\cm}$; \ $2p=2(24+7)=\mathbf{62\cm}$; \ $A=24\cdot7=\mathbf{168\cmq}$.
+\item $d=\ell\sqrt2=5\cdot1,414\approx\mathbf{7,07\cm}$.
+\end{enumerate}
+\end{solbox}
+
+\begin{esercizio}{G3}{1}{La ruota della bicicletta}{The bicycle wheel}
+Una ruota di bicicletta ha il diametro di $70\cm$. Quanto misura la circonferenza? Quanti giri deve fare la ruota per percorrere $1\unit{km}$?
+\en{A bicycle wheel has a diameter of $70\cm$. What is its circumference? How many turns does it make in $1\unit{km}$?}
+\end{esercizio}
+\begin{solbox}
+$C=\pi\cdot d=3,14\cdot70=\mathbf{219,8\cm}$. \quad $1\unit{km}=100\,000\cm$: \quad $100\,000:219,8\approx454,96$, \ circa \textbf{455 giri}.
+\en{In one turn the wheel moves forward by exactly one circumference.}
+\errore{prima di dividere, i km vanno trasformati in cm.}{convert km to cm before dividing.}
+\end{solbox}
+
+\begin{esercizio}{G4}{2}{Il rombo}{The rhombus}
+Un rombo ha le diagonali di $16\cm$ e $30\cm$. Calcola lato, perimetro, area e altezza.
+\en{A rhombus has diagonals $16$ and $30\cm$. Find its side, perimeter, area and height.}
+\begin{center}
+% === PRE-COMPUTATION === half diagonals 8 and 15 (scale 0.1): side 17
+\begin{tikzpicture}[scale=1]
+  \coordinate (L) at (-1.5,0); \coordinate (R) at (1.5,0); \coordinate (T) at (0,0.8); \coordinate (Bt) at (0,-0.8);
+  \fill[lightfill] (L) -- (T) -- (R) -- (Bt) -- cycle;
+  \draw[side] (L) -- (T) -- (R) -- (Bt) -- cycle;
+  \draw[helper] (L) -- (R); \draw[helper] (T) -- (Bt);
+  \node[font=\scriptsize, above] at (0.75,0) {$15$}; \node[font=\scriptsize, right] at (0,0.4) {$8$};
+\end{tikzpicture}
+\end{center}
+\end{esercizio}
+\begin{solbox}
+Le diagonali si tagliano a metà ad angolo retto: il lato è l'ipotenusa di un triangolo con cateti $8$ e $15$.
+\en{The diagonals bisect each other at right angles.}
+\[\ell=\sqrt{8^2+15^2}=\sqrt{289}=\mathbf{17\cm}\qquad 2p=4\cdot17=\mathbf{68\cm}\]
+\[A=\frac{16\cdot30}{2}=\mathbf{240\cmq}\qquad h=\frac{A}{\ell}=\frac{240}{17}\approx\mathbf{14,12\cm}\]
+\end{solbox}
+
+\begin{esercizio}{G5}{2}{Il trapezio isoscele}{The isosceles trapezium}
+Un trapezio isoscele ha le basi di $22\cm$ e $10\cm$ e il lato obliquo di $10\cm$. Calcola altezza, area, perimetro e diagonale.
+\en{An isosceles trapezium has bases $22$ and $10\cm$ and slanted sides of $10\cm$. Find height, area, perimeter and diagonal.}
+\begin{center}
+% === PRE-COMPUTATION === scale 0.18: bases 3.96 and 1.8, projection 6 -> 1.08, height 8 -> 1.44
+\begin{tikzpicture}[scale=1]
+  \coordinate (A) at (0,0); \coordinate (B) at (3.96,0); \coordinate (C) at (2.88,1.44); \coordinate (D) at (1.08,1.44);
+  \fill[lightfill] (A) -- (B) -- (C) -- (D) -- cycle;
+  \draw[side] (A) -- (B) -- (C) -- (D) -- cycle;
+  \draw[helper] (D) -- (1.08,0) node[below, font=\scriptsize] {$H$};
+  \node[below left, font=\small] at (A) {$A$}; \node[below right, font=\small] at (B) {$B$};
+  \node[above right, font=\small] at (C) {$C$}; \node[above left, font=\small] at (D) {$D$};
+  \node[font=\scriptsize, below] at (2.5,0) {$22$}; \node[font=\scriptsize, above] at (1.98,1.44) {$10$};
+  \node[font=\scriptsize, left] at (0.5,0.8) {$10$};
+\end{tikzpicture}
+\end{center}
+\end{esercizio}
+\begin{solbox}
+Proiezione del lato obliquo: $\seg{AH}=\frac{22-10}{2}=6\cm$. \ Altezza: $h=\sqrt{10^2-6^2}=\sqrt{64}=\mathbf{8\cm}$.
+\[A=\frac{(22+10)\cdot8}{2}=\mathbf{128\cmq}\qquad 2p=22+10+10+10=\mathbf{52\cm}\]
+Diagonale $\seg{BD}$: da $B$ a $H$ ci sono $22-6=16\cm$, quindi $\seg{BD}=\sqrt{16^2+8^2}=\sqrt{320}\approx\mathbf{17,89\cm}$.
+\en{The height splits off a right triangle with hypotenuse 10 and base 6.}
+\end{solbox}
+
+\begin{esercizio}{G6}{3}{Triangolo inscritto in una circonferenza}{Triangle inscribed in a circle}
+Un triangolo rettangolo con i cateti di $6\cm$ e $8\cm$ è inscritto in una circonferenza (l'ipotenusa è un diametro). Usa $\pi=3,14$.
+\en{A right triangle with legs $6$ and $8\cm$ is inscribed in a circle (its hypotenuse is a diameter). Use $\pi = 3.14$.}
+\begin{enumerate}
+\item Calcola il raggio. \enx{Find the radius.}
+\item Calcola la lunghezza della circonferenza e l'area del cerchio. \enx{Find the circumference and the area of the disc.}
+\item Calcola l'area della parte di cerchio esterna al triangolo. \enx{Find the area of the part of the disc outside the triangle.}
+\item Calcola la lunghezza di un arco di $72^\circ$ e l'area del settore circolare corrispondente. \enx{Find the length of a $72^\circ$ arc and the area of its sector.}
+\end{enumerate}
+\begin{center}
+% === PRE-COMPUTATION === r = 5 (scale 0.3): A(-5,0) B(5,0) C = (-5+36/10, 48/10) = (-1.4,4.8), |OC| = 5
+% sector 72 deg drawn between 234 and 306 deg
+\begin{tikzpicture}[scale=0.3]
+  \fill[fgD!30] (0,0) -- (234:5) arc (234:306:5) -- cycle;
+  \draw[line width=0.8pt] (0,0) circle (5);
+  \coordinate (TA) at (-5,0); \coordinate (TB) at (5,0); \coordinate (TC) at (-1.4,4.8);
+  \fill[fgB!18] (TA) -- (TB) -- (TC) -- cycle;
+  \draw[side] (TA) -- (TB) -- (TC) -- cycle;
+  \rang{TB}{TC}{TA}
+  \node[pt] at (0,0) {}; \node[font=\scriptsize, below] at (0,0) {$O$};
+  \node[font=\scriptsize, left] at (-3.3,2.6) {$6$}; \node[font=\scriptsize, right] at (1.9,2.6) {$8$};
+  \node[font=\scriptsize] at (0,-3.6) {$72^\circ$};
+\end{tikzpicture}
+\end{center}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item $i=\sqrt{6^2+8^2}=10\cm$ è il diametro, quindi $r=\mathbf{5\cm}$.
+\item $C=2\pi r=2\cdot3,14\cdot5=\mathbf{31,4\cm}$; \quad $A=\pi r^2=3,14\cdot25=\mathbf{78,5\cmq}$.
+\item Area del triangolo $\frac{6\cdot8}{2}=24\cmq$; \ parte esterna $78,5-24=\mathbf{54,5\cmq}$.
+\item L'arco e il settore sono la frazione $\frac{72}{360}=\frac15$ del totale: \ arco $=\frac{31,4}{5}=\mathbf{6,28\cm}$; \ settore $=\frac{78,5}{5}=\mathbf{15,7\cmq}$.
+\en{An arc of $72^\circ$ is one fifth of the circle: the same idea as the pie chart.}
+\end{enumerate}
+\end{solbox}
+
+
+% ===== parti/parte3-solidi.tex =====
+% STATUS: COMPLETE DRAFT
+% Parte 3: geometria solida e simulazione della prova d'esame
+% Every number is checked in verifica.py (same ids).
+
+% box in oblique (cavalier) projection: \scatola{width}{depth}{height}
+% names the 8 vertices A B C D (front, anticlockwise from bottom left) and A' B' C' D' (back)
+\newcommand{\scatola}[3]{%
+  \coordinate (A) at (0,0); \coordinate (B) at (#1,0); \coordinate (C) at (#1,#3); \coordinate (D) at (0,#3);
+  \coordinate (dv) at (40:{0.55*#2});
+  \coordinate (A') at ($(A)+(dv)$); \coordinate (B') at ($(B)+(dv)$);
+  \coordinate (C') at ($(C)+(dv)$); \coordinate (D') at ($(D)+(dv)$);
+  \draw[hidden] (A) -- (A') -- (B') (A') -- (D');
+  \draw[side] (A) -- (B) -- (C) -- (D) -- cycle;
+  \draw[side] (D) -- (D') -- (C') -- (C);
+  \draw[side] (B) -- (B') -- (C');}
+
+% ================================================================
+\sezione{Geometria solida}{Solid geometry}
+% ================================================================
+
+\begin{esercizio}{V1}{1}{Il parallelepipedo rettangolo}{The rectangular box}
+Un parallelepipedo rettangolo ha le dimensioni di base $a=5\cm$, $b=3\cm$ e l'altezza $c=4\cm$. Calcola: area di base, perimetro di base, superficie laterale, superficie totale, volume e diagonale.
+\en{A rectangular box has base $5 \times 3\cm$ and height $4\cm$. Find base area, base perimeter, lateral surface, total surface, volume and diagonal.}
+\begin{center}
+% === PRE-COMPUTATION === scale 0.5 cm per unit: width 5, depth 3, height 4
+\begin{tikzpicture}[scale=0.5]
+  \scatola{5}{3}{4}
+  \draw[helper, fgA] (A) -- (C');
+  \node[below, font=\small] at ($(A)!0.5!(B)$) {$a=5$};
+  \node[right, font=\small] at ($(B)!0.5!(B')$) {$b=3$};
+  \node[left, font=\small] at ($(A)!0.5!(D)$) {$c=4$};
+  \node[fgA, font=\small] at (3.7,2.7) {$d$};
+\end{tikzpicture}
+\end{center}
+\end{esercizio}
+\begin{solbox}
+\begin{align*}
+S_b&=a\cdot b=5\cdot3=\mathbf{15\cmq} & 2p_b&=2(a+b)=2(5+3)=\mathbf{16\cm}\\
+S_\ell&=2p_b\cdot c=16\cdot4=\mathbf{64\cmq} & S_t&=S_\ell+2S_b=64+30=\mathbf{94\cmq}\\
+V&=a\cdot b\cdot c=5\cdot3\cdot4=\mathbf{60\cmc} & d&=\sqrt{a^2+b^2+c^2}=\sqrt{25+9+16}=\sqrt{50}\approx\mathbf{7,07\cm}
+\end{align*}
+Controllo della superficie totale in un altro modo: $S_t=2(ab+bc+ac)=2(15+12+20)=94\cmq$. \checkmark
+\en{Check the total surface in a second way, with the three pairs of faces.}
+\end{solbox}
+
+\begin{esercizio}{V2}{1}{Il cubo}{The cube}
+\begin{enumerate}
+\item Un cubo ha lo spigolo di $6\cm$. Calcola superficie laterale, superficie totale, volume e diagonale.
+\en{A cube has edge $6\cm$. Find lateral surface, total surface, volume and diagonal.}
+\item Un cubo ha il volume di $125\cmc$. Quanto misura lo spigolo? E la superficie totale?
+\en{A cube has volume $125\cmc$. Find its edge and its total surface.}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item $S_\ell=4\ell^2=4\cdot36=\mathbf{144\cmq}$; \ $S_t=6\ell^2=\mathbf{216\cmq}$; \ $V=\ell^3=\mathbf{216\cmc}$; \ $d=\ell\sqrt3=6\cdot1,732\approx\mathbf{10,39\cm}$.
+\item $\ell=\sqrt[3]{125}=\mathbf{5\cm}$ perché $5\cdot5\cdot5=125$; \quad $S_t=6\cdot25=\mathbf{150\cmq}$.
+\end{enumerate}
+\en{The lateral surface of a cube is 4 faces; the total surface is 6 faces.}
+\end{solbox}
+
+\begin{esercizio}{V3}{2}{Trova l'errore}{Find the mistake}
+Una studentessa ha risolto questo esercizio: \emph{parallelepipedo con base $2,5\unit{m}\times4\unit{m}$ e altezza $6\unit{m}$}. Trova gli errori e correggili.
+\en{A student solved this exercise (box with base $2.5 \times 4\unit{m}$, height $6\unit{m}$). Find the mistakes and correct them.}
+\begin{center}
+\begin{tcolorbox}[width=0.62\linewidth, colback=white, colframe=black!30, boxrule=0.4pt, arc=1pt, left=8pt]
+\small
+$2p=2(2,5+4)=10,5\unit{m}$\\
+$S_\ell=10,5\cdot6=50,5\mq$\\
+$S_t=2(10+15+24)=73\mq$\\
+$V=2,5\cdot4\cdot6=60\unit{m^3}$
+\end{tcolorbox}
+\end{center}
+\end{esercizio}
+\begin{solbox}
+\begin{itemize}
+\item $2p=2(2,5+4)=2\cdot6,5=\mathbf{13\unit{m}}$ \ (non $10,5$).
+\item $S_\ell=13\cdot6=\mathbf{78\mq}$. \ Anche con il suo numero il calcolo era sbagliato: $10,5\cdot6=63$, non $50,5$.
+\item La formula di $S_t$ è giusta, ma la somma no: $10+15+24=49$, quindi $S_t=2\cdot49=\mathbf{98\mq}$.
+\item $V=\mathbf{60\unit{m^3}}$ è corretto.
+\end{itemize}
+Controllo: $S_t=S_\ell+2S_b=78+2\cdot10=98\mq$. \checkmark
+\en{Always check $S_t$ in two ways: $2(ab+bc+ac)$ and $S_\ell + 2S_b$. If they disagree, there is a mistake.}
+\end{solbox}
+
+\begin{esercizio}{V4}{2}{Dipingere una stanza}{Painting a room}
+Una stanza è lunga $5\unit{m}$, larga $4\unit{m}$ e alta $2,8\unit{m}$. Bisogna dipingere le quattro pareti e il soffitto (non il pavimento). La porta misura $0,9\unit{m}\times2,1\unit{m}$ e la finestra $1,2\unit{m}\times1\unit{m}$: non si dipingono.
+Un litro di pittura copre $8\mq$. La pittura si vende in barattoli da $2,5$ litri a $24$\,€ l'uno.
+\en{A room is $5\unit{m}$ long, $4\unit{m}$ wide and $2.8\unit{m}$ high. Paint the four walls and the ceiling, not the floor. The door ($0.9 \times 2.1\unit{m}$) and the window ($1.2 \times 1\unit{m}$) are not painted. One litre covers $8\mq$; paint comes in $2.5$ litre cans at 24\,€ each.}
+\begin{enumerate}
+\item Quanti metri quadrati bisogna dipingere? \enx{How many square metres must be painted?}
+\item Quanti litri di pittura servono? Quanti barattoli bisogna comprare? \enx{How many litres? How many cans must be bought?}
+\item Quanto si spende? Quanta pittura avanza? \enx{What is the cost? How much paint is left over?}
+\end{enumerate}
+\begin{center}
+% === PRE-COMPUTATION === scale 0.6: width 5, depth 4, height 2.8 ; door 0.9 x 2.1 at x = 0.8 ;
+% window 1.2 x 1 on the right wall, from depth 1.4 to 2.6 and height 1 to 2
+\begin{tikzpicture}[scale=0.6]
+  \scatola{5}{4}{2.8}
+  \fill[fgD!35] (0.8,0) rectangle (1.7,2.1); \draw[line width=0.6pt] (0.8,0) rectangle (1.7,2.1);
+  \node[font=\scriptsize] at (1.25,1.05) {porta};
+  \coordinate (u) at (40:0.55);
+  \path ($(B)+1.4*(u)+(0,1)$) coordinate (w1) ($(B)+2.6*(u)+(0,1)$) coordinate (w2)
+        ($(B)+2.6*(u)+(0,2)$) coordinate (w3) ($(B)+1.4*(u)+(0,2)$) coordinate (w4);
+  \fill[fgB!30] (w1) -- (w2) -- (w3) -- (w4) -- cycle; \draw[line width=0.6pt] (w1) -- (w2) -- (w3) -- (w4) -- cycle;
+  \node[below, font=\small] at ($(A)!0.5!(B)$) {$5\unit{m}$};
+  \node[below right, font=\small] at ($(B)!0.5!(B')$) {$4\unit{m}$};
+  \node[left, font=\small] at ($(A)!0.5!(D)$) {$2,8\unit{m}$};
+\end{tikzpicture}
+\end{center}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item Pareti (superficie laterale): $2p\cdot h=2(5+4)\cdot2,8=18\cdot2,8=50,4\mq$. \ Soffitto: $5\cdot4=20\mq$.\\
+Porta: $0,9\cdot2,1=1,89\mq$; \ finestra: $1,2\cdot1=1,2\mq$.\\
+Da dipingere: $50,4+20-1,89-1,2=\mathbf{67,31\mq}$.
+\item Litri: $67,31:8\approx\mathbf{8,41}$ litri. \ Barattoli: $8,41:2,5\approx3,37$: servono \textbf{4 barattoli}.
+\item Spesa: $4\cdot24=\mathbf{96}$\,€. \ Si comprano $4\cdot2,5=10$ litri, ne avanzano $10-8,41\approx\mathbf{1,59}$ litri.
+\end{enumerate}
+\errore{i barattoli non si comprano a pezzi: $3,37$ si arrotonda \emph{per eccesso} a $4$. Con 3 barattoli la pittura non basterebbe.}
+{you cannot buy 3.37 cans: round up to 4, because 3 cans would not be enough.}
+\end{solbox}
+
+\begin{esercizio}{V5}{2}{Capacità e peso}{Capacity and weight}
+\begin{enumerate}
+\item Un acquario ha la forma di un parallelepipedo con dimensioni interne $80\cm$, $35\cm$ e altezza $45\cm$. È riempito d'acqua fino a $5\cm$ dal bordo. Quanti litri d'acqua contiene? Quanto pesa l'acqua?
+\en{An aquarium is a box with inside measures $80$, $35$ and height $45\cm$. It is filled with water up to $5\cm$ below the top. How many litres does it hold? How much does the water weigh?}
+\item Un blocco di legno misura $20\cm\times10\cm\times5\cm$. Il legno ha peso specifico $0,6\unit{g/cm^3}$. Quanto pesa il blocco?
+\en{A wooden block measures $20 \times 10 \times 5\cm$. Wood has specific weight $0.6\unit{g/cm^3}$. What does the block weigh?}
+\end{enumerate}
+\begin{center}
+% === PRE-COMPUTATION === scale 0.04 per cm: width 80 -> 3.2, depth 35, height 45 -> 1.8, water 40 -> 1.6
+\begin{tikzpicture}[scale=1]
+  \coordinate (dv0) at (40:{0.55*1.4});
+  \fill[fgB!20] (0,0) -- (3.2,0) -- ($(3.2,0)+(dv0)$) -- ($(3.2,1.6)+(dv0)$) -- ($(0,1.6)+(dv0)$) -- (0,1.6) -- cycle;
+  \scatola{3.2}{1.4}{1.8}
+  \draw[fgB, line width=0.8pt] (0,1.6) -- (3.2,1.6) -- ($(3.2,1.6)+(dv0)$) -- ($(0,1.6)+(dv0)$) -- cycle;
+  \node[below, font=\small] at (1.6,0) {$80\cm$};
+  \node[left, font=\small] at (0,0.9) {$45\cm$};
+  \node[right, font=\small] at ($(3.2,0)!0.5!(B')$) {$35\cm$};
+\end{tikzpicture}
+\end{center}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item Altezza dell'acqua: $45-5=40\cm$. \ $V=80\cdot35\cdot40=112\,000\cmc=112\unit{dm^3}=\mathbf{112}$ \textbf{litri}. \ Un litro d'acqua pesa $1\unit{kg}$: l'acqua pesa $\mathbf{112\unit{kg}}$.
+\item $V=20\cdot10\cdot5=1000\cmc$; \quad $P=V\cdot p_s=1000\cdot0,6=\mathbf{600\unit{g}}$.
+\end{enumerate}
+\en{$1\unit{dm^3} = 1$ litre $= 1000\cmc$. Weight = volume $\times$ specific weight.}
+\errore{usa l'altezza dell'\emph{acqua} ($40\cm$), non quella della vasca ($45\cm$).}{use the height of the water, not of the tank.}
+\end{solbox}
+
+\begin{esercizio}{V6}{2}{Il prisma retto}{The right prism}
+Un prisma retto ha per base un triangolo rettangolo con i cateti di $9\cm$ e $12\cm$. L'altezza del prisma è $10\cm$. Calcola superficie laterale, superficie totale e volume.
+\en{A right prism has a right triangle base with legs $9$ and $12\cm$. The prism is $10\cm$ high. Find lateral surface, total surface and volume.}
+\begin{center}
+% === PRE-COMPUTATION === scale 0.18: legs 9 -> 1.62 (horizontal), 12 -> 2.16 (vertical); height 10 drawn obliquely (0.55 factor)
+\begin{tikzpicture}[scale=1]
+  \coordinate (P) at (0,0); \coordinate (Q) at (1.62,0); \coordinate (R) at (0,2.16);
+  \coordinate (dv) at (25:{0.55*1.8});
+  \coordinate (P') at ($(P)+(dv)$); \coordinate (Q') at ($(Q)+(dv)$); \coordinate (R') at ($(R)+(dv)$);
+  \draw[hidden] (P) -- (P') -- (Q') (P') -- (R');
+  \fill[fgB!15] (P) -- (Q) -- (R) -- cycle;
+  \draw[side] (P) -- (Q) -- (R) -- cycle;
+  \draw[side] (Q) -- (Q') -- (R') -- (R);
+  \rang{Q}{P}{R}
+  \node[below, font=\small] at ($(P)!0.5!(Q)$) {$9$};
+  \node[left, font=\small] at ($(P)!0.5!(R)$) {$12$};
+  \node[below right, font=\small] at ($(Q)!0.5!(Q')$) {$h=10$};
+\end{tikzpicture}
+\end{center}
+\end{esercizio}
+\begin{solbox}
+Ipotenusa della base: $\sqrt{9^2+12^2}=\sqrt{225}=15\cm$. \ Perimetro di base: $9+12+15=36\cm$. \ Area di base: $\frac{9\cdot12}{2}=54\cmq$.
+\[S_\ell=2p\cdot h=36\cdot10=\mathbf{360\cmq}\qquad S_t=S_\ell+2S_b=360+108=\mathbf{468\cmq}\qquad V=S_b\cdot h=54\cdot10=\mathbf{540\cmc}\]
+\en{For every right prism: lateral surface = base perimeter $\times$ height, volume = base area $\times$ height.}
+\end{solbox}
+
+\begin{esercizio}{V7}{3}{Solidi di rotazione}{Solids of revolution}
+Scrivi i risultati prima con $\pi$ e poi con $\pi=3,14$. \enx{Give each result with $\pi$, then with $\pi = 3.14$.}
+\begin{enumerate}
+\item Un rettangolo di lati $4\cm$ e $10\cm$ ruota di $360^\circ$ attorno al lato di $10\cm$. Che solido si ottiene? Calcola superficie laterale, superficie totale e volume.
+\en{A $4 \times 10\cm$ rectangle turns a full turn around its $10\cm$ side. Which solid do you get? Find lateral surface, total surface and volume.}
+\item Un triangolo rettangolo con i cateti di $6\cm$ e $8\cm$ ruota attorno al cateto di $6\cm$. Che solido si ottiene? Calcola l'apotema, la superficie laterale, la superficie totale e il volume.
+\en{A right triangle with legs $6$ and $8\cm$ turns around the $6\cm$ leg. Which solid? Find slant height, lateral surface, total surface and volume.}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+\begin{center}
+% === PRE-COMPUTATION === scale 0.2: cylinder r = 4 -> 0.8, h = 10 -> 2 ; cone r = 8 -> 1.6, h = 6 -> 1.2
+\begin{tikzpicture}[scale=1]
+  \begin{scope}
+    \draw[fgA, dashed] (0,-0.3) -- (0,2.4);
+    \fill[fgB!12] (-0.8,0) -- (-0.8,2) arc (180:360:0.8 and 0.22) -- (0.8,0) arc (0:-180:0.8 and 0.22);
+    \draw[side] (0,2) ellipse (0.8 and 0.22);
+    \draw[side] (-0.8,2) -- (-0.8,0) arc (180:360:0.8 and 0.22) -- (0.8,2);
+    \draw[hidden] (0.8,0) arc (0:180:0.8 and 0.22);
+    \fill[fgD!40] (0,0) rectangle (0.8,2); \draw[line width=0.6pt] (0,0) rectangle (0.8,2);
+    \node[font=\scriptsize, right] at (0.8,1) {$h=10$};
+    \node[font=\scriptsize, below] at (0.4,-0.25) {$r=4$};
+    \node[font=\small] at (0,-0.9) {cilindro};
+  \end{scope}
+  \begin{scope}[shift={(4,0)}]
+    \draw[fgA, dashed] (0,-0.3) -- (0,1.6);
+    \fill[fgB!12] (-1.6,0) -- (0,1.2) -- (1.6,0) arc (0:-180:1.6 and 0.4);
+    \draw[side] (-1.6,0) -- (0,1.2) -- (1.6,0);
+    \draw[side] (1.6,0) arc (0:-180:1.6 and 0.4);
+    \draw[hidden] (1.6,0) arc (0:180:1.6 and 0.4);
+    \fill[fgD!40] (0,0) -- (1.6,0) -- (0,1.2) -- cycle; \draw[line width=0.6pt] (0,0) -- (1.6,0) -- (0,1.2) -- cycle;
+    \node[font=\scriptsize, left] at (0,0.6) {$h=6$};
+    \node[font=\scriptsize, below] at (0.8,-0.45) {$r=8$};
+    \node[font=\scriptsize, above right] at (0.8,0.6) {$a=10$};
+    \node[font=\small] at (0,-1.05) {cono};
+  \end{scope}
+\end{tikzpicture}
+\end{center}
+\begin{enumerate}
+\item \textbf{Cilindro} con $r=4\cm$ e $h=10\cm$ (il lato attorno a cui ruota diventa l'altezza):
+\[S_\ell=2\pi rh=80\pi\approx\mathbf{251,2\cmq}\qquad S_t=S_\ell+2\pi r^2=80\pi+32\pi=112\pi\approx\mathbf{351,68\cmq}\]
+\[V=\pi r^2h=160\pi\approx\mathbf{502,4\cmc}\]
+\item \textbf{Cono} con altezza $h=6\cm$ (il cateto attorno a cui ruota) e raggio $r=8\cm$ (l'altro cateto). Apotema: $a=\sqrt{8^2+6^2}=\mathbf{10\cm}$ (l'ipotenusa).
+\[S_\ell=\pi ra=80\pi\approx\mathbf{251,2\cmq}\quad S_b=\pi r^2=64\pi\approx200,96\cmq\quad S_t=144\pi\approx\mathbf{452,16\cmq}\]
+\[V=\frac{\pi r^2h}{3}=\frac{64\pi\cdot6}{3}=128\pi\approx\mathbf{401,92\cmc}\]
+\end{enumerate}
+\errore{il cateto attorno a cui il triangolo ruota è l'\emph{altezza}; l'altro cateto è il \emph{raggio}.}
+{the leg on the axis is the height; the other leg is the radius.}
+\end{solbox}
+
+% ================================================================
+\sezione{Simulazione della prova d'esame}{Mock exam}
+% ================================================================
+\begin{tcolorbox}[colback=lv3!5, colframe=lv3!60, boxrule=0.5pt, arc=2pt, left=6pt, right=6pt, top=3pt, bottom=3pt]
+Quattro quesiti come nella prova scritta vera. Tempo consigliato: $2$ ore. Puoi usare la calcolatrice e il formulario.
+\en{Four questions like the real written exam. Suggested time: 2 hours. You may use a calculator and the formula sheet.}
+\end{tcolorbox}
+
+\begin{esercizio}{X1}{3}{Quesito 1: numeri e algebra}{Question 1: numbers and algebra}
+\begin{enumerate}
+\item Calcola: \ $\left(\dfrac23-\dfrac14\right)\cdot\dfrac{12}{5}+\left(\dfrac12\right)^2:\dfrac14$
+\item Risolvi e verifica: \ $3(x-2)+4=2x+5$
+\end{enumerate}
+\en{a) Compute the expression. b) Solve and check the equation.}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item $\frac23-\frac14=\frac{8-3}{12}=\frac{5}{12}$; \quad $\frac{5}{12}\cdot\frac{12}{5}=1$; \quad $\left(\frac12\right)^2:\frac14=\frac14\cdot4=1$; \quad totale $1+1=\boxed{2}$.
+\item $3x-6+4=2x+5\Rightarrow 3x-2=2x+5\Rightarrow\boxed{x=7}$. \ Verifica: $3\cdot5+4=19$ e $2\cdot7+5=19$. \checkmark
+\end{enumerate}
+\end{solbox}
+
+\begin{esercizio}{X2}{3}{Quesito 2: un solido composto}{Question 2: a composite solid}
+Un solido è formato da un cubo di spigolo $6\cm$ sormontato da una piramide regolare quadrangolare che ha la stessa base del cubo e altezza $4\cm$.
+\en{A solid is a cube with edge $6\cm$ with a regular square pyramid on top (same base, height $4\cm$).}
+\begin{enumerate}
+\item Calcola l'apotema della piramide. \enx{Find the slant height (apothem) of the pyramid.}
+\item Calcola la superficie totale del solido. \enx{Find the total surface of the solid.}
+\item Calcola il volume del solido. \enx{Find the volume.}
+\item Il solido è di un materiale con peso specifico $0,8\unit{g/cm^3}$. Quanto pesa? \enx{The material has specific weight $0.8\unit{g/cm^3}$. What does it weigh?}
+\end{enumerate}
+\begin{center}
+% === PRE-COMPUTATION === scale 0.35: edge 6 -> 2.1, depth factor 0.55 at 40 deg ; apex 4 -> 1.4 above the centre of the top face
+\begin{tikzpicture}[scale=1]
+  \scatola{2.1}{2.1}{2.1}
+  \coordinate (T) at ($(D)!0.5!(C')+(0,1.4)$);
+  \coordinate (Mt) at ($(D)!0.5!(C')$);
+  \draw[hidden] (T) -- (D'); \draw[hidden] (T) -- (Mt);
+  \draw[side] (D) -- (T) -- (C); \draw[side] (T) -- (C');
+  \coordinate (Mf) at ($(D)!0.5!(C)$);
+  \draw[fgA, line width=0.8pt] (T) -- (Mf);
+  \node[fgA, font=\scriptsize, left] at ($(T)!0.5!(Mf)+(-0.05,0)$) {apotema};
+  \node[below, font=\small] at ($(A)!0.5!(B)$) {$6\cm$};
+  \node[font=\scriptsize, right] at ($(Mt)!0.5!(T)$) {$4$};
+\end{tikzpicture}
+\end{center}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item L'apotema è l'ipotenusa di un triangolo rettangolo con cateti l'altezza della piramide ($4\cm$) e metà spigolo ($3\cm$): \ $a=\sqrt{4^2+3^2}=\mathbf{5\cm}$.
+\item La faccia superiore del cubo è coperta dalla piramide: si contano solo $5$ facce del cubo.\\
+$5\cdot6^2=180\cmq$; \quad $S_\ell$ piramide $=\frac{2p\cdot a}{2}=\frac{24\cdot5}{2}=60\cmq$; \quad $S_t=180+60=\mathbf{240\cmq}$.
+\item $V=6^3+\frac{6^2\cdot4}{3}=216+48=\mathbf{264\cmc}$.
+\item $P=264\cdot0,8=\mathbf{211,2\unit{g}}$.
+\end{enumerate}
+\errore{nella superficie totale la base della piramide e la faccia superiore del cubo non si contano: sono nascoste all'interno.}
+{the pyramid's base and the cube's top face are hidden inside, so they are not part of the surface.}
+\end{solbox}
+
+\begin{esercizio}{X3}{3}{Quesito 3: funzioni e realtà}{Question 3: functions in real life}
+Due compagnie di taxi hanno queste tariffe: \ \textbf{A}: $3$\,€ fissi più $1,50$\,€ al km; \ \textbf{B}: $2,50$\,€ al km, senza quota fissa.
+\en{Two taxi companies charge: A, 3\,€ fixed plus 1.50\,€ per km; B, 2.50\,€ per km with no fixed charge.}
+\begin{enumerate}
+\item Scrivi la formula del costo $y$ in funzione dei km $x$ per ciascuna tariffa. \enx{Write each cost $y$ as a function of the km $x$.}
+\item Compila una tabella per $x=0,\,2,\,4,\,6,\,8$ e disegna i due grafici nello stesso piano. \enx{Make a table and draw both graphs.}
+\item Con la tariffa A, quanti km si percorrono con $18$\,€? \enx{How many km for 18\,€ with A?}
+\item Per quale distanza le due tariffe costano uguale? Quando conviene A? \enx{For what distance do they cost the same? When is A cheaper?}
+\item Quale delle due è una proporzionalità diretta? Perché? \enx{Which one is a direct proportion? Why?}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+\begin{minipage}{0.5\linewidth}
+\begin{enumerate}
+\item A: $y=1,5x+3$; \quad B: $y=2,5x$.
+\item \begin{tabular}{c|ccccc}
+$x$ & 0 & 2 & 4 & 6 & 8\\ \hline
+A & 3 & 6 & 9 & 12 & 15\\
+B & 0 & 5 & 10 & 15 & 20
+\end{tabular}
+\item $1,5x+3=18\Rightarrow1,5x=15\Rightarrow x=\mathbf{10\unit{km}}$.
+\item $1,5x+3=2,5x\Rightarrow x=\mathbf{3\unit{km}}$ (costo $7,50$\,€). Oltre i $3\unit{km}$ conviene \textbf{A}.
+\item \textbf{B}: il grafico è una retta che passa per l'origine ($0$\,km, $0$\,€). A no: parte da $3$\,€.
+\end{enumerate}
+\end{minipage}\hfill
+\begin{minipage}{0.46\linewidth}\centering
+% === PRE-COMPUTATION === A: y = 1.5x + 3 ; B: y = 2.5x ; meet at (3, 7.5) ; xscale 0.45, yscale 0.18
+\begin{tikzpicture}[xscale=0.45, yscale=0.18]
+  \draw[gridl, xstep=1, ystep=2.5] (0,0) grid (10,25);
+  \draw[axis] (0,0) -- (10.8,0) node[right, font=\small] {km};
+  \draw[axis] (0,0) -- (0,26.5) node[above, font=\small] {€};
+  \foreach \k in {2,4,...,10} \node[font=\tiny, below] at (\k,0) {\k};
+  \foreach \k in {5,10,...,25} \node[font=\tiny, left] at (0,\k) {\k};
+  \draw[fgB, line width=1.1pt] (0,3) -- (10,18) node[right, font=\small] {A};
+  \draw[fgA, line width=1.1pt] (0,0) -- (10,25) node[right, font=\small] {B};
+  \node[pt] at (3,7.5) {}; \node[font=\scriptsize, left] at (3,8.8) {$(3;\,7,5)$};
+\end{tikzpicture}
+\end{minipage}
+\end{solbox}
+
+\begin{esercizio}{X4}{3}{Quesito 4: statistica e probabilità}{Question 4: statistics and probability}
+In una classe di $20$ alunni si è chiesto quanti fratelli o sorelle ha ciascuno:
+\en{20 pupils were asked how many brothers or sisters they have:}
+\begin{center}
+\begin{tabular}{l|cccc}
+numero di fratelli & 0 & 1 & 2 & 3\\ \hline
+numero di alunni & 4 & 9 & 5 & 2
+\end{tabular}
+\end{center}
+\begin{enumerate}
+\item Calcola media, moda e mediana. \enx{Find mean, mode and median.}
+\item Calcola le frequenze percentuali e le ampiezze dei settori, e disegna l'areogramma. \enx{Find the percentages and the sector angles, and draw the pie chart.}
+\item Scegliendo a caso un alunno, qual è la probabilità che abbia almeno $2$ fratelli? \enx{Choosing a pupil at random, what is the probability that they have at least 2 siblings?}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+\begin{minipage}{0.6\linewidth}
+\begin{enumerate}
+\item Media: $\frac{0\cdot4+1\cdot9+2\cdot5+3\cdot2}{20}=\frac{25}{20}=\mathbf{1,25}$. \ Moda: $\mathbf{1}$ (9 alunni). \ Mediana: i dati ordinati sono $20$; il $10^\circ$ e l'$11^\circ$ valore sono entrambi $1$, quindi mediana $=\mathbf{1}$.
+\item $0$: $20\%$, $72^\circ$; \ $1$: $45\%$, $162^\circ$; \ $2$: $25\%$, $90^\circ$; \ $3$: $10\%$, $36^\circ$. \ Somme: $100\%$ e $360^\circ$. \checkmark
+\item Almeno $2$ vuol dire $2$ oppure $3$: $\frac{5+2}{20}=\frac{7}{20}=\mathbf{35\%}$.
+\end{enumerate}
+\errore{nella media si moltiplica ogni valore per quante volte compare: non si fa $\frac{0+1+2+3}{4}$.}
+{each value must be multiplied by how many times it occurs.}
+\end{minipage}\hfill
+\begin{minipage}{0.36\linewidth}\centering
+% sectors from 90 deg clockwise: 72, 162, 90, 36 -> boundaries 90, 18, -144, -234, -270
+\begin{tikzpicture}
+  \def\R{1.35}
+  \fill[fgD!55] (0,0) -- (90:\R) arc (90:18:\R) -- cycle;
+  \fill[fgB!50] (0,0) -- (18:\R) arc (18:-144:\R) -- cycle;
+  \fill[fgC!50] (0,0) -- (-144:\R) arc (-144:-234:\R) -- cycle;
+  \fill[fgA!50] (0,0) -- (-234:\R) arc (-234:-270:\R) -- cycle;
+  \foreach \a in {90,18,-144,-234} \draw[white, line width=1pt] (0,0) -- (\a:\R);
+  \node[font=\scriptsize, align=center] at (54:0.85) {0\\$72^\circ$};
+  \node[font=\scriptsize, align=center] at (-63:0.8) {1\\$162^\circ$};
+  \node[font=\scriptsize, align=center] at (-189:0.8) {2\\$90^\circ$};
+  \node[font=\scriptsize, align=center] at (-252:0.95) {3\\$36^\circ$};
+\end{tikzpicture}
+\end{minipage}
+\end{solbox}
+
+
+
+\clearpage
+% ===== parti/formulario.tex =====
+% STATUS: COMPLETE DRAFT
+% Formulario (end of the questions file)
+\begin{center}
+{\Large\bfseries\color{navy} Formulario}\quad{\large\itshape\color{engray} Formula sheet}
+\end{center}
+\vspace{-4pt}
+{\small
+\renewcommand{\arraystretch}{1.35}
+\rowcolors{2}{navy!4}{white}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{3.4cm} X@{}}
+\toprule
+\rowcolor{white}
+Argomento \textperiodcentered\ \textit{\mdseries Topic} & Formule \textperiodcentered\ \textit{Formulas}\\
+\midrule
+Potenze \newline \textit{\mdseries Powers} & $a^m\cdot a^n=a^{m+n}$ \quad $a^m:a^n=a^{m-n}$ \quad $(a^m)^n=a^{m\cdot n}$ \quad $a^n\cdot b^n=(a\cdot b)^n$ \quad $a^0=1$ \ ($a\ne0$)\\
+Proporzioni \newline \textit{\mdseries Proportions} & $a:b=c:d\ \Rightarrow\ a\cdot d=b\cdot c$ \qquad diretta: $\frac yx=k$ \qquad inversa: $x\cdot y=k$\\
+Percentuali \newline \textit{\mdseries Percentages} & $p\%$ di $N=\frac{p}{100}\cdot N$ \qquad percentuale $=\frac{\text{parte}}{\text{totale}}\cdot100$ \qquad gradi $=\frac{\text{parte}}{\text{totale}}\cdot360^\circ$\\
+Statistica \newline \textit{\mdseries Statistics} & media $=\frac{\text{somma dei dati}}{\text{numero dei dati}}$; \ mediana: valore centrale dei dati ordinati; \ moda: valore più frequente\\
+Probabilità \newline \textit{\mdseries Probability} & $P=\frac{\text{casi favorevoli}}{\text{casi possibili}}$ \qquad $P(\text{contrario})=1-P$ \qquad $0\le P\le1$\\
+Piano cartesiano \newline \textit{\mdseries Coordinate plane} & distanza $\seg{AB}=\sqrt{(x_B-x_A)^2+(y_B-y_A)^2}$ \qquad retta $y=mx+q$\\
+Angoli \newline \textit{\mdseries Angles} & complementari $90^\circ$; \ supplementari $180^\circ$; \ esplementari $360^\circ$; \ triangolo $\av A+\av B+\av C=180^\circ$\\
+Pitagora \newline \textit{\mdseries Pythagoras} & $i^2=c^2+C^2$ \qquad $i=\sqrt{c^2+C^2}$ \qquad $c=\sqrt{i^2-C^2}$ \qquad diagonale quadrato $d=\ell\sqrt2$\\
+Aree \newline \textit{\mdseries Areas} & rettangolo $b\cdot h$; \ quadrato $\ell^2$; \ triangolo $\frac{b\cdot h}{2}$; \ rombo $\frac{D\cdot d}{2}$; \ trapezio $\frac{(B+b)\cdot h}{2}$\\
+Cerchio \newline \textit{\mdseries Circle} & $C=2\pi r=\pi d$ \qquad $A=\pi r^2$ \qquad arco $=C\cdot\frac{\alpha}{360^\circ}$ \qquad settore $=A\cdot\frac{\alpha}{360^\circ}$\\
+Parallelepipedo \newline \textit{\mdseries Box} & $S_\ell=2p_b\cdot h$ \quad $S_t=S_\ell+2S_b=2(ab+bc+ac)$ \quad $V=a\cdot b\cdot c$ \quad $d=\sqrt{a^2+b^2+c^2}$\\
+Cubo \newline \textit{\mdseries Cube} & $S_\ell=4\ell^2$ \quad $S_t=6\ell^2$ \quad $V=\ell^3$ \quad $d=\ell\sqrt3$\\
+Prisma retto \newline \textit{\mdseries Right prism} & $S_\ell=2p_b\cdot h$ \quad $S_t=S_\ell+2S_b$ \quad $V=S_b\cdot h$\\
+Piramide retta \newline \textit{\mdseries Right pyramid} & $S_\ell=\frac{2p_b\cdot a}{2}$ \quad $S_t=S_\ell+S_b$ \quad $V=\frac{S_b\cdot h}{3}$ \quad apotema $a$ con Pitagora\\
+Cilindro \newline \textit{\mdseries Cylinder} & $S_\ell=2\pi rh$ \quad $S_t=S_\ell+2\pi r^2$ \quad $V=\pi r^2h$\\
+Cono \newline \textit{\mdseries Cone} & $a=\sqrt{r^2+h^2}$ \quad $S_\ell=\pi ra$ \quad $S_t=S_\ell+\pi r^2$ \quad $V=\frac{\pi r^2h}{3}$\\
+Peso e capacità \newline \textit{\mdseries Weight, capacity} & $P=V\cdot p_s$ \qquad $1\unit{dm^3}=1$ litro $=1000\cmc$ \qquad $1$ litro d'acqua pesa $1\unit{kg}$\\
+\bottomrule
+\end{tabularx}
+}
+
+
+\end{document}

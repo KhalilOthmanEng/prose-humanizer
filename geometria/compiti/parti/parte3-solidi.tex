@@ -1,0 +1,368 @@
+% STATUS: COMPLETE DRAFT
+% Parte 3: geometria solida e simulazione della prova d'esame
+% Every number is checked in verifica.py (same ids).
+
+% box in oblique (cavalier) projection: \scatola{width}{depth}{height}
+% names the 8 vertices A B C D (front, anticlockwise from bottom left) and A' B' C' D' (back)
+\newcommand{\scatola}[3]{%
+  \coordinate (A) at (0,0); \coordinate (B) at (#1,0); \coordinate (C) at (#1,#3); \coordinate (D) at (0,#3);
+  \coordinate (dv) at (40:{0.55*#2});
+  \coordinate (A') at ($(A)+(dv)$); \coordinate (B') at ($(B)+(dv)$);
+  \coordinate (C') at ($(C)+(dv)$); \coordinate (D') at ($(D)+(dv)$);
+  \draw[hidden] (A) -- (A') -- (B') (A') -- (D');
+  \draw[side] (A) -- (B) -- (C) -- (D) -- cycle;
+  \draw[side] (D) -- (D') -- (C') -- (C);
+  \draw[side] (B) -- (B') -- (C');}
+
+% ================================================================
+\sezione{Geometria solida}{Solid geometry}
+% ================================================================
+
+\begin{esercizio}{V1}{1}{Il parallelepipedo rettangolo}{The rectangular box}
+Un parallelepipedo rettangolo ha le dimensioni di base $a=5\cm$, $b=3\cm$ e l'altezza $c=4\cm$. Calcola: area di base, perimetro di base, superficie laterale, superficie totale, volume e diagonale.
+\en{A rectangular box has base $5 \times 3\cm$ and height $4\cm$. Find base area, base perimeter, lateral surface, total surface, volume and diagonal.}
+\begin{center}
+% === PRE-COMPUTATION === scale 0.5 cm per unit: width 5, depth 3, height 4
+\begin{tikzpicture}[scale=0.5]
+  \scatola{5}{3}{4}
+  \draw[helper, fgA] (A) -- (C');
+  \node[below, font=\small] at ($(A)!0.5!(B)$) {$a=5$};
+  \node[right, font=\small] at ($(B)!0.5!(B')$) {$b=3$};
+  \node[left, font=\small] at ($(A)!0.5!(D)$) {$c=4$};
+  \node[fgA, font=\small] at (3.7,2.7) {$d$};
+\end{tikzpicture}
+\end{center}
+\end{esercizio}
+\begin{solbox}
+\begin{align*}
+S_b&=a\cdot b=5\cdot3=\mathbf{15\cmq} & 2p_b&=2(a+b)=2(5+3)=\mathbf{16\cm}\\
+S_\ell&=2p_b\cdot c=16\cdot4=\mathbf{64\cmq} & S_t&=S_\ell+2S_b=64+30=\mathbf{94\cmq}\\
+V&=a\cdot b\cdot c=5\cdot3\cdot4=\mathbf{60\cmc} & d&=\sqrt{a^2+b^2+c^2}=\sqrt{25+9+16}=\sqrt{50}\approx\mathbf{7,07\cm}
+\end{align*}
+Controllo della superficie totale in un altro modo: $S_t=2(ab+bc+ac)=2(15+12+20)=94\cmq$. \checkmark
+\en{Check the total surface in a second way, with the three pairs of faces.}
+\end{solbox}
+
+\begin{esercizio}{V2}{1}{Il cubo}{The cube}
+\begin{enumerate}
+\item Un cubo ha lo spigolo di $6\cm$. Calcola superficie laterale, superficie totale, volume e diagonale.
+\en{A cube has edge $6\cm$. Find lateral surface, total surface, volume and diagonal.}
+\item Un cubo ha il volume di $125\cmc$. Quanto misura lo spigolo? E la superficie totale?
+\en{A cube has volume $125\cmc$. Find its edge and its total surface.}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item $S_\ell=4\ell^2=4\cdot36=\mathbf{144\cmq}$; \ $S_t=6\ell^2=\mathbf{216\cmq}$; \ $V=\ell^3=\mathbf{216\cmc}$; \ $d=\ell\sqrt3=6\cdot1,732\approx\mathbf{10,39\cm}$.
+\item $\ell=\sqrt[3]{125}=\mathbf{5\cm}$ perché $5\cdot5\cdot5=125$; \quad $S_t=6\cdot25=\mathbf{150\cmq}$.
+\end{enumerate}
+\en{The lateral surface of a cube is 4 faces; the total surface is 6 faces.}
+\end{solbox}
+
+\begin{esercizio}{V3}{2}{Trova l'errore}{Find the mistake}
+Una studentessa ha risolto questo esercizio: \emph{parallelepipedo con base $2,5\unit{m}\times4\unit{m}$ e altezza $6\unit{m}$}. Trova gli errori e correggili.
+\en{A student solved this exercise (box with base $2.5 \times 4\unit{m}$, height $6\unit{m}$). Find the mistakes and correct them.}
+\begin{center}
+\begin{tcolorbox}[width=0.62\linewidth, colback=white, colframe=black!30, boxrule=0.4pt, arc=1pt, left=8pt]
+\small
+$2p=2(2,5+4)=10,5\unit{m}$\\
+$S_\ell=10,5\cdot6=50,5\mq$\\
+$S_t=2(10+15+24)=73\mq$\\
+$V=2,5\cdot4\cdot6=60\unit{m^3}$
+\end{tcolorbox}
+\end{center}
+\end{esercizio}
+\begin{solbox}
+\begin{itemize}
+\item $2p=2(2,5+4)=2\cdot6,5=\mathbf{13\unit{m}}$ \ (non $10,5$).
+\item $S_\ell=13\cdot6=\mathbf{78\mq}$. \ Anche con il suo numero il calcolo era sbagliato: $10,5\cdot6=63$, non $50,5$.
+\item La formula di $S_t$ è giusta, ma la somma no: $10+15+24=49$, quindi $S_t=2\cdot49=\mathbf{98\mq}$.
+\item $V=\mathbf{60\unit{m^3}}$ è corretto.
+\end{itemize}
+Controllo: $S_t=S_\ell+2S_b=78+2\cdot10=98\mq$. \checkmark
+\en{Always check $S_t$ in two ways: $2(ab+bc+ac)$ and $S_\ell + 2S_b$. If they disagree, there is a mistake.}
+\end{solbox}
+
+\begin{esercizio}{V4}{2}{Dipingere una stanza}{Painting a room}
+Una stanza è lunga $5\unit{m}$, larga $4\unit{m}$ e alta $2,8\unit{m}$. Bisogna dipingere le quattro pareti e il soffitto (non il pavimento). La porta misura $0,9\unit{m}\times2,1\unit{m}$ e la finestra $1,2\unit{m}\times1\unit{m}$: non si dipingono.
+Un litro di pittura copre $8\mq$. La pittura si vende in barattoli da $2,5$ litri a $24$\,€ l'uno.
+\en{A room is $5\unit{m}$ long, $4\unit{m}$ wide and $2.8\unit{m}$ high. Paint the four walls and the ceiling, not the floor. The door ($0.9 \times 2.1\unit{m}$) and the window ($1.2 \times 1\unit{m}$) are not painted. One litre covers $8\mq$; paint comes in $2.5$ litre cans at 24\,€ each.}
+\begin{enumerate}
+\item Quanti metri quadrati bisogna dipingere? \enx{How many square metres must be painted?}
+\item Quanti litri di pittura servono? Quanti barattoli bisogna comprare? \enx{How many litres? How many cans must be bought?}
+\item Quanto si spende? Quanta pittura avanza? \enx{What is the cost? How much paint is left over?}
+\end{enumerate}
+\begin{center}
+% === PRE-COMPUTATION === scale 0.6: width 5, depth 4, height 2.8 ; door 0.9 x 2.1 at x = 0.8 ;
+% window 1.2 x 1 on the right wall, from depth 1.4 to 2.6 and height 1 to 2
+\begin{tikzpicture}[scale=0.6]
+  \scatola{5}{4}{2.8}
+  \fill[fgD!35] (0.8,0) rectangle (1.7,2.1); \draw[line width=0.6pt] (0.8,0) rectangle (1.7,2.1);
+  \node[font=\scriptsize] at (1.25,1.05) {porta};
+  \coordinate (u) at (40:0.55);
+  \path ($(B)+1.4*(u)+(0,1)$) coordinate (w1) ($(B)+2.6*(u)+(0,1)$) coordinate (w2)
+        ($(B)+2.6*(u)+(0,2)$) coordinate (w3) ($(B)+1.4*(u)+(0,2)$) coordinate (w4);
+  \fill[fgB!30] (w1) -- (w2) -- (w3) -- (w4) -- cycle; \draw[line width=0.6pt] (w1) -- (w2) -- (w3) -- (w4) -- cycle;
+  \node[below, font=\small] at ($(A)!0.5!(B)$) {$5\unit{m}$};
+  \node[below right, font=\small] at ($(B)!0.5!(B')$) {$4\unit{m}$};
+  \node[left, font=\small] at ($(A)!0.5!(D)$) {$2,8\unit{m}$};
+\end{tikzpicture}
+\end{center}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item Pareti (superficie laterale): $2p\cdot h=2(5+4)\cdot2,8=18\cdot2,8=50,4\mq$. \ Soffitto: $5\cdot4=20\mq$.\\
+Porta: $0,9\cdot2,1=1,89\mq$; \ finestra: $1,2\cdot1=1,2\mq$.\\
+Da dipingere: $50,4+20-1,89-1,2=\mathbf{67,31\mq}$.
+\item Litri: $67,31:8\approx\mathbf{8,41}$ litri. \ Barattoli: $8,41:2,5\approx3,37$: servono \textbf{4 barattoli}.
+\item Spesa: $4\cdot24=\mathbf{96}$\,€. \ Si comprano $4\cdot2,5=10$ litri, ne avanzano $10-8,41\approx\mathbf{1,59}$ litri.
+\end{enumerate}
+\errore{i barattoli non si comprano a pezzi: $3,37$ si arrotonda \emph{per eccesso} a $4$. Con 3 barattoli la pittura non basterebbe.}
+{you cannot buy 3.37 cans: round up to 4, because 3 cans would not be enough.}
+\end{solbox}
+
+\begin{esercizio}{V5}{2}{Capacità e peso}{Capacity and weight}
+\begin{enumerate}
+\item Un acquario ha la forma di un parallelepipedo con dimensioni interne $80\cm$, $35\cm$ e altezza $45\cm$. È riempito d'acqua fino a $5\cm$ dal bordo. Quanti litri d'acqua contiene? Quanto pesa l'acqua?
+\en{An aquarium is a box with inside measures $80$, $35$ and height $45\cm$. It is filled with water up to $5\cm$ below the top. How many litres does it hold? How much does the water weigh?}
+\item Un blocco di legno misura $20\cm\times10\cm\times5\cm$. Il legno ha peso specifico $0,6\unit{g/cm^3}$. Quanto pesa il blocco?
+\en{A wooden block measures $20 \times 10 \times 5\cm$. Wood has specific weight $0.6\unit{g/cm^3}$. What does the block weigh?}
+\end{enumerate}
+\begin{center}
+% === PRE-COMPUTATION === scale 0.04 per cm: width 80 -> 3.2, depth 35, height 45 -> 1.8, water 40 -> 1.6
+\begin{tikzpicture}[scale=1]
+  \coordinate (dv0) at (40:{0.55*1.4});
+  \fill[fgB!20] (0,0) -- (3.2,0) -- ($(3.2,0)+(dv0)$) -- ($(3.2,1.6)+(dv0)$) -- ($(0,1.6)+(dv0)$) -- (0,1.6) -- cycle;
+  \scatola{3.2}{1.4}{1.8}
+  \draw[fgB, line width=0.8pt] (0,1.6) -- (3.2,1.6) -- ($(3.2,1.6)+(dv0)$) -- ($(0,1.6)+(dv0)$) -- cycle;
+  \node[below, font=\small] at (1.6,0) {$80\cm$};
+  \node[left, font=\small] at (0,0.9) {$45\cm$};
+  \node[right, font=\small] at ($(3.2,0)!0.5!(B')$) {$35\cm$};
+\end{tikzpicture}
+\end{center}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item Altezza dell'acqua: $45-5=40\cm$. \ $V=80\cdot35\cdot40=112\,000\cmc=112\unit{dm^3}=\mathbf{112}$ \textbf{litri}. \ Un litro d'acqua pesa $1\unit{kg}$: l'acqua pesa $\mathbf{112\unit{kg}}$.
+\item $V=20\cdot10\cdot5=1000\cmc$; \quad $P=V\cdot p_s=1000\cdot0,6=\mathbf{600\unit{g}}$.
+\end{enumerate}
+\en{$1\unit{dm^3} = 1$ litre $= 1000\cmc$. Weight = volume $\times$ specific weight.}
+\errore{usa l'altezza dell'\emph{acqua} ($40\cm$), non quella della vasca ($45\cm$).}{use the height of the water, not of the tank.}
+\end{solbox}
+
+\begin{esercizio}{V6}{2}{Il prisma retto}{The right prism}
+Un prisma retto ha per base un triangolo rettangolo con i cateti di $9\cm$ e $12\cm$. L'altezza del prisma è $10\cm$. Calcola superficie laterale, superficie totale e volume.
+\en{A right prism has a right triangle base with legs $9$ and $12\cm$. The prism is $10\cm$ high. Find lateral surface, total surface and volume.}
+\begin{center}
+% === PRE-COMPUTATION === scale 0.18: legs 9 -> 1.62 (horizontal), 12 -> 2.16 (vertical); height 10 drawn obliquely (0.55 factor)
+\begin{tikzpicture}[scale=1]
+  \coordinate (P) at (0,0); \coordinate (Q) at (1.62,0); \coordinate (R) at (0,2.16);
+  \coordinate (dv) at (25:{0.55*1.8});
+  \coordinate (P') at ($(P)+(dv)$); \coordinate (Q') at ($(Q)+(dv)$); \coordinate (R') at ($(R)+(dv)$);
+  \draw[hidden] (P) -- (P') -- (Q') (P') -- (R');
+  \fill[fgB!15] (P) -- (Q) -- (R) -- cycle;
+  \draw[side] (P) -- (Q) -- (R) -- cycle;
+  \draw[side] (Q) -- (Q') -- (R') -- (R);
+  \rang{Q}{P}{R}
+  \node[below, font=\small] at ($(P)!0.5!(Q)$) {$9$};
+  \node[left, font=\small] at ($(P)!0.5!(R)$) {$12$};
+  \node[below right, font=\small] at ($(Q)!0.5!(Q')$) {$h=10$};
+\end{tikzpicture}
+\end{center}
+\end{esercizio}
+\begin{solbox}
+Ipotenusa della base: $\sqrt{9^2+12^2}=\sqrt{225}=15\cm$. \ Perimetro di base: $9+12+15=36\cm$. \ Area di base: $\frac{9\cdot12}{2}=54\cmq$.
+\[S_\ell=2p\cdot h=36\cdot10=\mathbf{360\cmq}\qquad S_t=S_\ell+2S_b=360+108=\mathbf{468\cmq}\qquad V=S_b\cdot h=54\cdot10=\mathbf{540\cmc}\]
+\en{For every right prism: lateral surface = base perimeter $\times$ height, volume = base area $\times$ height.}
+\end{solbox}
+
+\begin{esercizio}{V7}{3}{Solidi di rotazione}{Solids of revolution}
+Scrivi i risultati prima con $\pi$ e poi con $\pi=3,14$. \enx{Give each result with $\pi$, then with $\pi = 3.14$.}
+\begin{enumerate}
+\item Un rettangolo di lati $4\cm$ e $10\cm$ ruota di $360^\circ$ attorno al lato di $10\cm$. Che solido si ottiene? Calcola superficie laterale, superficie totale e volume.
+\en{A $4 \times 10\cm$ rectangle turns a full turn around its $10\cm$ side. Which solid do you get? Find lateral surface, total surface and volume.}
+\item Un triangolo rettangolo con i cateti di $6\cm$ e $8\cm$ ruota attorno al cateto di $6\cm$. Che solido si ottiene? Calcola l'apotema, la superficie laterale, la superficie totale e il volume.
+\en{A right triangle with legs $6$ and $8\cm$ turns around the $6\cm$ leg. Which solid? Find slant height, lateral surface, total surface and volume.}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+\begin{center}
+% === PRE-COMPUTATION === scale 0.2: cylinder r = 4 -> 0.8, h = 10 -> 2 ; cone r = 8 -> 1.6, h = 6 -> 1.2
+\begin{tikzpicture}[scale=1]
+  \begin{scope}
+    \draw[fgA, dashed] (0,-0.3) -- (0,2.4);
+    \fill[fgB!12] (-0.8,0) -- (-0.8,2) arc (180:360:0.8 and 0.22) -- (0.8,0) arc (0:-180:0.8 and 0.22);
+    \draw[side] (0,2) ellipse (0.8 and 0.22);
+    \draw[side] (-0.8,2) -- (-0.8,0) arc (180:360:0.8 and 0.22) -- (0.8,2);
+    \draw[hidden] (0.8,0) arc (0:180:0.8 and 0.22);
+    \fill[fgD!40] (0,0) rectangle (0.8,2); \draw[line width=0.6pt] (0,0) rectangle (0.8,2);
+    \node[font=\scriptsize, right] at (0.8,1) {$h=10$};
+    \node[font=\scriptsize, below] at (0.4,-0.25) {$r=4$};
+    \node[font=\small] at (0,-0.9) {cilindro};
+  \end{scope}
+  \begin{scope}[shift={(4,0)}]
+    \draw[fgA, dashed] (0,-0.3) -- (0,1.6);
+    \fill[fgB!12] (-1.6,0) -- (0,1.2) -- (1.6,0) arc (0:-180:1.6 and 0.4);
+    \draw[side] (-1.6,0) -- (0,1.2) -- (1.6,0);
+    \draw[side] (1.6,0) arc (0:-180:1.6 and 0.4);
+    \draw[hidden] (1.6,0) arc (0:180:1.6 and 0.4);
+    \fill[fgD!40] (0,0) -- (1.6,0) -- (0,1.2) -- cycle; \draw[line width=0.6pt] (0,0) -- (1.6,0) -- (0,1.2) -- cycle;
+    \node[font=\scriptsize, left] at (0,0.6) {$h=6$};
+    \node[font=\scriptsize, below] at (0.8,-0.45) {$r=8$};
+    \node[font=\scriptsize, above right] at (0.8,0.6) {$a=10$};
+    \node[font=\small] at (0,-1.05) {cono};
+  \end{scope}
+\end{tikzpicture}
+\end{center}
+\begin{enumerate}
+\item \textbf{Cilindro} con $r=4\cm$ e $h=10\cm$ (il lato attorno a cui ruota diventa l'altezza):
+\[S_\ell=2\pi rh=80\pi\approx\mathbf{251,2\cmq}\qquad S_t=S_\ell+2\pi r^2=80\pi+32\pi=112\pi\approx\mathbf{351,68\cmq}\]
+\[V=\pi r^2h=160\pi\approx\mathbf{502,4\cmc}\]
+\item \textbf{Cono} con altezza $h=6\cm$ (il cateto attorno a cui ruota) e raggio $r=8\cm$ (l'altro cateto). Apotema: $a=\sqrt{8^2+6^2}=\mathbf{10\cm}$ (l'ipotenusa).
+\[S_\ell=\pi ra=80\pi\approx\mathbf{251,2\cmq}\quad S_b=\pi r^2=64\pi\approx200,96\cmq\quad S_t=144\pi\approx\mathbf{452,16\cmq}\]
+\[V=\frac{\pi r^2h}{3}=\frac{64\pi\cdot6}{3}=128\pi\approx\mathbf{401,92\cmc}\]
+\end{enumerate}
+\errore{il cateto attorno a cui il triangolo ruota è l'\emph{altezza}; l'altro cateto è il \emph{raggio}.}
+{the leg on the axis is the height; the other leg is the radius.}
+\end{solbox}
+
+% ================================================================
+\sezione{Simulazione della prova d'esame}{Mock exam}
+% ================================================================
+\begin{tcolorbox}[colback=lv3!5, colframe=lv3!60, boxrule=0.5pt, arc=2pt, left=6pt, right=6pt, top=3pt, bottom=3pt]
+Quattro quesiti come nella prova scritta vera. Tempo consigliato: $2$ ore. Puoi usare la calcolatrice e il formulario.
+\en{Four questions like the real written exam. Suggested time: 2 hours. You may use a calculator and the formula sheet.}
+\end{tcolorbox}
+
+\begin{esercizio}{X1}{3}{Quesito 1: numeri e algebra}{Question 1: numbers and algebra}
+\begin{enumerate}
+\item Calcola: \ $\left(\dfrac23-\dfrac14\right)\cdot\dfrac{12}{5}+\left(\dfrac12\right)^2:\dfrac14$
+\item Risolvi e verifica: \ $3(x-2)+4=2x+5$
+\end{enumerate}
+\en{a) Compute the expression. b) Solve and check the equation.}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item $\frac23-\frac14=\frac{8-3}{12}=\frac{5}{12}$; \quad $\frac{5}{12}\cdot\frac{12}{5}=1$; \quad $\left(\frac12\right)^2:\frac14=\frac14\cdot4=1$; \quad totale $1+1=\boxed{2}$.
+\item $3x-6+4=2x+5\Rightarrow 3x-2=2x+5\Rightarrow\boxed{x=7}$. \ Verifica: $3\cdot5+4=19$ e $2\cdot7+5=19$. \checkmark
+\end{enumerate}
+\end{solbox}
+
+\begin{esercizio}{X2}{3}{Quesito 2: un solido composto}{Question 2: a composite solid}
+Un solido è formato da un cubo di spigolo $6\cm$ sormontato da una piramide regolare quadrangolare che ha la stessa base del cubo e altezza $4\cm$.
+\en{A solid is a cube with edge $6\cm$ with a regular square pyramid on top (same base, height $4\cm$).}
+\begin{enumerate}
+\item Calcola l'apotema della piramide. \enx{Find the slant height (apothem) of the pyramid.}
+\item Calcola la superficie totale del solido. \enx{Find the total surface of the solid.}
+\item Calcola il volume del solido. \enx{Find the volume.}
+\item Il solido è di un materiale con peso specifico $0,8\unit{g/cm^3}$. Quanto pesa? \enx{The material has specific weight $0.8\unit{g/cm^3}$. What does it weigh?}
+\end{enumerate}
+\begin{center}
+% === PRE-COMPUTATION === scale 0.35: edge 6 -> 2.1, depth factor 0.55 at 40 deg ; apex 4 -> 1.4 above the centre of the top face
+\begin{tikzpicture}[scale=1]
+  \scatola{2.1}{2.1}{2.1}
+  \coordinate (T) at ($(D)!0.5!(C')+(0,1.4)$);
+  \coordinate (Mt) at ($(D)!0.5!(C')$);
+  \draw[hidden] (T) -- (D'); \draw[hidden] (T) -- (Mt);
+  \draw[side] (D) -- (T) -- (C); \draw[side] (T) -- (C');
+  \coordinate (Mf) at ($(D)!0.5!(C)$);
+  \draw[fgA, line width=0.8pt] (T) -- (Mf);
+  \node[fgA, font=\scriptsize, left] at ($(T)!0.5!(Mf)+(-0.05,0)$) {apotema};
+  \node[below, font=\small] at ($(A)!0.5!(B)$) {$6\cm$};
+  \node[font=\scriptsize, right] at ($(Mt)!0.5!(T)$) {$4$};
+\end{tikzpicture}
+\end{center}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item L'apotema è l'ipotenusa di un triangolo rettangolo con cateti l'altezza della piramide ($4\cm$) e metà spigolo ($3\cm$): \ $a=\sqrt{4^2+3^2}=\mathbf{5\cm}$.
+\item La faccia superiore del cubo è coperta dalla piramide: si contano solo $5$ facce del cubo.\\
+$5\cdot6^2=180\cmq$; \quad $S_\ell$ piramide $=\frac{2p\cdot a}{2}=\frac{24\cdot5}{2}=60\cmq$; \quad $S_t=180+60=\mathbf{240\cmq}$.
+\item $V=6^3+\frac{6^2\cdot4}{3}=216+48=\mathbf{264\cmc}$.
+\item $P=264\cdot0,8=\mathbf{211,2\unit{g}}$.
+\end{enumerate}
+\errore{nella superficie totale la base della piramide e la faccia superiore del cubo non si contano: sono nascoste all'interno.}
+{the pyramid's base and the cube's top face are hidden inside, so they are not part of the surface.}
+\end{solbox}
+
+\begin{esercizio}{X3}{3}{Quesito 3: funzioni e realtà}{Question 3: functions in real life}
+Due compagnie di taxi hanno queste tariffe: \ \textbf{A}: $3$\,€ fissi più $1,50$\,€ al km; \ \textbf{B}: $2,50$\,€ al km, senza quota fissa.
+\en{Two taxi companies charge: A, 3\,€ fixed plus 1.50\,€ per km; B, 2.50\,€ per km with no fixed charge.}
+\begin{enumerate}
+\item Scrivi la formula del costo $y$ in funzione dei km $x$ per ciascuna tariffa. \enx{Write each cost $y$ as a function of the km $x$.}
+\item Compila una tabella per $x=0,\,2,\,4,\,6,\,8$ e disegna i due grafici nello stesso piano. \enx{Make a table and draw both graphs.}
+\item Con la tariffa A, quanti km si percorrono con $18$\,€? \enx{How many km for 18\,€ with A?}
+\item Per quale distanza le due tariffe costano uguale? Quando conviene A? \enx{For what distance do they cost the same? When is A cheaper?}
+\item Quale delle due è una proporzionalità diretta? Perché? \enx{Which one is a direct proportion? Why?}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+\begin{minipage}{0.5\linewidth}
+\begin{enumerate}
+\item A: $y=1,5x+3$; \quad B: $y=2,5x$.
+\item \begin{tabular}{c|ccccc}
+$x$ & 0 & 2 & 4 & 6 & 8\\ \hline
+A & 3 & 6 & 9 & 12 & 15\\
+B & 0 & 5 & 10 & 15 & 20
+\end{tabular}
+\item $1,5x+3=18\Rightarrow1,5x=15\Rightarrow x=\mathbf{10\unit{km}}$.
+\item $1,5x+3=2,5x\Rightarrow x=\mathbf{3\unit{km}}$ (costo $7,50$\,€). Oltre i $3\unit{km}$ conviene \textbf{A}.
+\item \textbf{B}: il grafico è una retta che passa per l'origine ($0$\,km, $0$\,€). A no: parte da $3$\,€.
+\end{enumerate}
+\end{minipage}\hfill
+\begin{minipage}{0.46\linewidth}\centering
+% === PRE-COMPUTATION === A: y = 1.5x + 3 ; B: y = 2.5x ; meet at (3, 7.5) ; xscale 0.45, yscale 0.18
+\begin{tikzpicture}[xscale=0.45, yscale=0.18]
+  \draw[gridl, xstep=1, ystep=2.5] (0,0) grid (10,25);
+  \draw[axis] (0,0) -- (10.8,0) node[right, font=\small] {km};
+  \draw[axis] (0,0) -- (0,26.5) node[above, font=\small] {€};
+  \foreach \k in {2,4,...,10} \node[font=\tiny, below] at (\k,0) {\k};
+  \foreach \k in {5,10,...,25} \node[font=\tiny, left] at (0,\k) {\k};
+  \draw[fgB, line width=1.1pt] (0,3) -- (10,18) node[right, font=\small] {A};
+  \draw[fgA, line width=1.1pt] (0,0) -- (10,25) node[right, font=\small] {B};
+  \node[pt] at (3,7.5) {}; \node[font=\scriptsize, left] at (3,8.8) {$(3;\,7,5)$};
+\end{tikzpicture}
+\end{minipage}
+\end{solbox}
+
+\begin{esercizio}{X4}{3}{Quesito 4: statistica e probabilità}{Question 4: statistics and probability}
+In una classe di $20$ alunni si è chiesto quanti fratelli o sorelle ha ciascuno:
+\en{20 pupils were asked how many brothers or sisters they have:}
+\begin{center}
+\begin{tabular}{l|cccc}
+numero di fratelli & 0 & 1 & 2 & 3\\ \hline
+numero di alunni & 4 & 9 & 5 & 2
+\end{tabular}
+\end{center}
+\begin{enumerate}
+\item Calcola media, moda e mediana. \enx{Find mean, mode and median.}
+\item Calcola le frequenze percentuali e le ampiezze dei settori, e disegna l'areogramma. \enx{Find the percentages and the sector angles, and draw the pie chart.}
+\item Scegliendo a caso un alunno, qual è la probabilità che abbia almeno $2$ fratelli? \enx{Choosing a pupil at random, what is the probability that they have at least 2 siblings?}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+\begin{minipage}{0.6\linewidth}
+\begin{enumerate}
+\item Media: $\frac{0\cdot4+1\cdot9+2\cdot5+3\cdot2}{20}=\frac{25}{20}=\mathbf{1,25}$. \ Moda: $\mathbf{1}$ (9 alunni). \ Mediana: i dati ordinati sono $20$; il $10^\circ$ e l'$11^\circ$ valore sono entrambi $1$, quindi mediana $=\mathbf{1}$.
+\item $0$: $20\%$, $72^\circ$; \ $1$: $45\%$, $162^\circ$; \ $2$: $25\%$, $90^\circ$; \ $3$: $10\%$, $36^\circ$. \ Somme: $100\%$ e $360^\circ$. \checkmark
+\item Almeno $2$ vuol dire $2$ oppure $3$: $\frac{5+2}{20}=\frac{7}{20}=\mathbf{35\%}$.
+\end{enumerate}
+\errore{nella media si moltiplica ogni valore per quante volte compare: non si fa $\frac{0+1+2+3}{4}$.}
+{each value must be multiplied by how many times it occurs.}
+\end{minipage}\hfill
+\begin{minipage}{0.36\linewidth}\centering
+% sectors from 90 deg clockwise: 72, 162, 90, 36 -> boundaries 90, 18, -144, -234, -270
+\begin{tikzpicture}
+  \def\R{1.35}
+  \fill[fgD!55] (0,0) -- (90:\R) arc (90:18:\R) -- cycle;
+  \fill[fgB!50] (0,0) -- (18:\R) arc (18:-144:\R) -- cycle;
+  \fill[fgC!50] (0,0) -- (-144:\R) arc (-144:-234:\R) -- cycle;
+  \fill[fgA!50] (0,0) -- (-234:\R) arc (-234:-270:\R) -- cycle;
+  \foreach \a in {90,18,-144,-234} \draw[white, line width=1pt] (0,0) -- (\a:\R);
+  \node[font=\scriptsize, align=center] at (54:0.85) {0\\$72^\circ$};
+  \node[font=\scriptsize, align=center] at (-63:0.8) {1\\$162^\circ$};
+  \node[font=\scriptsize, align=center] at (-189:0.8) {2\\$90^\circ$};
+  \node[font=\scriptsize, align=center] at (-252:0.95) {3\\$36^\circ$};
+\end{tikzpicture}
+\end{minipage}
+\end{solbox}

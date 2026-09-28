@@ -1,0 +1,455 @@
+% STATUS: COMPLETE DRAFT
+% Parte 1: numeri, frazioni e potenze, equazioni, proporzioni e percentuali, statistica e probabilità
+% Every number is checked in verifica.py (same ids).
+
+% ================================================================
+\sezione{Numeri naturali e proprietà}{Natural numbers and properties}
+% ================================================================
+
+\begin{esercizio}{N1}{1}{Le proprietà delle operazioni}{Properties of the operations}
+Scrivi il nome della proprietà usata in ogni uguaglianza.
+\en{Write the name of the property used in each equality.}
+\begin{multicols}{2}
+\begin{enumerate}
+\item $7\cdot(10+3)=7\cdot10+7\cdot3$
+\item $36:4=(36:2):(4:2)$
+\item $5\cdot 0\cdot 8=0$
+\item $12+8=8+12$
+\item $(4\cdot 5)\cdot 2=4\cdot(5\cdot 2)$
+\end{enumerate}
+\end{multicols}
+\vspace{-4pt}
+Poi calcola, se è possibile, $0:9$, \ $9:0$, \ $0:0$ e spiega la risposta.
+\en{Then compute, if possible, $0:9$, $9:0$, $0:0$ and explain your answer.}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item Proprietà \textbf{distributiva} della moltiplicazione rispetto all'addizione. \enx{distributive}
+\item Proprietà \textbf{invariantiva} della divisione: dividendo e divisore divisi per lo stesso numero. \enx{invariance of the quotient}
+\item Legge di \textbf{annullamento del prodotto}: se un fattore è $0$, il prodotto è $0$. \enx{zero product law}
+\item Proprietà \textbf{commutativa} dell'addizione. \enx{commutative}
+\item Proprietà \textbf{associativa} della moltiplicazione. \enx{associative}
+\end{enumerate}
+$0:9=0$, perché $0\cdot 9=0$.\quad
+$9:0$ è \textbf{impossibile}: nessun numero moltiplicato per $0$ dà $9$.\quad
+$0:0$ è \textbf{indeterminata}: ogni numero moltiplicato per $0$ dà $0$.
+\en{$0:9=0$. $9:0$ is impossible (no number times $0$ gives $9$). $0:0$ is undetermined (every number works).}
+\end{solbox}
+
+\begin{esercizio}{N2}{2}{mcm e MCD nei problemi}{LCM and GCD in word problems}
+\begin{enumerate}
+\item Due autobus partono insieme dal capolinea alle 7:00. Il primo ripassa ogni 12 minuti, il secondo ogni 18 minuti. A che ora ripartono di nuovo insieme per la prima volta?
+\en{Two buses leave the terminal together at 7:00. One comes back every 12 minutes, the other every 18 minutes. When do they leave together again for the first time?}
+\item Una maestra ha 48 penne e 72 matite. Vuole preparare astucci tutti uguali, usando tutto il materiale. Qual è il numero massimo di astucci? Quante penne e quante matite ci sono in ognuno?
+\en{A teacher has 48 pens and 72 pencils. She wants identical pencil cases, using everything. What is the largest number of cases? How many pens and pencils in each?}
+\end{enumerate}
+Scomponi prima i numeri in fattori primi. \enx{First write each number as a product of primes.}
+\end{esercizio}
+\begin{solbox}
+$12=2^2\cdot3$, \quad $18=2\cdot3^2$, \quad $48=2^4\cdot3$, \quad $72=2^3\cdot3^2$.
+\begin{enumerate}
+\item Cerco quando gli eventi si ripetono \emph{insieme}: $\text{mcm}(12,18)=2^2\cdot3^2=36$. Ripartono insieme dopo 36 minuti, alle \textbf{7:36}.
+\en{Events repeating together: least common multiple. They meet after 36 minutes, at 7:36.}
+\item Divido in parti uguali \emph{il più grandi possibile}: $\text{MCD}(48,72)=2^3\cdot3=24$. Quindi \textbf{24 astucci}, ognuno con $48:24=2$ penne e $72:24=3$ matite.
+\en{Sharing into the largest equal groups: greatest common divisor, 24 cases with 2 pens and 3 pencils each.}
+\end{enumerate}
+\errore{mcm: fattori comuni e non comuni con l'esponente \emph{maggiore}; MCD: solo i fattori comuni con l'esponente \emph{minore}.}
+{LCM takes all prime factors with the highest power; GCD takes only common factors with the lowest power.}
+\end{solbox}
+
+% ================================================================
+\sezione{Frazioni, potenze e radici}{Fractions, powers and roots}
+% ================================================================
+
+\begin{esercizio}{F1}{1}{Espressione con le frazioni}{Expression with fractions}
+Calcola: \enx{Compute:}
+\[\left(\frac34+\frac16\right)\cdot\frac{6}{11}-\frac13\]
+\end{esercizio}
+\begin{solbox}
+\[
+\left(\frac{9}{12}+\frac{2}{12}\right)\cdot\frac{6}{11}-\frac13
+=\frac{\cancel{11}}{\cancelto{2}{12}}\cdot\frac{\cancel{6}}{\cancel{11}}-\frac13
+=\frac12-\frac13=\frac{3-2}{6}=\boxed{\frac16}
+\]
+Prima le parentesi, poi la moltiplicazione, infine la sottrazione.
+\en{First the brackets, then the multiplication, and the subtraction last.}
+\end{solbox}
+
+\begin{esercizio}{F2}{1}{Le proprietà delle potenze}{Properties of powers}
+Calcola usando le proprietà delle potenze. \enx{Compute using the properties of powers.}
+\begin{multicols}{2}
+\begin{enumerate}
+\item $2^3\cdot 2^4:2^5$
+\item $(3^2)^3:3^4$
+\item $\left(\dfrac25\right)^3\cdot\left(\dfrac52\right)^3$
+\item $(-2)^3,\ \ (-2)^4,\ \ -2^4,\ \ \left(-\dfrac13\right)^2$
+\item $7^0,\ \ 1^9,\ \ 0^5$
+\end{enumerate}
+\end{multicols}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item Stessa base: si sommano e sottraggono gli esponenti. $2^{3+4-5}=2^2=\mathbf{4}$
+\item Potenza di potenza: si moltiplicano gli esponenti. $3^{6}:3^4=3^{2}=\mathbf{9}$
+\item Stesso esponente: si moltiplicano le basi. $\left(\frac25\cdot\frac52\right)^3=1^3=\mathbf{1}$
+\item $(-2)^3=\mathbf{-8}$ (esponente dispari: il segno resta); $(-2)^4=\mathbf{16}$ (esponente pari: positivo); $-2^4=\mathbf{-16}$ (il meno è \emph{fuori} dalla potenza); $\left(-\frac13\right)^2=\mathbf{\frac19}$.
+\item $7^0=\mathbf{1}$ (ogni numero diverso da zero elevato a $0$ fa $1$); $1^9=\mathbf{1}$; $0^5=\mathbf{0}$.
+\end{enumerate}
+\en{Same base: add or subtract exponents. Power of a power: multiply exponents. Same exponent: multiply the bases. An odd exponent keeps the minus sign; an even one makes the result positive; in $-2^4$ the minus sign is outside the power.}
+\end{solbox}
+
+\begin{esercizio}{F3}{2}{Potenze di frazioni}{Powers of fractions}
+Calcola: \enx{Compute:}
+\[\left[\left(\frac53\right)^4:\left(\frac53\right)^2\right]\cdot\frac{9}{25}+\left(\frac12\right)^2\]
+\end{esercizio}
+\begin{solbox}
+\[
+\left(\frac53\right)^{4-2}\cdot\frac{9}{25}+\frac14
+=\frac{25}{9}\cdot\frac{9}{25}+\frac14
+=1+\frac14=\boxed{\frac54}
+\]
+\end{solbox}
+
+\begin{esercizio}{F4}{2}{Numeri decimali periodici e radici quadrate}{Repeating decimals and square roots}
+\begin{enumerate}
+\item Trova la frazione generatrice di $0,\overline{3}$, \ $0,\overline{45}$, \ $1,2\overline{5}$.
+\en{Write each repeating decimal as a fraction.}
+\item Calcola $\sqrt{144}$, \ $\sqrt{\dfrac{9}{25}}$, \ $\sqrt{0,49}$.
+\en{Compute the square roots.}
+\item Tra quali due numeri interi consecutivi si trova $\sqrt{50}$?
+\en{Between which two consecutive whole numbers is $\sqrt{50}$?}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item Regola: al numeratore tutto il numero senza virgola meno la parte che non si ripete; al denominatore tanti $9$ quante sono le cifre del periodo, seguiti da tanti $0$ quante sono le cifre dell'antiperiodo.
+\en{Numerator: the whole number without the comma minus the non repeating part. Denominator: one 9 for each repeating digit, then one 0 for each non repeating decimal digit.}
+\[0,\overline{3}=\frac39=\frac13\qquad 0,\overline{45}=\frac{45}{99}=\frac{5}{11}\qquad 1,2\overline{5}=\frac{125-12}{90}=\frac{113}{90}\]
+\item $\sqrt{144}=\mathbf{12}$ perché $12^2=144$; \quad $\sqrt{\frac{9}{25}}=\mathbf{\frac35}$; \quad $\sqrt{0,49}=\mathbf{0,7}$ perché $0,7^2=0,49$.
+\item $7^2=49<50<64=8^2$, quindi $\sqrt{50}$ è tra \textbf{7 e 8} (circa $7,07$).
+\end{enumerate}
+\end{solbox}
+
+\begin{esercizio}{F5}{3}{Espressione lunga}{A long expression}
+Calcola con attenzione ai segni. \enx{Compute, paying attention to the signs.}
+\[\left\{\left[\left(1-\frac14\right)\cdot\left(1+\frac13\right)-\left(\frac12\right)^2\right]:\left(\frac34\right)^2+\left(-\frac23\right)^2\right\}\cdot\frac{9}{16}-\left(-\frac12\right)^3\]
+\end{esercizio}
+\begin{solbox}
+Tonde, poi quadre, poi graffe. \enx{Round brackets, then square, then curly.}
+\begin{align*}
+&\left(1-\tfrac14\right)\cdot\left(1+\tfrac13\right)=\tfrac34\cdot\tfrac43=1
+&&\left[\,1-\tfrac14\,\right]=\tfrac34\\
+&\tfrac34:\left(\tfrac34\right)^2=\tfrac34\cdot\tfrac{16}{9}=\tfrac43
+&&\tfrac43+\left(-\tfrac23\right)^2=\tfrac43+\tfrac49=\tfrac{12+4}{9}=\tfrac{16}{9}\\
+&\tfrac{16}{9}\cdot\tfrac{9}{16}=1
+&&1-\left(-\tfrac12\right)^3=1-\left(-\tfrac18\right)=1+\tfrac18=\boxed{\tfrac98}
+\end{align*}
+\errore{$\left(-\frac12\right)^3=-\frac18$, e \emph{meno per meno} fa più: $1-\left(-\frac18\right)=1+\frac18$.}
+{a negative base with an odd exponent stays negative, and subtracting a negative number means adding.}
+\end{solbox}
+
+% ================================================================
+\sezione{Equazioni di primo grado}{Linear equations}
+% ================================================================
+
+\begin{esercizio}{E1}{1}{Equazioni semplici}{Simple equations}
+Risolvi e fai la verifica. \enx{Solve and check.}
+\begin{multicols}{2}
+\begin{enumerate}
+\item $3x-7=2x+5$
+\item $4(x-2)=2x+6$
+\end{enumerate}
+\end{multicols}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item $3x-2x=5+7\ \Rightarrow\ \boxed{x=12}$. \ Verifica: $3\cdot12-7=29$ e $2\cdot12+5=29$. \checkmark
+\item $4x-8=2x+6\ \Rightarrow\ 2x=14\ \Rightarrow\ \boxed{x=7}$. \ Verifica: $4\cdot5=20$ e $14+6=20$. \checkmark
+\end{enumerate}
+\en{Move the $x$ terms to one side and the numbers to the other, changing sign when a term crosses the equals sign.}
+\end{solbox}
+
+\begin{esercizio}{E2}{2}{Equazione con le parentesi}{Equation with brackets}
+Risolvi e verifica: \enx{Solve and check:}
+\[2(x+3)-3(x-1)=5-2x\]
+\end{esercizio}
+\begin{solbox}
+\[2x+6-3x+3=5-2x\ \Rightarrow\ -x+9=5-2x\ \Rightarrow\ -x+2x=5-9\ \Rightarrow\ \boxed{x=-4}\]
+Verifica: $2(-1)-3(-5)=-2+15=13$ \ e \ $5-2(-4)=5+8=13$. \checkmark
+\errore{$-3(x-1)=-3x\mathbf{+3}$: il meno davanti alla parentesi cambia \emph{tutti} i segni dentro.}
+{the minus sign in front of the bracket changes every sign inside it.}
+\end{solbox}
+
+\begin{esercizio}{E3}{2}{Equazione con le frazioni}{Equation with fractions}
+Risolvi e verifica: \enx{Solve and check:}
+\[\frac{x-1}{2}+\frac{x}{3}=2+\frac{x+1}{6}\]
+\end{esercizio}
+\begin{solbox}
+Moltiplico tutto per il mcm dei denominatori, $6$: \enx{multiply every term by 6}
+\[3(x-1)+2x=12+(x+1)\ \Rightarrow\ 3x-3+2x=x+13\ \Rightarrow\ 4x=16\ \Rightarrow\ \boxed{x=4}\]
+Verifica: $\frac32+\frac43=\frac{9+8}{6}=\frac{17}{6}$ \ e \ $2+\frac56=\frac{17}{6}$. \checkmark
+\errore{anche il $2$ va moltiplicato per $6$.}{the whole number $2$ must be multiplied by 6 too.}
+\end{solbox}
+
+\begin{esercizio}{E4}{3}{Problemi risolti con le equazioni}{Word problems with equations}
+\begin{enumerate}
+\item Il perimetro di un rettangolo è $56\cm$ e la base supera l'altezza di $8\cm$. Trova base, altezza e area.
+\en{A rectangle has perimeter $56\cm$ and its base is $8\cm$ longer than its height. Find base, height and area.}
+\item La somma di tre numeri naturali consecutivi è $84$. Quali sono?
+\en{The sum of three consecutive natural numbers is $84$. Find them.}
+\item Una di queste equazioni è impossibile e l'altra è indeterminata. Quale è quale? \ $2(x+1)=2x+2$ \quad $3x+1=3x+5$
+\en{One equation is impossible and the other is undetermined. Which is which?}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item Altezza $x$, base $x+8$: \ $2(x+x+8)=56\Rightarrow 4x+16=56\Rightarrow x=10$. \ Altezza $\mathbf{10\cm}$, base $\mathbf{18\cm}$, area $10\cdot18=\mathbf{180\cmq}$.
+\item $n+(n+1)+(n+2)=84\Rightarrow 3n+3=84\Rightarrow n=27$. \ I numeri sono $\mathbf{27,\ 28,\ 29}$.
+\item $2x+2=2x+2\Rightarrow 0x=0$: vera per ogni $x$, \textbf{indeterminata}. \quad $3x+1=3x+5\Rightarrow 0x=4$: nessun $x$, \textbf{impossibile}.
+\en{$0x=0$ holds for every $x$ (undetermined); $0x=4$ never holds (impossible).}
+\end{enumerate}
+\end{solbox}
+
+% ================================================================
+\sezione{Proporzioni e percentuali}{Proportions and percentages}
+% ================================================================
+
+\begin{esercizio}{P1}{1}{Proporzioni}{Proportions}
+Trova il termine incognito. \enx{Find the unknown term.}
+\begin{multicols}{3}
+\begin{enumerate}
+\item $6:x=9:12$
+\item $x:5=14:10$
+\item $(x+2):x=5:3$
+\end{enumerate}
+\end{multicols}
+\end{esercizio}
+\begin{solbox}
+Proprietà fondamentale: prodotto dei medi $=$ prodotto degli estremi. \enx{product of the means equals product of the extremes}
+\begin{enumerate}
+\item $9x=6\cdot12=72\Rightarrow \boxed{x=8}$
+\item $10x=5\cdot14=70\Rightarrow \boxed{x=7}$
+\item $3(x+2)=5x\Rightarrow 3x+6=5x\Rightarrow 6=2x\Rightarrow \boxed{x=3}$. \ Verifica: $5:3=5:3$. \checkmark
+\end{enumerate}
+\end{solbox}
+
+\begin{esercizio}{P2}{1}{Calcolo di percentuali}{Working with percentages}
+\begin{enumerate}
+\item Quanto è il $15\%$ di $240$? \enx{What is 15\% of 240?}
+\item $18$ è quale percentuale di $72$? \enx{18 is what percentage of 72?}
+\item Il $30\%$ di un numero è $45$. Qual è il numero? \enx{30\% of a number is 45. Find the number.}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item $240\cdot\frac{15}{100}=\mathbf{36}$
+\item $\frac{18}{72}\cdot100=\frac14\cdot100=\mathbf{25\%}$
+\item $45:30=x:100\Rightarrow x=\frac{45\cdot100}{30}=\mathbf{150}$
+\end{enumerate}
+\end{solbox}
+
+\begin{esercizio}{P3}{2}{Sconti e aumenti}{Discounts and increases}
+\begin{enumerate}
+\item Un paio di scarpe costa $170$\,€ dopo uno sconto del $20\%$. Qual era il prezzo prima dello sconto?
+\en{A pair of shoes costs 170\,€ after a 20\% discount. What was the price before the discount?}
+\item Un giubbotto costa $80$\,€. Il prezzo aumenta del $10\%$ e poi viene scontato del $10\%$. Torna a costare $80$\,€? Perché?
+\en{A jacket costs 80\,€. Its price goes up by 10\%, then goes down by 10\%. Is it 80\,€ again? Why?}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item Dopo lo sconto si paga $100\%-20\%=80\%$ del prezzo iniziale:
+\[80:170=100:x\ \Rightarrow\ x=\frac{170\cdot100}{80}=\boxed{212,50\ \text{€}}\qquad\text{verifica: } 212,50\cdot0,8=170\ \checkmark\]
+\errore{$170+20\%$ di $170=204$ è sbagliato: il $20\%$ si calcola sul prezzo \emph{iniziale}, non su quello scontato.}
+{adding 20\% of 170 is wrong, because the 20\% was taken from the original price.}
+\item $80\cdot1,1=88$\,€, \ poi $88\cdot0,9=\mathbf{79,20}$\,€. \ \textbf{No}: il secondo $10\%$ si calcola su $88$, un numero più grande, quindi toglie più di quanto era stato aggiunto.
+\en{No: the second 10\% is taken from 88, so it removes more than was added.}
+\end{enumerate}
+\end{solbox}
+
+\begin{esercizio}{P4}{2}{Consumo di energia}{Energy use}
+Un elettrodomestico consuma $1,5$\,kWh in $4$ ore.
+\en{An appliance uses 1.5\,kWh in 4 hours.}
+\begin{enumerate}
+\item Quanto consuma in $10$ ore? \enx{How much in 10 hours?}
+\item E se lavora per $10$ ore al $60\%$ della potenza? \enx{And at 60\% of its power, for 10 hours?}
+\item Se $1$\,kWh costa $0,28$\,€, quanto si spende nel caso b)? \enx{If 1\,kWh costs 0.28\,€, what does case b) cost?}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item Proporzionalità diretta: $1,5:4=x:10\Rightarrow x=\frac{1,5\cdot10}{4}=\mathbf{3,75}$\,kWh.
+\item $3,75\cdot\frac{60}{100}=\mathbf{2,25}$\,kWh.
+\item $2,25\cdot0,28=\mathbf{0,63}$\,€.
+\end{enumerate}
+\end{solbox}
+
+\begin{esercizio}{P5}{3}{Proporzionalità diretta e inversa}{Direct and inverse proportion}
+\begin{enumerate}
+\item Un atleta percorre $12$\,km in $48$ minuti, a velocità costante. In quanto tempo percorre $20$\,km?
+\en{A runner covers 12\,km in 48 minutes at constant speed. How long for 20\,km?}
+\item $6$ operai costruiscono un muro in $10$ giorni. Quanti giorni servono a $4$ operai che lavorano allo stesso ritmo?
+\en{6 workers build a wall in 10 days. How many days for 4 workers at the same pace?}
+\item Per ogni caso, le grandezze sono direttamente o inversamente proporzionali? Scrivi la costante.
+\en{In each case, are the quantities directly or inversely proportional? Write the constant.}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item $12:48=20:x\Rightarrow x=\frac{48\cdot20}{12}=\mathbf{80}$ minuti $=1$\,h $20$\,min.
+\item Meno operai, \emph{più} giorni: $6\cdot10=4\cdot x\Rightarrow x=\mathbf{15}$ giorni.
+\item Caso a) \textbf{diretta}: il rapporto è costante, $\frac{48}{12}=4$ minuti per km. \ Caso b) \textbf{inversa}: il prodotto è costante, $6\cdot10=60$.
+\en{a) direct proportion, constant ratio 4 minutes per km; b) inverse proportion, constant product 60.}
+\end{enumerate}
+\errore{nel caso b) la proporzione $6:10=4:x$ è sbagliata: darebbe meno giorni con meno operai.}
+{in case b) the direct proportion $6:10=4:x$ is wrong: fewer workers would finish sooner.}
+\end{solbox}
+
+% ================================================================
+\sezione{Statistica e probabilità}{Statistics and probability}
+% ================================================================
+
+\begin{esercizio}{S1}{1}{Media, moda, mediana}{Mean, mode, median}
+I voti di Luca in matematica sono: \ $6,\ 7,\ 5,\ 8,\ 7,\ 9,\ 7,\ 6$. \ Calcola media, moda, mediana e campo di variazione.
+\en{Luca's maths marks are listed above. Find the mean, mode, median and range.}
+\end{esercizio}
+\begin{solbox}
+Media: $\frac{6+7+5+8+7+9+7+6}{8}=\frac{55}{8}=\mathbf{6,875}$.\quad
+Dati in ordine: $5,6,6,7,7,7,8,9$: \ mediana $=\frac{7+7}{2}=\mathbf{7}$ (i due valori centrali).\quad
+Moda $=\mathbf{7}$ (compare 3 volte).\quad
+Campo di variazione $=9-5=\mathbf{4}$.
+\en{With an even number of data the median is the mean of the two middle values, after sorting.}
+\end{solbox}
+
+\begin{esercizio}{S2}{2}{Dalla tabella all'areogramma}{From a table to a pie chart}
+In una biblioteca ci sono: gialli $96$, fantasy $60$, romanzi storici $48$, biografie $36$.
+\en{A library has 96 crime novels, 60 fantasy, 48 historical novels and 36 biographies.}
+\begin{enumerate}
+\item Calcola il totale e la frequenza relativa percentuale di ogni genere.
+\en{Find the total and the percentage of each type.}
+\item Calcola l'ampiezza in gradi di ogni settore e disegna l'areogramma con il goniometro.
+\en{Find the angle of each sector and draw the pie chart with a protractor.}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+Totale $96+60+48+36=240$.\quad Percentuale $=\frac{\text{frequenza}}{240}\cdot100$; \quad gradi $=\frac{\text{frequenza}}{240}\cdot360^\circ$.
+\begin{center}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+genere & frequenza & percentuale & gradi\\
+\midrule
+gialli & $96$ & $40\%$ & $144^\circ$\\
+fantasy & $60$ & $25\%$ & $90^\circ$\\
+romanzi storici & $48$ & $20\%$ & $72^\circ$\\
+biografie & $36$ & $15\%$ & $54^\circ$\\
+\midrule
+totale & $240$ & $100\%$ & $360^\circ$\\
+\bottomrule
+\end{tabular}
+\hspace{1cm}
+% sectors from 90 deg clockwise: 144, 90, 72, 54 -> boundaries 90, -54, -144, -216, -270
+\begin{tikzpicture}[baseline=(c.base)]
+  \coordinate (c) at (0,0);
+  \def\R{1.35}
+  \fill[fgA!55] (0,0) -- (90:\R) arc (90:-54:\R) -- cycle;
+  \fill[fgB!50] (0,0) -- (-54:\R) arc (-54:-144:\R) -- cycle;
+  \fill[fgC!50] (0,0) -- (-144:\R) arc (-144:-216:\R) -- cycle;
+  \fill[fgD!55] (0,0) -- (-216:\R) arc (-216:-270:\R) -- cycle;
+  \foreach \a in {90,-54,-144,-216} \draw[white, line width=1pt] (0,0) -- (\a:\R);
+  \node[font=\scriptsize] at (18:0.85) {$144^\circ$};
+  \node[font=\scriptsize] at (-99:0.85) {$90^\circ$};
+  \node[font=\scriptsize] at (-180:0.85) {$72^\circ$};
+  \node[font=\scriptsize] at (-243:0.9) {$54^\circ$};
+\end{tikzpicture}
+\end{center}
+Controllo: la somma delle percentuali è $100\%$ e quella dei gradi è $360^\circ$. \enx{check both totals}
+\end{solbox}
+
+\begin{esercizio}{S3}{2}{Dall'areogramma ai dati}{From a pie chart back to the data}
+L'areogramma rappresenta i giudizi di $72$ alunni. \enx{The pie chart shows the grades of 72 pupils.}
+\begin{center}
+% sectors: sufficiente 150, buono 120, ottimo (unknown) 90 ; drawn to scale
+\begin{tikzpicture}
+  \def\R{1.5}
+  \fill[fgB!40] (0,0) -- (90:\R) arc (90:-60:\R) -- cycle;
+  \fill[fgC!40] (0,0) -- (-60:\R) arc (-60:-180:\R) -- cycle;
+  \fill[fgD!45] (0,0) -- (-180:\R) arc (-180:-270:\R) -- cycle;
+  \foreach \a in {90,-60,-180} \draw[white, line width=1pt] (0,0) -- (\a:\R);
+  \node[font=\small, align=center] at (15:0.85) {sufficiente\\$150^\circ$};
+  \node[font=\small, align=center] at (-120:0.85) {buono\\$120^\circ$};
+  \node[font=\small, align=center] at (-225:0.8) {ottimo\\$?$};
+\end{tikzpicture}
+\end{center}
+\begin{enumerate}
+\item Quanto è ampio il settore «ottimo»? \enx{What is the angle of the sector ``excellent''?}
+\item Quanti alunni hanno preso ciascun giudizio? \enx{How many pupils got each grade?}
+\item Che percentuale di alunni ha preso «ottimo»? \enx{What percentage got ``excellent''?}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item $360^\circ-(150^\circ+120^\circ)=\mathbf{90^\circ}$.
+\item Alunni $=\frac{\text{gradi}}{360^\circ}\cdot72$: \ sufficiente $\frac{150}{360}\cdot72=\mathbf{30}$; \ buono $\frac{120}{360}\cdot72=\mathbf{24}$; \ ottimo $\frac{90}{360}\cdot72=\mathbf{18}$. \ Controllo: $30+24+18=72$. \checkmark
+\item $\frac{90}{360}=\frac14=\mathbf{25\%}$.
+\end{enumerate}
+\end{solbox}
+
+\begin{esercizio}{S4}{1}{Probabilità con un dado}{Probability with one die}
+Lanci un dado a sei facce. Scrivi la probabilità come frazione, numero decimale e percentuale.
+\en{You roll a six sided die. Write each probability as a fraction, a decimal and a percentage.}
+\begin{multicols}{2}
+\begin{enumerate}
+\item Esce un numero pari. \enx{an even number}
+\item Esce un numero maggiore di $4$. \enx{more than 4}
+\item Esce il $7$. \enx{a 7}
+\item Esce un numero da $1$ a $6$. \enx{a number from 1 to 6}
+\end{enumerate}
+\end{multicols}
+\end{esercizio}
+\begin{solbox}
+$P=\dfrac{\text{casi favorevoli}}{\text{casi possibili}}$
+\begin{enumerate}
+\item $\{2,4,6\}$: \ $\frac36=\frac12=0,5=\mathbf{50\%}$
+\item $\{5,6\}$: \ $\frac26=\frac13\approx0,33\approx\mathbf{33,3\%}$
+\item Evento \textbf{impossibile}: $P=\mathbf{0}$.
+\item Evento \textbf{certo}: $P=\mathbf{1}=100\%$.
+\end{enumerate}
+\en{Probability is always between 0 (impossible) and 1 (certain).}
+\end{solbox}
+
+\begin{esercizio}{S5}{3}{Urne e due dadi}{Urns and two dice}
+\begin{enumerate}
+\item Un'urna contiene $5$ palline rosse, $3$ blu e $2$ verdi. Ne estrai una. Calcola la probabilità che sia: rossa; non blu; rossa oppure verde.
+\en{An urn holds 5 red, 3 blue and 2 green balls. You draw one. Find P(red), P(not blue), P(red or green).}
+\item Lanci due dadi. Costruisci la tabella delle somme e calcola la probabilità che: la somma sia $7$; i due numeri siano uguali; la somma sia maggiore di $10$.
+\en{You roll two dice. Build the table of sums and find P(sum 7), P(both the same), P(sum greater than 10).}
+\end{enumerate}
+\end{esercizio}
+\begin{solbox}
+\begin{enumerate}
+\item Casi possibili $10$. \ $P(\text{rossa})=\frac{5}{10}=\mathbf{\frac12}$; \ $P(\text{non blu})=1-\frac{3}{10}=\mathbf{\frac{7}{10}}$ (evento contrario); \ $P(\text{rossa o verde})=\frac{5+2}{10}=\mathbf{\frac{7}{10}}$.
+\item $6\cdot6=36$ casi possibili.
+\begin{center}
+% 6x6 table of sums; sum 7 in green, doubles in orange (4+... none overlap), sum > 10 in red
+\begin{tikzpicture}[scale=0.52]
+  \foreach \i in {1,...,6} {
+    \node[font=\scriptsize\bfseries] at (\i,0.1) {\i};
+    \node[font=\scriptsize\bfseries] at (-0.05,-\i) {\i};
+    \foreach \j in {1,...,6} {
+      \pgfmathtruncatemacro{\s}{\i+\j}
+      \ifnum\s=7 \fill[fgC!35] (\i-0.5,-\j-0.5) rectangle (\i+0.5,-\j+0.5); \fi
+      \ifnum\i=\j \fill[fgD!40] (\i-0.5,-\j-0.5) rectangle (\i+0.5,-\j+0.5); \fi
+      \ifnum\s>10 \draw[fgA, line width=1pt] (\i-0.42,-\j-0.42) rectangle (\i+0.42,-\j+0.42); \fi
+      \node[font=\scriptsize] at (\i,-\j) {\s};
+    }
+  }
+  \foreach \k in {0,...,6} {\draw[black!40] (\k+0.5,-0.5) -- (\k+0.5,-6.5); \draw[black!40] (0.5,-\k-0.5) -- (6.5,-\k-0.5);}
+  \node[font=\scriptsize, anchor=west] at (7,-1.5) {\textcolor{fgC!80!black}{$\blacksquare$} somma 7: $6$ casi};
+  \node[font=\scriptsize, anchor=west] at (7,-2.7) {\textcolor{fgD}{$\blacksquare$} numeri uguali: $6$ casi};
+  \node[font=\scriptsize, anchor=west] at (7,-3.9) {\textcolor{fgA}{$\square$} somma $>10$: $3$ casi};
+\end{tikzpicture}
+\end{center}
+$P(\text{somma }7)=\frac{6}{36}=\mathbf{\frac16}$; \quad $P(\text{uguali})=\frac{6}{36}=\mathbf{\frac16}$; \quad $P(\text{somma}>10)=\frac{3}{36}=\mathbf{\frac{1}{12}}$ (casi $5{+}6$, $6{+}5$, $6{+}6$).
+\end{enumerate}
+\errore{$1+6$ e $6+1$ sono due casi diversi: nella tabella occupano due caselle.}{$1+6$ and $6+1$ are two different outcomes.}
+\end{solbox}

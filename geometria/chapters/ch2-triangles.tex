@@ -24,7 +24,7 @@ I triangoli si classificano in due modi. Rispetto ai \emph{lati}: \textbf{equila
 \begin{tikzpicture}
   \begin{scope}
     \coordinate (A) at (0,0); \coordinate (B) at (4.2,0); \coordinate (C) at (1.5,2.6);
-    \fill[shade] (A) -- (B) -- (C) -- cycle;
+    \fill[lightfill] (A) -- (B) -- (C) -- cycle;
     \draw[side] (A) -- (B) -- (C) -- cycle;
     \pic[draw, angA, angle radius=5mm, "$\alpha$", angle eccentricity=1.5] {angle=B--A--C};
     \pic[draw, angB, angle radius=5mm, "$\beta$", angle eccentricity=1.5] {angle=C--B--A};
@@ -270,7 +270,7 @@ Disegna le tre altezze di un triangolo qualsiasi, prolungandole quando serve. Su
   \begin{scope}
     \coordinate (A) at (0,0); \coordinate (B) at (4,0); \coordinate (C) at (1.6,3.0);
     \coordinate (Ha) at ($(B)!(A)!(C)$); \coordinate (Hb) at ($(A)!(B)!(C)$); \coordinate (Hc) at ($(A)!(C)!(B)$);
-    \draw[side, fill=shade] (A) -- (B) -- (C) -- cycle;
+    \draw[side, fill=lightfill] (A) -- (B) -- (C) -- cycle;
     \draw[angB, line width=0.8pt] (A) -- (Ha); \draw[angB, line width=0.8pt] (B) -- (Hb); \draw[angB, line width=0.8pt] (C) -- (Hc);
     \node[circle, fill=crimson, inner sep=1.8pt] at (1.6,1.28) {};
     \node[below left] at (A) {$A$}; \node[below right] at (B) {$B$}; \node[above] at (C) {$C$};
@@ -281,7 +281,7 @@ Disegna le tre altezze di un triangolo qualsiasi, prolungandole quando serve. Su
   \begin{scope}[shift={(6.3,0)}]
     \coordinate (A) at (0,0); \coordinate (B) at (4,0); \coordinate (C) at (0,3.0);
     \coordinate (Ha) at ($(B)!(A)!(C)$);
-    \draw[side, fill=shade] (A) -- (B) -- (C) -- cycle;
+    \draw[side, fill=lightfill] (A) -- (B) -- (C) -- cycle;
     \draw[angB, line width=0.8pt] (A) -- (Ha);
     \draw[angB, line width=2pt, opacity=0.45] (A) -- (B); \draw[angB, line width=2pt, opacity=0.45] (A) -- (C);
     \rang{B}{A}{C}
@@ -295,7 +295,7 @@ Disegna le tre altezze di un triangolo qualsiasi, prolungandole quando serve. Su
     \coordinate (Ha) at ($(B)!(A)!(C)$); \coordinate (Hb) at ($(A)!(B)!(C)$); \coordinate (Hc) at ($(A)!(C)!(B)$);
     \draw[helper] (Hc) -- (A); \draw[helper] (A) -- (Hb);
     \draw[helper, angB!70] (Hc) -- (O); \draw[helper, angB!70] (Hb) -- (O); \draw[helper, angB!70] (A) -- (O);
-    \draw[side, fill=shade] (A) -- (B) -- (C) -- cycle;
+    \draw[side, fill=lightfill] (A) -- (B) -- (C) -- cycle;
     \draw[angB, line width=0.8pt] (A) -- (Ha); \draw[angB, line width=0.8pt] (B) -- (Hb); \draw[angB, line width=0.8pt] (C) -- (Hc);
     \node[circle, fill=crimson, inner sep=1.8pt] at (O) {};
     \node[below right] at (A) {$A$}; \node[below right] at (B) {$B$}; \node[above] at (C) {$C$};
@@ -336,7 +336,7 @@ La stessa area tre volte: l'altezza viaggia sempre insieme alla sua base.
 \begin{tikzpicture}[scale=0.62]
   \begin{scope}
     \coordinate (P1) at (0,0); \coordinate (P2) at (4,0); \coordinate (P3) at (0,3);
-    \draw[side, fill=shade] (P1) -- (P2) -- (P3) -- cycle;
+    \draw[side, fill=lightfill] (P1) -- (P2) -- (P3) -- cycle;
     \draw[line width=2.2pt, angD] (P1) -- (P2);
     \draw[line width=1.4pt, angB] (P1) -- (P3);
     \rang{P2}{P1}{P3}
@@ -345,7 +345,7 @@ La stessa area tre volte: l'altezza viaggia sempre insieme alla sua base.
   \end{scope}
   \begin{scope}[shift={(6.5,0)}]
     \coordinate (P1) at (0,0); \coordinate (P2) at (3,0); \coordinate (P3) at (0,4);
-    \draw[side, fill=shade] (P1) -- (P2) -- (P3) -- cycle;
+    \draw[side, fill=lightfill] (P1) -- (P2) -- (P3) -- cycle;
     \draw[line width=2.2pt, angD] (P1) -- (P2);
     \draw[line width=1.4pt, angB] (P1) -- (P3);
     \rang{P2}{P1}{P3}
@@ -354,7 +354,7 @@ La stessa area tre volte: l'altezza viaggia sempre insieme alla sua base.
   \end{scope}
   \begin{scope}[shift={(12,0)}]
     \coordinate (P1) at (0,0); \coordinate (P2) at (5,0); \coordinate (P3) at (3.2,2.4); \coordinate (F) at (3.2,0);
-    \draw[side, fill=shade] (P1) -- (P2) -- (P3) -- cycle;
+    \draw[side, fill=lightfill] (P1) -- (P2) -- (P3) -- cycle;
     \draw[line width=2.2pt, angD] (P1) -- (P2);
     \draw[line width=1.4pt, angB] (P3) -- (F);
     \rang{P3}{F}{P2}
@@ -387,7 +387,7 @@ Da ogni vertice partono tre segmenti famosi, ed è facile confonderli. L'\textbf
 \begin{tikzpicture}[scale=1.05]
   \coordinate (A) at (0,0); \coordinate (B) at (5.5,0); \coordinate (C) at (1.2,3.2);
   \coordinate (H) at (1.2,0); \coordinate (D) at (2.141,0); \coordinate (M) at (2.75,0);
-  \draw[side, fill=shade] (A) -- (B) -- (C) -- cycle;
+  \draw[side, fill=lightfill] (A) -- (B) -- (C) -- cycle;
   \draw[angB, line width=1.1pt] (C) -- (H);
   \draw[angC, line width=1.1pt] (C) -- (D);
   \draw[angA, line width=1.1pt] (C) -- (M);

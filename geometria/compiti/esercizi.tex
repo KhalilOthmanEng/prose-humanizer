@@ -1,0 +1,62 @@
+% ==================================================================
+%  esercizi.tex : QUESTIONS ONLY (solutions are hidden)
+%  Compile: pdflatex esercizi   (twice)
+%  Same source as soluzioni.tex; every number is checked in verifica.py
+% ==================================================================
+\def\modoesercizi{}      % hide every solution in this file
+\input{preambolo}
+\fancyhead[L]{\small\color{engray}Matematica \textperiodcentered\ Esercizi per casa}
+\fancyhead[R]{\small\color{engray}\itshape Maths \textperiodcentered\ Homework}
+
+\begin{document}
+
+\begin{center}
+{\LARGE\bfseries\color{navy} Esercizi di matematica}\\[3pt]
+{\large\itshape\color{engray} Maths exercises}\\[6pt]
+{\normalsize Preparazione all'esame di terza media \textperiodcentered\ \textit{\color{engray}Practice for the final exam of lower secondary school}}
+\end{center}
+\vspace{2pt}
+\noindent Nome \enx{name}\ \rule{6cm}{0.4pt}\hfill Data \enx{date}\ \rule{3.5cm}{0.4pt}
+
+\begin{tcolorbox}[colback=navy!4, colframe=navy!50, boxrule=0.5pt, arc=2pt, left=6pt, right=6pt, top=4pt, bottom=4pt,
+  title={Come lavorare \textperiodcentered\ \itshape How to work}, fonttitle=\bfseries\small, colbacktitle=navy!70]
+\begin{itemize}[leftmargin=1.2em]
+\item Ogni esercizio ha un livello: \livello{1} base, \livello{2} intermedio, \livello{3} avanzato. Parti dal livello base di ogni sezione; quando lo sai fare, passa al successivo.
+\en{Each exercise has a level: one star basic, two stars intermediate, three stars advanced. Start with the basic ones; when they are easy, move up.}
+\item Lavora sul quaderno: copia il numero dell'esercizio e scrivi \emph{tutti} i passaggi, non solo il risultato. Quando c'è una figura, ridisegnala. Fai sempre la verifica quando puoi.
+\en{Work in your notebook: copy the exercise number and write every step, not only the result. When there is a figure, draw it again. Check your answer whenever you can.}
+\item Usa $\pi=3,14$. La calcolatrice va bene per la geometria solida e le radici. La virgola è il separatore decimale: $2,5$ vuol dire due e mezzo.
+\en{Use $\pi = 3.14$. A calculator is fine for solid geometry and square roots. The comma is the decimal separator: $2,5$ means two and a half.}
+\item Alla fine controlla con il file delle soluzioni e segna gli errori con un colore diverso: sono la parte più utile!
+\en{At the end, check with the solutions file and mark your mistakes in another colour: they are the most useful part.}
+\end{itemize}
+\end{tcolorbox}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}rlll@{}}
+\toprule
+& \textbf{Sezione} & \textbf{\itshape\color{engray}Section} & \textbf{Esercizi}\\
+\midrule
+1 & Numeri naturali e proprietà & \itshape\color{engray}Natural numbers & N1, N2\\
+2 & Frazioni, potenze e radici & \itshape\color{engray}Fractions, powers, roots & F1 to F5\\
+3 & Equazioni di primo grado & \itshape\color{engray}Linear equations & E1 to E4\\
+4 & Proporzioni e percentuali & \itshape\color{engray}Proportions, percentages & P1 to P5\\
+5 & Statistica e probabilità & \itshape\color{engray}Statistics, probability & S1 to S5\\
+6 & Piano cartesiano e funzioni & \itshape\color{engray}Coordinate plane, functions & C1 to C4\\
+7 & Angoli e rette parallele & \itshape\color{engray}Angles, parallel lines & A1 to A3\\
+8 & Triangoli e congruenza & \itshape\color{engray}Triangles, congruence & T1 to T4\\
+9 & Pitagora, poligoni e cerchio & \itshape\color{engray}Pythagoras, polygons, circle & G1 to G6\\
+10 & Geometria solida & \itshape\color{engray}Solid geometry & V1 to V7\\
+11 & Simulazione della prova d'esame & \itshape\color{engray}Mock exam & X1 to X4\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\input{contenuto}
+
+\clearpage
+\input{parti/formulario}
+
+\end{document}
