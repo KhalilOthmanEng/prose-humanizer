@@ -318,7 +318,7 @@ class V6_P4_Rotazione(LessonScene):
             self.play(Write(g[2]))
         with self.say("E il volume, come per la piramide, è un terzo del cilindro con la stessa base e la stessa altezza: centoventotto pi greco."):
             self.play(Write(g[3]))
-        trap = T("Il cateto sull'asse è l'altezza, l'altro è il raggio.", 26, COL_ERR).move_to(P(3.0, -1.5))
+        trap = VGroup(T("Il cateto sull'asse è l'altezza,", 28, COL_ERR), T("l'altro è il raggio.", 28, COL_ERR)).arrange(DOWN, buff=0.15).move_to(P(2.8, -1.4))
         with self.say("Attenzione: il cateto attorno a cui il triangolo gira è sempre l'altezza del cono."):
             self.play(FadeIn(trap))
         self.end()
